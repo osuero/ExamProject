@@ -1,0 +1,13 @@
+❯ Building...
+✔ Building...
+Application bundle generation complete. [1.403 seconds] - 2026-10-03T18:59:30.357Z
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.3 [39m[90m/home/claude/ExamProject/frontend[39m
+
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m3 passed[39m[22m[90m (3)[39m
+[2m   Start at [22m 14:59:30
+[2m   Duration [22m 941ms[2m (environment 65%, setup 25%, transform 7%, import 2%, worker 1%, tests 1%)[22m
+

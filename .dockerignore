@@ -1,0 +1,10 @@
+**/node_modules
+**/bin
+**/obj
+**/dist
+**/.angular
+**/TestResults
+**/playwright-report
+**/test-results
+.git
+.env

@@ -1,0 +1,18 @@
+
+Running 13 tests using 1 worker
+
+  ✓   1 [desktop] › e2e/app.spec.ts:6:7 › catalog › cards show format, language and a quick look on hover and keyboard focus (1.3s)
+  ✓   2 [desktop] › e2e/app.spec.ts:24:7 › catalog › detail page shows syllabus, weights and modes (917ms)
+  ✓   3 [desktop] › e2e/app.spec.ts:43:7 › catalog › pages have no serious accessibility violations (5.7s)
+  ✓   4 [desktop] › e2e/app.spec.ts:55:7 › account › magic link sign-in works once and the link cannot be reused (2.0s)
+  ✓   5 [desktop] › e2e/app.spec.ts:74:7 › account › invalid email is explained (783ms)
+  ✓   6 [desktop] › e2e/app.spec.ts:83:7 › practice › single answer: correct and incorrect feedback with explanations for every option (2.7s)
+  ✓   7 [desktop] › e2e/app.spec.ts:116:7 › practice › multiple response waits for the full selection and an explicit check (2.0s)
+  ✓   8 [desktop] › e2e/app.spec.ts:139:7 › simulation › no solutions in the page or API while active; turning feedback on marks it assisted (2.1s)
+  ✓   9 [desktop] › e2e/app.spec.ts:165:7 › simulation › timer survives reload, answers autosave, and the map tracks state (5.3s)
+  ✓  10 [desktop] › e2e/app.spec.ts:184:7 › simulation › connection loss keeps the choice and retries; finish shows the result (1.9s)
+  ✓  11 [desktop] › e2e/app.spec.ts:206:7 › isolation and admin › another user cannot open my attempt (2.5s)
+  ✓  12 [desktop] › e2e/app.spec.ts:218:7 › isolation and admin › students cannot open admin; admins see questions, coverage and import preview (2.9s)
+  ✓  13 [mobile] › e2e/app.spec.ts:32:7 › catalog › quick look works by tap on mobile @mobile (934ms)
+
+  13 passed (33.2s)

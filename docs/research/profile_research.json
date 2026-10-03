@@ -1,0 +1,1201 @@
+{
+  "checkedAt": "2026-10-03",
+  "exams": {
+    "CCDV-F": {
+      "examCode": {
+        "value": "CCDV-F",
+        "status": "confirmed_official",
+        "evidence": [
+          {
+            "sourceId": "P04",
+            "url": "https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F1783542875%2FClaude+Certified+Developer+%E2%80%93+Foundations+Exam+Guide.pdf",
+            "tier": 1,
+            "quote": "\"Version 1.0 · Effective July 2026 · Exam code: CCDV-F\""
+          },
+          {
+            "sourceId": "P01",
+            "url": "https://www.pearsonvue.com/us/en/anthropic.html",
+            "tier": 2,
+            "quote": "\"Claude Certified Developer - Foundations (CCDV-F)\""
+          }
+        ]
+      },
+      "numberOfQuestions": {
+        "value": 53,
+        "status": "confirmed_official",
+        "evidence": [
+          {
+            "sourceId": "P04",
+            "url": "https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F1783542875%2FClaude+Certified+Developer+%E2%80%93+Foundations+Exam+Guide.pdf",
+            "tier": 1,
+            "quote": "Exam Details at a Glance: \"Number of items 53\""
+          },
+          {
+            "sourceId": "C01",
+            "url": "https://claudecertificationguide.com/ccdv-f",
+            "tier": 4,
+            "quote": "\"Number of items 53\" (states facts come from Anthropic's exam guide)"
+          },
+          {
+            "sourceId": "C03",
+            "url": "https://www.linkedin.com/pulse/claude-certification-exams-honest-review-matthew-purcell-byo2e",
+            "tier": 5,
+            "quote": "Testimony: \"Questions: 53, across eight domains\""
+          }
+        ]
+      },
+      "examTimeMinutes": {
+        "value": 120,
+        "status": "confirmed_official",
+        "evidence": [
+          {
+            "sourceId": "P04",
+            "url": "https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F1783542875%2FClaude+Certified+Developer+%E2%80%93+Foundations+Exam+Guide.pdf",
+            "tier": 1,
+            "quote": "\"Time limit 120 minutes\""
+          },
+          {
+            "sourceId": "P06",
+            "url": "https://anthropic-partners.skilljar.com/page/faq-certifications",
+            "tier": 2,
+            "quote": "\"You have 120 minutes to answer them.\""
+          },
+          {
+            "sourceId": "C03",
+            "url": "https://www.linkedin.com/pulse/claude-certification-exams-honest-review-matthew-purcell-byo2e",
+            "tier": 5,
+            "quote": "Testimony: \"Time to complete: Approximately 45 minutes (out of 120 minutes)\""
+          }
+        ]
+      },
+      "seatTimeMinutes": {
+        "value": 135,
+        "status": "confirmed_official",
+        "evidence": [
+          {
+            "sourceId": "P06",
+            "url": "https://anthropic-partners.skilljar.com/page/faq-certifications",
+            "tier": 2,
+            "quote": "\"All Claude certification exams use multiple choice and scenario-based multiple response questions. You have 120 minutes to answer them. Plan for about 135 minutes of total seat time, which includes check-in, instructions, and a brief post-exam survey.\""
+          },
+          {
+            "sourceId": "P09",
+            "url": "https://www.pearsonvue.com/us/en/anthropic/onvue.html",
+            "tier": 2,
+            "quote": "OnVUE testing rules: \"Begin check-in 30 minutes before your appointment.\""
+          }
+        ],
+        "note": "Approximate ('about 135 minutes'); program-wide FAQ, not exam-specific. OnVUE check-in starts 30 minutes before the appointment."
+      },
+      "accommodations": {
+        "value": "Mentioned: reasonable accommodations via Pearson VUE, must be approved before scheduling",
+        "status": "confirmed_official",
+        "evidence": [
+          {
+            "sourceId": "P04",
+            "url": "https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F1783542875%2FClaude+Certified+Developer+%E2%80%93+Foundations+Exam+Guide.pdf",
+            "tier": 1,
+            "quote": "s.11: \"Reasonable accommodations are available for candidates with documented disabilities or needs, in accordance with applicable law. Accommodations must be requested and approved by Pearson VUE before you schedule your exam.\""
+          },
+          {
+            "sourceId": "P06",
+            "url": "https://anthropic-partners.skilljar.com/page/faq-certifications",
+            "tier": 2,
+            "quote": "\"Accommodations are requested through Pearson's accommodations process. Please plan to request accommodations 10 days or more before you plan on taking your exam.\""
+          },
+          {
+            "sourceId": "P08",
+            "url": "https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F34hhd92iyp94a0gtbr15cy5jk%2Fpublic%2F1782870704%2FAnthropic+Certification+Exam+Policy.pdf",
+            "tier": 2,
+            "quote": "Exam Policy s.7 (last updated June 25, 2026): \"Your accommodation request must be submitted and approved prior to scheduling your Exam.\""
+          },
+          {
+            "sourceId": "P10",
+            "url": "https://www.pearsonvue.com/us/en/test-takers/accommodations/pearson_approve.anthropic.html",
+            "tier": 2,
+            "quote": "Pearson Anthropic accommodations page: \"Please allow 10 business days for us to review your materials.\""
+          }
+        ],
+        "note": "Lead time wording differs slightly: FAQ '10 days or more' vs Pearson '10 business days' review."
+      },
+      "questionTypes": {
+        "value": [
+          "multiple-choice",
+          "multiple-response"
+        ],
+        "status": "confirmed_official",
+        "evidence": [
+          {
+            "sourceId": "P04",
+            "url": "https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F1783542875%2FClaude+Certified+Developer+%E2%80%93+Foundations+Exam+Guide.pdf",
+            "tier": 1,
+            "quote": "\"Item format Multiple-choice and multiple-response items; each item states how many responses to select\""
+          },
+          {
+            "sourceId": "P06",
+            "url": "https://anthropic-partners.skilljar.com/page/faq-certifications",
+            "tier": 2,
+            "quote": "\"All Claude certification exams use multiple choice and scenario-based multiple response questions.\""
+          }
+        ],
+        "note": "No official proportion of single vs multiple response is published."
+      },
+      "optionsPerQuestion": {
+        "value": null,
+        "status": "unknown",
+        "evidence": [
+          {
+            "sourceId": "P04",
+            "url": "https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F1783542875%2FClaude+Certified+Developer+%E2%80%93+Foundations+Exam+Guide.pdf",
+            "tier": 1,
+            "quote": "Section 8 sample items (illustrative, 'not drawn from the live item bank') each show options A–D."
+          }
+        ],
+        "note": "No official source states how many options live items have. Both official guides' sample items use four lettered options (A–D) (CCDV-F: 3 samples; CCAR-F: 12 samples), but the guides call them illustrative only. Do not derive proportions of single vs multiple response; none are published."
+      },
+      "domains": {
+        "value": [
+          {
+            "n": 1,
+            "name": "Agents and Workflows",
+            "weight": 14.7,
+            "skills": [
+              {
+                "name": "Agent Architecture",
+                "weight": 4.5
+              },
+              {
+                "name": "Agent Construction with Claude",
+                "weight": 5.3
+              },
+              {
+                "name": "Agent Patterns and Frameworks",
+                "weight": 4.9
+              }
+            ]
+          },
+          {
+            "n": 2,
+            "name": "Applications and Integration",
+            "weight": 33.1,
+            "skills": [
+              {
+                "name": "Understanding Requirements",
+                "weight": 3.4
+              },
+              {
+                "name": "Systems Life Cycle",
+                "weight": 2.8
+              },
+              {
+                "name": "Claude API Mechanics",
+                "weight": 6.8
+              },
+              {
+                "name": "Software Engineering Foundations",
+                "weight": 7.4
+              },
+              {
+                "name": "Claude Application Design",
+                "weight": 8.6
+              },
+              {
+                "name": "Configuration Management",
+                "weight": 4.1
+              }
+            ]
+          },
+          {
+            "n": 3,
+            "name": "Claude Code",
+            "weight": 3.1,
+            "skills": [
+              {
+                "name": "Claude Code Operation",
+                "weight": 3.1
+              }
+            ]
+          },
+          {
+            "n": 4,
+            "name": "Eval, Testing, and Debugging",
+            "weight": 2.6,
+            "skills": [
+              {
+                "name": "Debugging and Error Handling",
+                "weight": 2.6
+              }
+            ]
+          },
+          {
+            "n": 5,
+            "name": "Model Selection and Optimization",
+            "weight": 16.8,
+            "skills": [
+              {
+                "name": "LLM Fundamentals",
+                "weight": 5.2
+              },
+              {
+                "name": "Technical Fundamentals",
+                "weight": 6.1
+              },
+              {
+                "name": "Model Selection and Tradeoffs",
+                "weight": 2.7
+              },
+              {
+                "name": "Cost and Token Management",
+                "weight": 2.8
+              }
+            ]
+          },
+          {
+            "n": 6,
+            "name": "Prompt and Context Engineering",
+            "weight": 11.0,
+            "skills": [
+              {
+                "name": "Context Engineering",
+                "weight": 3.8
+              },
+              {
+                "name": "Prompt Engineering",
+                "weight": 4.6
+              },
+              {
+                "name": "Output Handling",
+                "weight": 2.6
+              }
+            ]
+          },
+          {
+            "n": 7,
+            "name": "Security and Safety",
+            "weight": 8.1,
+            "skills": [
+              {
+                "name": "AI Application Security",
+                "weight": 3.2
+              },
+              {
+                "name": "Guardrails and Safe Deployment",
+                "weight": 2.3
+              },
+              {
+                "name": "Claude Hooks",
+                "weight": 1.0
+              },
+              {
+                "name": "Identity, Secrets, and Key Management",
+                "weight": 1.6
+              }
+            ]
+          },
+          {
+            "n": 8,
+            "name": "Tools and MCPs",
+            "weight": 10.6,
+            "skills": [
+              {
+                "name": "Tool Implementation",
+                "weight": 4.4
+              },
+              {
+                "name": "MCP Server Development",
+                "weight": 2.1
+              },
+              {
+                "name": "Agentic Customization",
+                "weight": 4.1
+              }
+            ]
+          }
+        ],
+        "status": "confirmed_official",
+        "evidence": [
+          {
+            "sourceId": "P04",
+            "url": "https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F1783542875%2FClaude+Certified+Developer+%E2%80%93+Foundations+Exam+Guide.pdf",
+            "tier": 1,
+            "quote": "Blueprint table: \"1 Agents and Workflows 14.7% / 2 Applications and Integration 33.1% / 3 Claude Code 3.1% / 4 Eval, Testing, and Debugging 2.6% / 5 Model Selection and Optimization 16.8% / 6 Prompt and Context Engineering 11.0% / 7 Security and Safety 8.1% / 8 Tools and MCPs 10.6% | Total 100%\"; skill weights from 'Detailed objectives by domain' (\"Skill weights show each skill's share of the overall exam\")."
+          },
+          {
+            "sourceId": "C01",
+            "url": "https://claudecertificationguide.com/ccdv-f",
+            "tier": 4,
+            "quote": "Same 8 domains and weights (spells 'Optimisation')."
+          }
+        ],
+        "note": "All provisional weights confirmed. Weights are 'the approximate proportion of scored items drawn from each domain'."
+      },
+      "blueprintVersion": {
+        "value": {
+          "version": "1.0",
+          "effective": "July 2026",
+          "history": [
+            {
+              "version": "1.0",
+              "summary": "Initial publication",
+              "date": "July 2026"
+            }
+          ],
+          "pdfCreationDate": "2026-07-08"
+        },
+        "status": "confirmed_official",
+        "evidence": [
+          {
+            "sourceId": "P04",
+            "url": "https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F1783542875%2FClaude+Certified+Developer+%E2%80%93+Foundations+Exam+Guide.pdf",
+            "tier": 1,
+            "quote": "\"Version 1.0 · Effective July 2026 · Exam code: CCDV-F · This guide is subject to change without notice.\"; Document Control: \"1.0 Initial publication July 2026\""
+          }
+        ],
+        "note": "pdfCreationDate taken from PDF metadata."
+      },
+      "languages": {
+        "value": [
+          "English"
+        ],
+        "status": "confirmed_official",
+        "evidence": [
+          {
+            "sourceId": "P06",
+            "url": "https://anthropic-partners.skilljar.com/page/faq-certifications",
+            "tier": 2,
+            "quote": "FAQ 'Is content available in languages other than English?': \"The exam and prep content are available in English only. Note that browser translation tools are not permitted during proctored exams.\""
+          },
+          {
+            "sourceId": "P06",
+            "url": "https://anthropic-partners.skilljar.com/page/faq-certifications",
+            "tier": 2,
+            "quote": "\"Can I use notes, documentation, translation tools, or AI assistants during the exam? No. Exams are closed book. Browser translation tools are not permitted under the Pearson proctoring platform.\""
+          }
+        ],
+        "note": "Program-wide FAQ statement on an official Anthropic page (tier 2); the exam guide itself does not list languages. The Pearson site language selector and the G01 site language selector (English/Español/Français/Русский) are NOT evidence of exam languages and were disregarded."
+      },
+      "scoring": {
+        "value": {
+          "scale": "100–1,000 (scaled)",
+          "passingScore": 720,
+          "statedBy": "Anthropic (exam guide; Partner Academy FAQ)",
+          "method": "criterion-referenced; cut score set by formal standard-setting study with SMEs",
+          "reporting": "pass/fail + scaled score + percent-correct by domain (domain % not used for pass/fail)"
+        },
+        "status": "confirmed_official",
+        "evidence": [
+          {
+            "sourceId": "P04",
+            "url": "https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F1783542875%2FClaude+Certified+Developer+%E2%80%93+Foundations+Exam+Guide.pdf",
+            "tier": 1,
+            "quote": "\"Passing score Scaled score of 720 on a scale of 100–1,000\"; s.9: \"The score is reported on a scaled range of 100–1,000, and the cut score is 720.\""
+          },
+          {
+            "sourceId": "P06",
+            "url": "https://anthropic-partners.skilljar.com/page/faq-certifications",
+            "tier": 2,
+            "quote": "\"Results are reported as a scaled score of 100 to 1,000. The minimum passing score is 720 for all four certifications. Scaled scoring equates scores across exam forms that may have slightly different difficulty.\""
+          }
+        ]
+      },
+      "priceUSD": {
+        "value": 125,
+        "status": "confirmed_official",
+        "evidence": [
+          {
+            "sourceId": "P04",
+            "url": "https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F1783542875%2FClaude+Certified+Developer+%E2%80%93+Foundations+Exam+Guide.pdf",
+            "tier": 1,
+            "quote": "\"Exam fee $125 USD\""
+          },
+          {
+            "sourceId": "P02",
+            "url": "https://anthropic-partners.skilljar.com/claude-certified-developer-foundations-certification",
+            "tier": 2,
+            "quote": "Course page lists price \"$125\""
+          },
+          {
+            "sourceId": "P06",
+            "url": "https://anthropic-partners.skilljar.com/page/faq-certifications",
+            "tier": 2,
+            "quote": "\"Four: Claude Certified Associate ($99), Claude Certified Developer – Foundations ($125), Claude Certified Architect – Foundations ($125), and Claude Certified Architect – Professional ($175). Prices are in USD before any partner-tier discount.\""
+          },
+          {
+            "sourceId": "P07",
+            "url": "https://anthropic-partners.skilljar.com/page/partner-certifications",
+            "tier": 2,
+            "quote": "Certification table: \"Claude Certified Developer – Foundations Foundations $125 USD ... Claude Certified Architect – Foundations Foundations $125 USD\""
+          }
+        ],
+        "note": "Informational. Partner-tier discounts (50% Select/Preferred/Global Premier; 100% Global Premier through Dec 31, 2026) per P06."
+      },
+      "delivery": {
+        "value": "Pearson VUE, online proctored (OnVUE) or test center",
+        "status": "confirmed_official",
+        "evidence": [
+          {
+            "sourceId": "P04",
+            "url": "https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F1783542875%2FClaude+Certified+Developer+%E2%80%93+Foundations+Exam+Guide.pdf",
+            "tier": 1,
+            "quote": "\"Choose an available date and select either online proctoring or a Pearson test center. The exam is delivered by Pearson VUE.\""
+          },
+          {
+            "sourceId": "P01",
+            "url": "https://www.pearsonvue.com/us/en/anthropic.html",
+            "tier": 2,
+            "quote": "Delivery via OnVUE and test centers (page lists OnVUE requirements and test-center scheduling)."
+          }
+        ]
+      }
+    },
+    "CCAR-F": {
+      "examCode": {
+        "value": "CCAR-F",
+        "status": "confirmed_official",
+        "evidence": [
+          {
+            "sourceId": "P05",
+            "url": "https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F1783542750%2FClaude+Certified+Architect+%E2%80%93+Foundations+Exam+Guide.pdf",
+            "tier": 1,
+            "quote": "\"Version 1.0 · Effective July 2026 · Exam code: CCAR-F\""
+          },
+          {
+            "sourceId": "P01",
+            "url": "https://www.pearsonvue.com/us/en/anthropic.html",
+            "tier": 2,
+            "quote": "\"Claude Certified Architect - Foundations (CCAR-F)\""
+          }
+        ]
+      },
+      "numberOfQuestions": {
+        "value": 60,
+        "status": "confirmed_official",
+        "evidence": [
+          {
+            "sourceId": "P05",
+            "url": "https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F1783542750%2FClaude+Certified+Architect+%E2%80%93+Foundations+Exam+Guide.pdf",
+            "tier": 1,
+            "quote": "Exam Details at a Glance: \"Number of items 60\""
+          },
+          {
+            "sourceId": "C02",
+            "url": "https://claudecertificationguide.com/architect-foundations",
+            "tier": 4,
+            "quote": "\"Number of items 60\""
+          },
+          {
+            "sourceId": "G01",
+            "url": "https://ccaf-exam.guide/docs/01-exam-overview/",
+            "tier": 4,
+            "quote": "\"60 multiple-choice questions, 120 minutes, proctored, closed-book\""
+          },
+          {
+            "sourceId": "C03",
+            "url": "https://www.linkedin.com/pulse/claude-certification-exams-honest-review-matthew-purcell-byo2e",
+            "tier": 5,
+            "quote": "Testimony: \"Questions: 60 (four scenarios, roughly 15 questions each)\""
+          },
+          {
+            "sourceId": "C06",
+            "url": "https://rogs.me/2026/07/how-i-got-claude-certified-and-how-you-can-too/",
+            "tier": 5,
+            "quote": "Testimony: \"The exam is 60 questions\""
+          }
+        ]
+      },
+      "examStructure": {
+        "value": "4 scenarios drawn at random from a bank of 6",
+        "status": "confirmed_official",
+        "evidence": [
+          {
+            "sourceId": "P05",
+            "url": "https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F1783542750%2FClaude+Certified+Architect+%E2%80%93+Foundations+Exam+Guide.pdf",
+            "tier": 1,
+            "quote": "\"Exam structure 4 scenarios drawn from a bank of 6\"; s.5: \"During the exam, 4 scenarios are presented and picked at random from the full set of the 6 scenarios below.\""
+          },
+          {
+            "sourceId": "C03",
+            "url": "https://www.linkedin.com/pulse/claude-certification-exams-honest-review-matthew-purcell-byo2e",
+            "tier": 5,
+            "quote": "Testimony: \"about 15 questions per scenario\""
+          }
+        ],
+        "note": "Questions-per-scenario (~15) is testimony only, not official."
+      },
+      "examTimeMinutes": {
+        "value": 120,
+        "status": "conflicting",
+        "evidence": [
+          {
+            "sourceId": "P05",
+            "url": "https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F1783542750%2FClaude+Certified+Architect+%E2%80%93+Foundations+Exam+Guide.pdf",
+            "tier": 1,
+            "quote": "\"Time limit 120 minutes\""
+          },
+          {
+            "sourceId": "P06",
+            "url": "https://anthropic-partners.skilljar.com/page/faq-certifications",
+            "tier": 2,
+            "quote": "\"You have 120 minutes to answer them.\""
+          },
+          {
+            "sourceId": "C02",
+            "url": "https://claudecertificationguide.com/architect-foundations",
+            "tier": 4,
+            "quote": "\"Time limit 120 minutes\""
+          },
+          {
+            "sourceId": "C03",
+            "url": "https://www.linkedin.com/pulse/claude-certification-exams-honest-review-matthew-purcell-byo2e",
+            "tier": 5,
+            "quote": "Testimony: \"Approximately 90 minutes (out of 120 minutes)\""
+          },
+          {
+            "sourceId": "C06",
+            "url": "https://rogs.me/2026/07/how-i-got-claude-certified-and-how-you-can-too/",
+            "tier": 5,
+            "quote": "Testimony (contradicts): \"The exam is 60 questions, and you get 2 and a half hours.\""
+          }
+        ],
+        "note": "Official value is 120 minutes. Only C06 (tier 5 testimony) says 2.5 h, likely conflating the ~135-min seat time; tier-1/2 sources agree on 120. Treat 120 as authoritative."
+      },
+      "seatTimeMinutes": {
+        "value": 135,
+        "status": "confirmed_official",
+        "evidence": [
+          {
+            "sourceId": "P06",
+            "url": "https://anthropic-partners.skilljar.com/page/faq-certifications",
+            "tier": 2,
+            "quote": "\"All Claude certification exams use multiple choice and scenario-based multiple response questions. You have 120 minutes to answer them. Plan for about 135 minutes of total seat time, which includes check-in, instructions, and a brief post-exam survey.\""
+          },
+          {
+            "sourceId": "P09",
+            "url": "https://www.pearsonvue.com/us/en/anthropic/onvue.html",
+            "tier": 2,
+            "quote": "OnVUE testing rules: \"Begin check-in 30 minutes before your appointment.\""
+          }
+        ],
+        "note": "Approximate; program-wide FAQ."
+      },
+      "accommodations": {
+        "value": "Mentioned: reasonable accommodations via Pearson VUE, must be approved before scheduling",
+        "status": "confirmed_official",
+        "evidence": [
+          {
+            "sourceId": "P05",
+            "url": "https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F1783542750%2FClaude+Certified+Architect+%E2%80%93+Foundations+Exam+Guide.pdf",
+            "tier": 1,
+            "quote": "s.12: \"Reasonable accommodations are available for candidates with documented disabilities or needs, in accordance with applicable law. Accommodations must be requested and approved by Pearson VUE before you schedule your exam.\""
+          },
+          {
+            "sourceId": "P06",
+            "url": "https://anthropic-partners.skilljar.com/page/faq-certifications",
+            "tier": 2,
+            "quote": "\"Accommodations are requested through Pearson's accommodations process. Please plan to request accommodations 10 days or more before you plan on taking your exam.\""
+          },
+          {
+            "sourceId": "P08",
+            "url": "https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F34hhd92iyp94a0gtbr15cy5jk%2Fpublic%2F1782870704%2FAnthropic+Certification+Exam+Policy.pdf",
+            "tier": 2,
+            "quote": "Exam Policy s.7 (last updated June 25, 2026): \"Your accommodation request must be submitted and approved prior to scheduling your Exam.\""
+          },
+          {
+            "sourceId": "P10",
+            "url": "https://www.pearsonvue.com/us/en/test-takers/accommodations/pearson_approve.anthropic.html",
+            "tier": 2,
+            "quote": "Pearson Anthropic accommodations page: \"Please allow 10 business days for us to review your materials.\""
+          }
+        ]
+      },
+      "questionTypes": {
+        "value": [
+          "multiple-choice",
+          "multiple-response"
+        ],
+        "status": "conflicting",
+        "evidence": [
+          {
+            "sourceId": "P05",
+            "url": "https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F1783542750%2FClaude+Certified+Architect+%E2%80%93+Foundations+Exam+Guide.pdf",
+            "tier": 1,
+            "quote": "\"Item format Multiple-choice and multiple-response items; each item states how many responses to select\""
+          },
+          {
+            "sourceId": "P06",
+            "url": "https://anthropic-partners.skilljar.com/page/faq-certifications",
+            "tier": 2,
+            "quote": "\"All Claude certification exams use multiple choice and scenario-based multiple response questions.\""
+          },
+          {
+            "sourceId": "G01",
+            "url": "https://ccaf-exam.guide/docs/01-exam-overview/",
+            "tier": 4,
+            "quote": "Contradicts (unofficial, last updated May 20, 2026): \"Question format. Multiple choice, one correct answer plus three distractors.\""
+          }
+        ],
+        "note": "Official (tier 1/2) = multiple-choice AND multiple-response. G01's single-answer-only claim predates guide v1.0 (July 2026) and conflicts; do not use it. No official proportions."
+      },
+      "optionsPerQuestion": {
+        "value": null,
+        "status": "unknown",
+        "evidence": [
+          {
+            "sourceId": "P05",
+            "url": "https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F1783542750%2FClaude+Certified+Architect+%E2%80%93+Foundations+Exam+Guide.pdf",
+            "tier": 1,
+            "quote": "Section 9 sample items (\"drawn from the practice test\") each show options A–D."
+          },
+          {
+            "sourceId": "G01",
+            "url": "https://ccaf-exam.guide/docs/01-exam-overview/",
+            "tier": 4,
+            "quote": "\"one correct answer plus three distractors\""
+          },
+          {
+            "sourceId": "C03",
+            "url": "https://www.linkedin.com/pulse/claude-certification-exams-honest-review-matthew-purcell-byo2e",
+            "tier": 5,
+            "quote": "Testimony: \"...in a multiple choice exam when you are being given four options\""
+          }
+        ],
+        "note": "No official source states how many options live items have. Both official guides' sample items use four lettered options (A–D) (CCDV-F: 3 samples; CCAR-F: 12 samples), but the guides call them illustrative only. Do not derive proportions of single vs multiple response; none are published. G01 and C03 suggest 4 options for CCAR-F, but these are tier 4/5."
+      },
+      "domains": {
+        "value": [
+          {
+            "n": 1,
+            "name": "Agentic Architecture & Orchestration",
+            "weight": 27
+          },
+          {
+            "n": 2,
+            "name": "Tool Design & MCP Integration",
+            "weight": 18
+          },
+          {
+            "n": 3,
+            "name": "Claude Code Configuration & Workflows",
+            "weight": 20
+          },
+          {
+            "n": 4,
+            "name": "Prompt Engineering & Structured Output",
+            "weight": 20
+          },
+          {
+            "n": 5,
+            "name": "Context Management & Reliability",
+            "weight": 15
+          }
+        ],
+        "status": "confirmed_official",
+        "evidence": [
+          {
+            "sourceId": "P05",
+            "url": "https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F1783542750%2FClaude+Certified+Architect+%E2%80%93+Foundations+Exam+Guide.pdf",
+            "tier": 1,
+            "quote": "Blueprint table: \"1 Agentic Architecture & Orchestration 27% / 2 Tool Design & MCP Integration 18% / 3 Claude Code Configuration & Workflows 20% / 4 Prompt Engineering & Structured Output 20% / 5 Context Management & Reliability 15% | Total 100%\""
+          },
+          {
+            "sourceId": "C02",
+            "url": "https://claudecertificationguide.com/architect-foundations",
+            "tier": 4,
+            "quote": "Same 5 domains and weights."
+          },
+          {
+            "sourceId": "G01",
+            "url": "https://ccaf-exam.guide/docs/01-exam-overview/",
+            "tier": 4,
+            "quote": "Same 5 domains and weights."
+          }
+        ],
+        "note": "All provisional weights confirmed (official names use '&'). No sub-skill weights published; domains are broken into task statements (1.1, 1.2, ...)."
+      },
+      "blueprintVersion": {
+        "value": {
+          "version": "1.0",
+          "effective": "July 2026",
+          "history": [
+            {
+              "version": "0.1",
+              "summary": "Initial draft",
+              "date": "February 2026"
+            },
+            {
+              "version": "0.2",
+              "summary": "Draft revision",
+              "date": "June 2026"
+            },
+            {
+              "version": "1.0",
+              "summary": "Formatting and layout updates",
+              "date": "July 2026"
+            }
+          ],
+          "pdfCreationDate": "2026-07-08"
+        },
+        "status": "confirmed_official",
+        "evidence": [
+          {
+            "sourceId": "P05",
+            "url": "https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F1783542750%2FClaude+Certified+Architect+%E2%80%93+Foundations+Exam+Guide.pdf",
+            "tier": 1,
+            "quote": "\"Version 1.0 · Effective July 2026 · Exam code: CCAR-F\"; Document Control: \"1.0 Formatting and layout updates July 2026 / 0.2 Draft revision June 2026 / 0.1 Initial draft February 2026\""
+          }
+        ]
+      },
+      "languages": {
+        "value": [
+          "English"
+        ],
+        "status": "confirmed_official",
+        "evidence": [
+          {
+            "sourceId": "P06",
+            "url": "https://anthropic-partners.skilljar.com/page/faq-certifications",
+            "tier": 2,
+            "quote": "FAQ 'Is content available in languages other than English?': \"The exam and prep content are available in English only. Note that browser translation tools are not permitted during proctored exams.\""
+          },
+          {
+            "sourceId": "P06",
+            "url": "https://anthropic-partners.skilljar.com/page/faq-certifications",
+            "tier": 2,
+            "quote": "\"Can I use notes, documentation, translation tools, or AI assistants during the exam? No. Exams are closed book. Browser translation tools are not permitted under the Pearson proctoring platform.\""
+          }
+        ],
+        "note": "Program-wide FAQ statement on an official Anthropic page (tier 2); the exam guide itself does not list languages. The Pearson site language selector and the G01 site language selector (English/Español/Français/Русский) are NOT evidence of exam languages and were disregarded."
+      },
+      "scoring": {
+        "value": {
+          "scale": "100–1,000 (scaled)",
+          "passingScore": 720,
+          "statedBy": "Anthropic (exam guide; Partner Academy FAQ)",
+          "method": "criterion-referenced; cut score set by formal standard-setting study with SMEs; scaled scoring equates across forms",
+          "reporting": "pass/fail + scaled score + percent-correct by domain"
+        },
+        "status": "confirmed_official",
+        "evidence": [
+          {
+            "sourceId": "P05",
+            "url": "https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F1783542750%2FClaude+Certified+Architect+%E2%80%93+Foundations+Exam+Guide.pdf",
+            "tier": 1,
+            "quote": "\"Passing score Scaled score of 720 on a scale of 100–1,000\"; s.10: \"the cut score is 720. Scaled scoring models help equate scores across multiple exam forms...\""
+          },
+          {
+            "sourceId": "P06",
+            "url": "https://anthropic-partners.skilljar.com/page/faq-certifications",
+            "tier": 2,
+            "quote": "\"Results are reported as a scaled score of 100 to 1,000. The minimum passing score is 720 for all four certifications. Scaled scoring equates scores across exam forms that may have slightly different difficulty.\""
+          },
+          {
+            "sourceId": "G01",
+            "url": "https://ccaf-exam.guide/docs/01-exam-overview/",
+            "tier": 4,
+            "quote": "\"The minimum passing score is 720\""
+          }
+        ]
+      },
+      "priceUSD": {
+        "value": 125,
+        "status": "confirmed_official",
+        "evidence": [
+          {
+            "sourceId": "P05",
+            "url": "https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F1783542750%2FClaude+Certified+Architect+%E2%80%93+Foundations+Exam+Guide.pdf",
+            "tier": 1,
+            "quote": "\"Exam fee $125 USD\""
+          },
+          {
+            "sourceId": "P03",
+            "url": "https://anthropic-partners.skilljar.com/claude-certified-architect-foundations-certification",
+            "tier": 2,
+            "quote": "Course page lists price \"$125\""
+          },
+          {
+            "sourceId": "P06",
+            "url": "https://anthropic-partners.skilljar.com/page/faq-certifications",
+            "tier": 2,
+            "quote": "\"Effective June 30, 2026, the price of Claude Certified Architect – Foundations increased from $99 to $125.\""
+          },
+          {
+            "sourceId": "G01",
+            "url": "https://ccaf-exam.guide/docs/01-exam-overview/",
+            "tier": 4,
+            "quote": "Outdated: \"Cost is $99 per attempt, waived for the first 5,000 attempts...\""
+          },
+          {
+            "sourceId": "P06",
+            "url": "https://anthropic-partners.skilljar.com/page/faq-certifications",
+            "tier": 2,
+            "quote": "\"Four: Claude Certified Associate ($99), Claude Certified Developer – Foundations ($125), Claude Certified Architect – Foundations ($125), and Claude Certified Architect – Professional ($175). Prices are in USD before any partner-tier discount.\""
+          },
+          {
+            "sourceId": "P07",
+            "url": "https://anthropic-partners.skilljar.com/page/partner-certifications",
+            "tier": 2,
+            "quote": "Certification table: \"Claude Certified Developer – Foundations Foundations $125 USD ... Claude Certified Architect – Foundations Foundations $125 USD\""
+          }
+        ],
+        "note": "Informational. G01's $99 is the pre-June-30-2026 price."
+      },
+      "delivery": {
+        "value": "Pearson VUE, online proctored (OnVUE) or test center",
+        "status": "confirmed_official",
+        "evidence": [
+          {
+            "sourceId": "P05",
+            "url": "https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F1783542750%2FClaude+Certified+Architect+%E2%80%93+Foundations+Exam+Guide.pdf",
+            "tier": 1,
+            "quote": "\"Choose an available date and select either online proctoring or a Pearson test center. The exam is delivered by Pearson VUE.\""
+          },
+          {
+            "sourceId": "C03",
+            "url": "https://www.linkedin.com/pulse/claude-certification-exams-honest-review-matthew-purcell-byo2e",
+            "tier": 5,
+            "quote": "Testimony: first CCAR-F sitting (3 June 2026) was pre-Pearson, on Skilljar/ProctorFree."
+          }
+        ]
+      }
+    }
+  },
+  "sources": [
+    {
+      "id": "P01",
+      "url": "https://www.pearsonvue.com/us/en/anthropic.html",
+      "title": "Claude Certification Program by Anthropic - Pearson VUE",
+      "publisher": "Pearson VUE",
+      "kind": "provider",
+      "publishedAt": "2026-10-02",
+      "checkedAt": "2026-10-03",
+      "confidence": "high",
+      "status": "reachable",
+      "topic": "Program landing page: exam list, scheduling, retakes, OnVUE network domains, FAQ",
+      "claimsSupported": [
+        "exam codes CCDV-F/CCAR-F",
+        "delivery OnVUE + test center",
+        "retake waiting periods 14/30/90 days, 4 attempts per rolling 12 months",
+        "cancel/reschedule >=48h"
+      ],
+      "restrictions": "No item count, duration, languages, scoring or price on page. 'Last updated 2026-10-02' footer used as publishedAt. Site language selector ignored as evidence.",
+      "conflicts": "Says 48h reschedule window; both exam guides say 24h."
+    },
+    {
+      "id": "P02",
+      "url": "https://anthropic-partners.skilljar.com/claude-certified-developer-foundations-certification",
+      "title": "Claude Certified Developer – Foundations Certification",
+      "publisher": "Anthropic (Anthropic Partner Academy / Skilljar)",
+      "kind": "provider",
+      "publishedAt": null,
+      "checkedAt": "2026-10-03",
+      "confidence": "high",
+      "status": "reachable",
+      "topic": "CCDV-F course/registration page",
+      "claimsSupported": [
+        "CCDV-F price $125",
+        "links to official exam guide PDF"
+      ],
+      "restrictions": "Registration limited to Claude Partner Network employees; page itself has no format details.",
+      "conflicts": null
+    },
+    {
+      "id": "P03",
+      "url": "https://anthropic-partners.skilljar.com/claude-certified-architect-foundations-certification",
+      "title": "Claude Certified Architect – Foundations Certification",
+      "publisher": "Anthropic (Anthropic Partner Academy / Skilljar)",
+      "kind": "provider",
+      "publishedAt": null,
+      "checkedAt": "2026-10-03",
+      "confidence": "high",
+      "status": "reachable",
+      "topic": "CCAR-F course/registration page",
+      "claimsSupported": [
+        "CCAR-F price $125",
+        "links to official exam guide PDF",
+        "scope: Claude Code, Agent SDK, Claude API, MCP"
+      ],
+      "restrictions": "Registration limited to Claude Partner Network employees.",
+      "conflicts": null
+    },
+    {
+      "id": "P04",
+      "url": "https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F1783542875%2FClaude+Certified+Developer+%E2%80%93+Foundations+Exam+Guide.pdf",
+      "title": "Claude Certified Developer – Foundations Exam Guide (v1.0)",
+      "publisher": "Anthropic",
+      "kind": "official_exam",
+      "publishedAt": "2026-07-08",
+      "checkedAt": "2026-10-03",
+      "confidence": "high",
+      "status": "reachable",
+      "topic": "Official CCDV-F exam guide: format, blueprint, scoring, policies",
+      "claimsSupported": [
+        "53 items",
+        "120 minutes",
+        "multiple-choice + multiple-response",
+        "8 domains + skill weights",
+        "720 on 100–1,000",
+        "$125",
+        "accommodations via Pearson VUE",
+        "v1.0 effective July 2026"
+      ],
+      "restrictions": "publishedAt from PDF metadata (guide says 'Effective July 2026'). Does not state languages or options per item. Guide 'subject to change without notice'.",
+      "conflicts": "Reschedule/cancel window 24h vs 48h in P06/P01."
+    },
+    {
+      "id": "P05",
+      "url": "https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F1783542750%2FClaude+Certified+Architect+%E2%80%93+Foundations+Exam+Guide.pdf",
+      "title": "Claude Certified Architect – Foundations Exam Guide (v1.0)",
+      "publisher": "Anthropic",
+      "kind": "official_exam",
+      "publishedAt": "2026-07-08",
+      "checkedAt": "2026-10-03",
+      "confidence": "high",
+      "status": "reachable",
+      "topic": "Official CCAR-F exam guide: format, scenarios, blueprint, scoring, policies",
+      "claimsSupported": [
+        "60 items",
+        "120 minutes",
+        "4 of 6 scenarios",
+        "multiple-choice + multiple-response",
+        "5 domains and weights",
+        "720 on 100–1,000",
+        "$125",
+        "accommodations via Pearson VUE",
+        "v1.0 effective July 2026 (drafts Feb/Jun 2026)"
+      ],
+      "restrictions": "publishedAt from PDF metadata. Does not state languages or options per item.",
+      "conflicts": "Reschedule/cancel window 24h vs 48h in P06/P01; G01 claims single-answer only."
+    },
+    {
+      "id": "P06",
+      "url": "https://anthropic-partners.skilljar.com/page/faq-certifications",
+      "title": "Certification FAQ – Anthropic Partner Academy",
+      "publisher": "Anthropic",
+      "kind": "provider",
+      "publishedAt": null,
+      "checkedAt": "2026-10-03",
+      "confidence": "high",
+      "status": "reachable",
+      "topic": "Program-wide FAQ",
+      "claimsSupported": [
+        "English only",
+        "120 min answer time; ~135 min seat time",
+        "MC + scenario-based multiple response",
+        "720 on 100–1,000 for all four certs",
+        "prices; CCAR-F $99->$125 on 2026-06-30",
+        "accommodations via Pearson, 10+ days",
+        "practice exam retired; guide samples only",
+        "closed book, no translation tools"
+      ],
+      "restrictions": "Program-wide, not exam-specific. FAQ content is rendered from page scripts (decoded from HTML).",
+      "conflicts": "48h reschedule window vs 24h in exam guides."
+    },
+    {
+      "id": "P07",
+      "url": "https://anthropic-partners.skilljar.com/page/partner-certifications",
+      "title": "Partner Certifications – Anthropic Partner Academy",
+      "publisher": "Anthropic",
+      "kind": "provider",
+      "publishedAt": null,
+      "checkedAt": "2026-10-03",
+      "confidence": "high",
+      "status": "reachable",
+      "topic": "Certification catalog and price table; links to all exam guides and policy PDFs",
+      "claimsSupported": [
+        "CCDV-F $125",
+        "CCAR-F $125",
+        "official guide PDF URLs"
+      ],
+      "restrictions": null,
+      "conflicts": null
+    },
+    {
+      "id": "P08",
+      "url": "https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F34hhd92iyp94a0gtbr15cy5jk%2Fpublic%2F1782870704%2FAnthropic+Certification+Exam+Policy.pdf",
+      "title": "Anthropic Certification Exam Policy",
+      "publisher": "Anthropic",
+      "kind": "provider",
+      "publishedAt": "2026-06-25",
+      "checkedAt": "2026-10-03",
+      "confidence": "high",
+      "status": "reachable",
+      "topic": "Confidentiality, misconduct, appeals, accommodations policy",
+      "claimsSupported": [
+        "accommodations must be approved before scheduling",
+        "exam content is confidential",
+        "no AI assistance during exam"
+      ],
+      "restrictions": "Program-wide.",
+      "conflicts": null
+    },
+    {
+      "id": "P09",
+      "url": "https://www.pearsonvue.com/us/en/anthropic/onvue.html",
+      "title": "Anthropic Online Exams with OnVUE",
+      "publisher": "Pearson VUE",
+      "kind": "provider",
+      "publishedAt": null,
+      "checkedAt": "2026-10-03",
+      "confidence": "high",
+      "status": "reachable",
+      "topic": "OnVUE rules for Anthropic exams",
+      "claimsSupported": [
+        "check-in begins 30 minutes before appointment",
+        "digital whiteboard allowance",
+        "ID requirements"
+      ],
+      "restrictions": null,
+      "conflicts": null
+    },
+    {
+      "id": "P10",
+      "url": "https://www.pearsonvue.com/us/en/test-takers/accommodations/pearson_approve.anthropic.html",
+      "title": "Request test accommodations (Anthropic)",
+      "publisher": "Pearson VUE",
+      "kind": "provider",
+      "publishedAt": null,
+      "checkedAt": "2026-10-03",
+      "confidence": "high",
+      "status": "reachable",
+      "topic": "Accommodations request process",
+      "claimsSupported": [
+        "accommodations available; ~10 business days review"
+      ],
+      "restrictions": null,
+      "conflicts": "'10 business days' review vs FAQ '10 days or more' lead time (minor wording difference)."
+    },
+    {
+      "id": "P11",
+      "url": "https://wsr.pearsonvue.com/testtaker/registration/examlist/ANTHROPIC?locale=en_US",
+      "title": "Pearson VUE Anthropic exam list (WSR)",
+      "publisher": "Pearson VUE",
+      "kind": "provider",
+      "publishedAt": null,
+      "checkedAt": "2026-10-03",
+      "confidence": "low",
+      "status": "blocked",
+      "topic": "Per-exam listing (could show languages/durations)",
+      "claimsSupported": [],
+      "restrictions": "Returned a Pearson error page without an authenticated session; NOT read.",
+      "conflicts": null
+    },
+    {
+      "id": "C01",
+      "url": "https://claudecertificationguide.com/ccdv-f",
+      "title": "CCDV-F – Claude Certification Guide",
+      "publisher": "claudecertificationguide.com (independent)",
+      "kind": "community",
+      "publishedAt": null,
+      "checkedAt": "2026-10-03",
+      "confidence": "medium",
+      "status": "reachable",
+      "topic": "Community CCDV-F hub restating guide facts",
+      "claimsSupported": [
+        "53 items",
+        "120 min",
+        "MC + MR",
+        "8 domains/weights",
+        "720/100–1,000",
+        "$125"
+      ],
+      "restrictions": "States it is not affiliated with Anthropic; facts attributed to the official guide.",
+      "conflicts": null
+    },
+    {
+      "id": "C02",
+      "url": "https://claudecertificationguide.com/architect-foundations",
+      "title": "Architect Foundations – Claude Certification Guide",
+      "publisher": "claudecertificationguide.com (independent)",
+      "kind": "community",
+      "publishedAt": null,
+      "checkedAt": "2026-10-03",
+      "confidence": "medium",
+      "status": "reachable",
+      "topic": "Community CCAR-F hub restating guide facts",
+      "claimsSupported": [
+        "60 items",
+        "120 min",
+        "MC + MR",
+        "5 domains/weights",
+        "720/100–1,000",
+        "$125"
+      ],
+      "restrictions": "Not affiliated with Anthropic.",
+      "conflicts": null
+    },
+    {
+      "id": "C03",
+      "url": "https://www.linkedin.com/pulse/claude-certification-exams-honest-review-matthew-purcell-byo2e",
+      "title": "The Claude certification exams: an honest review",
+      "publisher": "Matthew Purcell (LinkedIn)",
+      "kind": "testimony",
+      "publishedAt": "2026-07-21",
+      "checkedAt": "2026-10-03",
+      "confidence": "medium",
+      "status": "reachable",
+      "topic": "Candidate review of all four exams",
+      "claimsSupported": [
+        "CCAR-F: 60 Q, ~15 per scenario, ~90 min used, rated hardest, heavy on CLI/API specifics",
+        "CCDV-F: 53 Q, ~45 min used, 'close second in technical difficulty'"
+      ],
+      "restrictions": "Testimony: use only for experience/perceived difficulty. Author promotes own practice exams. CCAR-F sitting was pre-Pearson (Skilljar/ProctorFree).",
+      "conflicts": null
+    },
+    {
+      "id": "C05",
+      "url": "https://www.reddit.com/r/ClaudeAI/comments/1vzp37x/passed_the_claude_certified_developer_foundations/",
+      "title": "Passed the Claude Certified Developer Foundations (r/ClaudeAI)",
+      "publisher": "Reddit",
+      "kind": "testimony",
+      "publishedAt": null,
+      "checkedAt": "2026-10-03",
+      "confidence": "low",
+      "status": "blocked",
+      "topic": "Candidate post about CCDV-F",
+      "claimsSupported": [],
+      "restrictions": "Blocked (WebFetch SITE_BLOCKED; curl/old.reddit returned block page). NOT read.",
+      "conflicts": null
+    },
+    {
+      "id": "C06",
+      "url": "https://rogs.me/2026/07/how-i-got-claude-certified-and-how-you-can-too/",
+      "title": "How I got Claude certified (and how you can too)",
+      "publisher": "Roger Gonzalez (rogs.me)",
+      "kind": "testimony",
+      "publishedAt": "2026-07-19",
+      "checkedAt": "2026-10-03",
+      "confidence": "low",
+      "status": "reachable",
+      "topic": "Candidate review of CCAR-F",
+      "claimsSupported": [
+        "CCAR-F 60 Q",
+        "Claude CLI flags hardest part",
+        "questions long/convoluted; reading fatigue",
+        "finished in ~1.5 h",
+        "OnVUE proctoring strict"
+      ],
+      "restrictions": "Testimony only.",
+      "conflicts": "Says 'you get 2 and a half hours' vs official 120 minutes (likely seat time confusion)."
+    },
+    {
+      "id": "G01",
+      "url": "https://ccaf-exam.guide/docs/01-exam-overview/",
+      "title": "Exam Overview – CCA-F unofficial study guide",
+      "publisher": "Dmitry Degtyarev (ccaf-exam.guide, unofficial)",
+      "kind": "community",
+      "publishedAt": "2026-05-20",
+      "checkedAt": "2026-10-03",
+      "confidence": "low",
+      "status": "reachable",
+      "topic": "Unofficial Architect-oriented overview",
+      "claimsSupported": [
+        "60 Q / 120 min",
+        "4 of 6 scenarios",
+        "5 domains/weights",
+        "720/100–1,000"
+      ],
+      "restrictions": "Unofficial; last updated 2026-05-20, predates guide v1.0 and the Pearson migration. Site language selector is not evidence of exam languages.",
+      "conflicts": "Claims single-answer MC 'one correct answer plus three distractors' (official: MC + multiple-response); price $99 (official now $125); 'no penalty for guessing' not stated officially."
+    }
+  ]
+}

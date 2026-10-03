@@ -1,0 +1,45 @@
+# Local development stack. Nothing here is a production secret; real values belong in your host's secret store.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: examprep
+      POSTGRES_USER: examprep
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+    volumes: [ "pgdata:/var/lib/postgresql/data" ]
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U examprep -d examprep" ]
+      interval: 5s
+      retries: 20
+    ports: [ "127.0.0.1:5432:5432" ]
+
+  # Local mailbox for sign-in links (web UI on http://localhost:8025). Development only.
+  mail:
+    image: axllent/mailpit:v1.31.4
+    ports: [ "127.0.0.1:8025:8025" ]
+
+  app:
+    build: .
+    depends_on:
+      db: { condition: service_healthy }
+      mail: { condition: service_started }
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__Default: Host=db;Port=5432;Database=examprep;Username=examprep;Password=${POSTGRES_PASSWORD}
+      Database__MigrateOnStartup: "true"
+      Content__BootstrapOnStartup: "true"
+      Auth__PublicBaseUrl: http://localhost:8080
+      Auth__AdminEmails__0: ${ADMIN_EMAIL:-admin@example.test}
+      Email__Mode: smtp
+      Email__From: ${MAIL_FROM:-no-reply@example.test}
+      Email__SmtpHost: mail
+      Email__SmtpPort: "1025"
+      Email__SmtpStartTls: "false"
+      # Local http only. Remove for any deployment behind HTTPS.
+      Security__CookieSecurePolicy: SameAsRequest
+    volumes: [ "keys:/keys" ]
+    ports: [ "127.0.0.1:8080:8080" ]
+
+volumes:
+  pgdata: {}
+  keys: {}

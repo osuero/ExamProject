@@ -1,0 +1,106 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  backend:
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: examdev
+          POSTGRES_PASSWORD: examdev_local_only
+          POSTGRES_DB: postgres
+        ports: [ "5432:5432" ]
+        options: >-
+          --health-cmd "pg_isready -U examdev" --health-interval 5s --health-retries 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with: { global-json-file: backend/global.json }
+      - name: Test with coverage
+        working-directory: backend
+        run: dotnet test -- --coverage --coverage-output-format cobertura --coverage-output coverage.cobertura.xml
+      - name: Vulnerable packages
+        working-directory: backend
+        run: dotnet list package --vulnerable --include-transitive
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with: { name: backend-coverage, path: backend/TestResults/ }
+
+  frontend:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with: { node-version: 24.21.0, cache: npm, cache-dependency-path: frontend/package-lock.json }
+      - working-directory: frontend
+        run: |
+          npm ci
+          npm audit --audit-level=high
+          npx ng test --watch=false
+          npx ng build --configuration production
+
+  e2e:
+    runs-on: ubuntu-24.04
+    needs: [ backend, frontend ]
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: examdev
+          POSTGRES_PASSWORD: examdev_local_only
+          POSTGRES_DB: examdev
+        ports: [ "5432:5432" ]
+        options: >-
+          --health-cmd "pg_isready -U examdev" --health-interval 5s --health-retries 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with: { global-json-file: backend/global.json }
+      - uses: actions/setup-node@v7
+        with: { node-version: 24.21.0, cache: npm, cache-dependency-path: frontend/package-lock.json }
+      - name: "Start API (Development mode with local mailbox and seeded content)"
+        working-directory: backend/src/ExamPrep.Api
+        env:
+          ASPNETCORE_ENVIRONMENT: Development
+          RateLimits__AuthPerMinute: "500"
+          Auth__MaxLinksPerEmailPer15Min: "100"
+        run: |
+          nohup dotnet run --no-launch-profile --urls http://localhost:5080 > api.log 2>&1 &
+          for i in $(seq 1 90); do curl -sf http://localhost:5080/api/health && break; sleep 2; done
+      - name: Start web
+        working-directory: frontend
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+          nohup npx ng serve --port 4200 > ng.log 2>&1 &
+          for i in $(seq 1 90); do curl -sf http://localhost:4200/api/health && break; sleep 2; done
+      - name: Playwright
+        working-directory: frontend
+        run: npx playwright test
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: e2e-report
+          path: |
+            frontend/playwright-report/
+            frontend/test-results/
+            backend/src/ExamPrep.Api/api.log
+
+  secrets:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+        with: { fetch-depth: 0 }
+      - name: gitleaks
+        run: |
+          curl -sSL https://github.com/gitleaks/gitleaks/releases/download/v8.28.0/gitleaks_8.28.0_linux_x64.tar.gz | tar xz gitleaks
+          ./gitleaks git . --no-banner --redact

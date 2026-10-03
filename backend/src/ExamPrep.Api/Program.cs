@@ -4,6 +4,7 @@ using ExamPrep.Api.Infrastructure;
 using ExamPrep.Api.Modules;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,13 +34,20 @@ else
 
 if (cfg.GetValue("Workers:Expiry", true)) builder.Services.AddHostedService<ExpiryWorker>();
 
+var devLike = builder.Environment.IsDevelopment() || builder.Environment.IsEnvironment("Testing");
+// Cookies are Secure by default. Only a local http setup (docker compose on localhost) may relax this explicitly.
+var cookieSecure = cfg.GetValue("Security:CookieSecurePolicy", devLike ? "SameAsRequest" : "Always") == "SameAsRequest"
+    ? CookieSecurePolicy.SameAsRequest : CookieSecurePolicy.Always;
+var keysPath = cfg["DataProtection:KeysPath"];
+if (!string.IsNullOrEmpty(keysPath))
+    builder.Services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo(keysPath)).SetApplicationName("ExamPrep");
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(o =>
 {
     o.Cookie.Name = "examprep.auth";
     o.Cookie.HttpOnly = true;
     o.Cookie.SameSite = SameSiteMode.Lax;
-    o.Cookie.SecurePolicy = builder.Environment.IsDevelopment() || builder.Environment.IsEnvironment("Testing")
-        ? CookieSecurePolicy.SameAsRequest : CookieSecurePolicy.Always;
+    o.Cookie.SecurePolicy = cookieSecure;
     o.ExpireTimeSpan = TimeSpan.FromHours(8);
     o.SlidingExpiration = true;
     o.Events.OnRedirectToLogin = ctx => { ctx.Response.StatusCode = 401; return Task.CompletedTask; };
@@ -52,8 +60,7 @@ builder.Services.AddAntiforgery(o =>
     o.Cookie.Name = "examprep.af";
     o.Cookie.HttpOnly = true;
     o.Cookie.SameSite = SameSiteMode.Strict;
-    o.Cookie.SecurePolicy = builder.Environment.IsDevelopment() || builder.Environment.IsEnvironment("Testing")
-        ? CookieSecurePolicy.SameAsRequest : CookieSecurePolicy.Always;
+    o.Cookie.SecurePolicy = cookieSecure;
 });
 builder.Services.AddRateLimiter(o =>
 {

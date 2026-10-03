@@ -63,7 +63,7 @@ type SaveState = 'idle' | 'saving' | 'saved' | 'error';
                     <span class="otext">
                       {{ o.text }}
                       @if (q.solution) {
-                        <span class="verdict">{{ o.isCorrect ? 'Correct option.' : 'Not the best option.' }} {{ o.rationale }}</span>
+                        <span class="verdict"><span class="visually-hidden">{{ o.isCorrect ? 'Correct option: ' : 'Not the best option: ' }}</span>{{ o.rationale }}</span>
                       }
                     </span>
                   </label>

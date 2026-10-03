@@ -1,0 +1,12 @@
+Running tests from /home/claude/ExamProject/backend/tests/ExamPrep.Tests/bin/Debug/net10.0/ExamPrep.Tests.dll (net10.0|x64)
+/home/claude/ExamProject/backend/tests/ExamPrep.Tests/bin/Debug/net10.0/ExamPrep.Tests.dll (net10.0|x64) passed (14s 178ms)
+
+  In process file artifacts produced:
+    - /home/claude/ExamProject/backend/TestResults/coverage.cobertura.xml
+
+Test run summary: Passed!
+  total: 52
+  failed: 0
+  succeeded: 52
+  skipped: 0
+  duration: 15s 601ms
