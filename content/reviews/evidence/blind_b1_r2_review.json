@@ -1,0 +1,61 @@
+[
+ {"id":"CCDV-F-SEED-002","chosen":["A"],"confidence":"high","verdict":"pass",
+  "verifiedFacts":[
+   {"claim":"Agent SDK provides Claude Code's agent loop, built-in tools (read/edit files, run commands) and permissions","url":"https://code.claude.com/docs/en/agent-sdk/overview","supported":true},
+   {"claim":"Client SDK: you write the tool loop yourself or use the beta tool runner (tools still team-authored)","url":"https://code.claude.com/docs/en/agent-sdk/overview","supported":true},
+   {"claim":"Code execution tool runs in Anthropic's sandboxed container, not on the local repository","url":"https://platform.claude.com/docs/en/agents-and-tools/tool-use/code-execution-tool","supported":true}],
+  "issues":["Minor: stem phrase 'built-in file-editing and shell tools' closely mirrors option A, but this is the tested requirement, not an unfair cue."],
+  "suggestedFix":""},
+ {"id":"CCDV-F-B1-D2-006","chosen":["B"],"confidence":"high","verdict":"pass",
+  "verifiedFacts":[
+   {"claim":"Thinking blocks must be passed back complete and unmodified with the tool_use block during a tool-use turn, including redacted_thinking","url":"https://platform.claude.com/docs/en/build-with-claude/thinking","supported":true},
+   {"claim":"Signature must be passed exactly; modified thinking blocks are rejected with 400","url":"https://platform.claude.com/docs/en/build-with-claude/thinking","supported":true},
+   {"claim":"tool_choice any/tool errors with manual extended thinking","url":"https://platform.claude.com/docs/en/build-with-claude/thinking","supported":true}],
+  "issues":[],"suggestedFix":""},
+ {"id":"CCDV-F-B1-D2-010","chosen":["B","E"],"confidence":"high","verdict":"pass",
+  "verifiedFacts":[
+   {"claim":"Python SDK retries 2 times by default with short exponential backoff (5 outer x 3 = 15 attempts matches stem)","url":"https://platform.claude.com/docs/en/api/sdks/python","supported":true},
+   {"claim":"SDK retries connection errors, 408, 409, 429, >=500; 400 invalid_request_error not retryable","url":"https://platform.claude.com/docs/en/api/errors","supported":true},
+   {"claim":"_request_id property on responses; request-id header on responses","url":"https://platform.claude.com/docs/en/api/errors","supported":true},
+   {"claim":"Default timeout is 10 minutes (5s timeout would break normal generations)","url":"https://platform.claude.com/docs/en/api/sdks/python","supported":true}],
+  "issues":["Minor: option B does not itself say 'stop retrying 400s', but removing the outer loop does that implicitly since the SDK does not retry 400."],
+  "suggestedFix":"Optional: in B say 'Remove the outer loop and tune max_retries...' to make the 400 consequence explicit."},
+ {"id":"CCDV-F-B1-D5-006","chosen":["B"],"confidence":"high","verdict":"pass",
+  "verifiedFacts":[
+   {"claim":"Batches complete within 24h, most within 1 hour (unsuitable when a user waits minutes)","url":"https://platform.claude.com/docs/en/build-with-claude/batch-processing","supported":true}],
+  "issues":[],"suggestedFix":""},
+ {"id":"CCDV-F-B1-D5-009","chosen":["B","E"],"confidence":"medium-high","verdict":"pass",
+  "verifiedFacts":[
+   {"claim":"Prompt caching and Message Batches discounts stack","url":"https://platform.claude.com/docs/en/build-with-claude/batch-processing","supported":true},
+   {"claim":"Batch requests processed concurrently in any order; cache hits best-effort (30-98%); consider 1-hour cache for batches","url":"https://platform.claude.com/docs/en/build-with-claude/batch-processing","supported":true},
+   {"claim":"max_tokens: 0 is rejected inside a Message Batches request","url":"https://platform.claude.com/docs/en/build-with-claude/prompt-caching","supported":true},
+   {"claim":"Cache entry only available after first response begins; wait for first response before parallel requests","url":"https://platform.claude.com/docs/en/build-with-claude/prompt-caching","supported":true}],
+  "issues":["Option E says 'with one request' without specifying it is a synchronous Messages API request outside the batch; a careful reader might wonder whether it is a separate one-request batch.","Docs do not explicitly state that a cache written by a synchronous request is hit by later batch requests (same-workspace cache scope makes it reasonable)."],
+  "suggestedFix":"E: 'First write the shared prefix with one synchronous Messages API request using a 1-hour cache TTL, then submit the batch once it completes.'"},
+ {"id":"CCAR-F-B1-A1-016","chosen":["B"],"confidence":"high","verdict":"pass",
+  "verifiedFacts":[
+   {"claim":"claude --resume <name> resumes a named session and restores full history including tool calls and results","url":"https://code.claude.com/docs/en/sessions","supported":true},
+   {"claim":"--fork-session creates a copy of the conversation with a new session ID (history copied, not refreshed)","url":"https://code.claude.com/docs/en/sessions","supported":true},
+   {"claim":"Claude reads files fresh on each tool call","url":"https://code.claude.com/docs/en/common-workflows","supported":true}],
+  "issues":["Minor: Claude Code may surface external file modifications itself in some cases; A remains wrong as worded ('restored Read results already show the merged code') and B is safe regardless."],
+  "suggestedFix":""},
+ {"id":"CCAR-F-B1-A2-008","chosen":["A","C"],"confidence":"high","verdict":"pass",
+  "verifiedFacts":[
+   {"claim":"Tool descriptions and server instructions significantly affect whether Claude finds and uses MCP tools (tool search)","url":"https://code.claude.com/docs/en/mcp","supported":true},
+   {"claim":"Scope precedence is local > project > user for duplicate definitions; no 'loaded before built-in tools' behavior","url":"https://code.claude.com/docs/en/mcp","supported":true},
+   {"claim":"MAX_MCP_OUTPUT_TOKENS controls output size limit (default 25,000), not tool selection","url":"https://code.claude.com/docs/en/mcp","supported":true},
+   {"claim":"Refining tool descriptions improves tool selection; describe as to a new hire","url":"https://www.anthropic.com/engineering/writing-tools-for-agents","supported":true}],
+  "issues":[],"suggestedFix":""},
+ {"id":"CCAR-F-B1-A3-003","chosen":["C"],"confidence":"high","verdict":"pass",
+  "verifiedFacts":[
+   {"claim":"context: fork runs the skill in a subagent of the agent type, with SKILL.md as the task","url":"https://code.claude.com/docs/en/skills","supported":true},
+   {"claim":"Built-in Explore and Plan skip CLAUDE.md and git status; a forked skill with agent: Explore sees only SKILL.md and the agent's system prompt","url":"https://code.claude.com/docs/en/sub-agents","supported":true}],
+  "issues":["Option C embeds its own justification ('since the Explore agent skips CLAUDE.md'), which slightly stands out vs. D's parallel justification; acceptable since D's justification is equally assertive and false."],
+  "suggestedFix":""},
+ {"id":"CCAR-F-B1-A4-010","chosen":["A"],"confidence":"high","verdict":"pass",
+  "verifiedFacts":[
+   {"claim":"Batches support tool use, multi-turn conversations; almost any Messages request can be batched (C is false)","url":"https://platform.claude.com/docs/en/build-with-claude/batch-processing","supported":true},
+   {"claim":"Batch requests processed asynchronously; results available when all complete or after 24h (no mid-request injection of tool results)","url":"https://platform.claude.com/docs/en/build-with-claude/batch-processing","supported":true}],
+  "issues":["Minor: a multi-round batch design (batch returns tool_use, app runs lookup, follow-up batch) is also viable in principle but is not offered, so A is uniquely defensible among options."],
+  "suggestedFix":""}
+]

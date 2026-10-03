@@ -31,7 +31,7 @@ public static class AttemptEndpoints
             scenario = sc is null ? null : new { id = sc.Id, title = sc.Title, text = sc.Text },
             stem = v.Stem,
             options = opts,
-            selected = i.SelectedOptionIds,
+            selected = i.FeedbackRevealed && i.LearningOptionIds is not null ? i.LearningOptionIds : i.SelectedOptionIds,
             flagged = i.Flagged,
             feedbackRevealed = i.FeedbackRevealed,
             solution = reveal ? new
@@ -115,7 +115,7 @@ public static class AttemptEndpoints
         g.MapPut("/{id:guid}/items/{position:int}/answer", (Guid id, int position, AnswerDto dto, ClaimsPrincipal p, AttemptService svc, CancellationToken ct) => Guarded(async () =>
         {
             var i = await svc.SaveAnswerAsync(id, p.UserId(), position, dto.Selected, ct);
-            return Results.Ok(new { position = i.Position, selected = i.SelectedOptionIds, learning = i.LearningOptionIds, savedAt = i.AnsweredAt });
+            return Results.Ok(new { position = i.Position, selected = i.FeedbackRevealed && i.LearningOptionIds is not null ? i.LearningOptionIds : i.SelectedOptionIds, learning = i.LearningOptionIds, savedAt = i.AnsweredAt });
         }));
 
         g.MapPut("/{id:guid}/items/{position:int}/flag", (Guid id, int position, FlagDto dto, ClaimsPrincipal p, AttemptService svc, CancellationToken ct) => Guarded(async () =>

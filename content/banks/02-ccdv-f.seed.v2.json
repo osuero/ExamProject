@@ -1,0 +1,692 @@
+{
+  "schemaVersion": "1.0",
+  "examCode": "CCDV-F",
+  "cases": [],
+  "questions": [
+    {
+      "id": "CCDV-F-SEED-001",
+      "version": 2,
+      "examCode": "CCDV-F",
+      "locale": "en",
+      "domainId": "D1",
+      "objective": "Agent Architecture",
+      "scenarioId": null,
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "An accounts-payable service sends every invoice through the same three stages in a fixed order: extraction, schema validation, then an accounting-system lookup. Auditors require that validation is never skipped and that every invoice follows an identical, reproducible path. Which design best fits these requirements?",
+      "options": [
+        {
+          "id": "A",
+          "text": "An orchestrator-workers design in which a lead model decides, per invoice, which stages to delegate.",
+          "rationale": "Orchestrator-workers suits subtasks that cannot be predicted in advance. Here the stages are fixed, and letting a model choose them per invoice reintroduces the risk of skipping validation."
+        },
+        {
+          "id": "B",
+          "text": "A parallelization workflow that runs extraction, validation, and lookup at once and merges results.",
+          "rationale": "Validation and lookup depend on the extraction output, so running the stages concurrently breaks the required order."
+        },
+        {
+          "id": "C",
+          "text": "A prompt chain coded as fixed steps, with a programmatic gate that stops invoices failing validation.",
+          "rationale": "A predefined code path enforces the order and makes the validation gate deterministic, while the model is still used where interpretation is needed (extraction)."
+        },
+        {
+          "id": "D",
+          "text": "A single agent given all three tools and a system prompt that lists the required stage order.",
+          "rationale": "The agent still directs its own tool use. A prompt describes the order but does not enforce it, so a skipped validation remains possible."
+        }
+      ],
+      "correctOptionIds": [
+        "C"
+      ],
+      "explanation": "When the steps are known in advance and must run in a fixed order, a workflow with predefined code paths (here prompt chaining with a gate) fits better than model-directed orchestration. Using a model for one stage does not by itself justify an autonomous agent.",
+      "points": 1,
+      "difficulty": "foundational",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T01"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCDV-F-SEED-001",
+      "tags": [
+        "workflow-versus-autonomous-agent",
+        "prompt-chaining"
+      ]
+    },
+    {
+      "id": "CCDV-F-SEED-002",
+      "version": 2,
+      "examCode": "CCDV-F",
+      "locale": "en",
+      "domainId": "D1",
+      "objective": "Agent Construction with Claude",
+      "scenarioId": null,
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "A developer is building an internal assistant that inspects a local repository, edits files, and runs the test suite. The team wants a supported agent loop with built-in file-editing and shell tools and configurable permissions, rather than writing and maintaining those tools itself. Which starting point best matches this goal?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The Claude Agent SDK, configured with its Read, Edit, and Bash tools and a permission mode.",
+          "rationale": "The Agent SDK runs Claude Code's agent loop with built-in tools such as Read, Edit, and Bash, and permission modes (for example default or acceptEdits) control which calls are approved."
+        },
+        {
+          "id": "B",
+          "text": "The Client SDK tool runner, with read_file, edit_file, and run_tests functions the team writes.",
+          "rationale": "The tool runner drives the loop, but every tool is a function the team must define and maintain, which is what the team wants to avoid."
+        },
+        {
+          "id": "C",
+          "text": "The Messages API with the code execution tool, so Claude edits and tests the repository directly.",
+          "rationale": "Code execution runs in a sandboxed container on Anthropic's infrastructure with no access to the local repository; files must be uploaded through the Files API."
+        },
+        {
+          "id": "D",
+          "text": "The Messages API with custom tool definitions and an application loop that dispatches tool_use.",
+          "rationale": "This works, but the team would implement both the loop and every file and shell tool itself."
+        }
+      ],
+      "correctOptionIds": [
+        "A"
+      ],
+      "explanation": "The Agent SDK embeds Claude Code's agent loop and built-in tools in a Python or TypeScript application. With the Client SDK you either write the tool loop or let the beta tool runner drive it, but in both cases you implement the tools.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T02",
+        "T104",
+        "T101",
+        "T105"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCDV-F-SEED-002",
+      "tags": [
+        "choosing-an-agent-implementation",
+        "agent-sdk"
+      ]
+    },
+    {
+      "id": "CCDV-F-SEED-003",
+      "version": 2,
+      "examCode": "CCDV-F",
+      "locale": "en",
+      "domainId": "D2",
+      "objective": "Claude API Mechanics",
+      "scenarioId": null,
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "An application defines a client tool named get_order. A response arrives with stop_reason \"tool_use\" and a tool_use block that has an id and the input {\"order_id\": \"A-1042\"}. No lookup has happened yet. What should the application do to continue the conversation correctly?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Run the lookup, then send an assistant message holding a tool_result block with the matching tool_use_id.",
+          "rationale": "tool_result blocks belong in a user message, not an assistant message."
+        },
+        {
+          "id": "B",
+          "text": "Run the lookup, then send a user message with the order details as text, followed by the tool_result block.",
+          "rationale": "Inside the user message, tool_result blocks must come first; text placed before them is a formatting error."
+        },
+        {
+          "id": "C",
+          "text": "Run the lookup, then send the order details as a plain-text user message with no tool_use_id reference.",
+          "rationale": "Every tool_use block must be answered by a tool_result immediately after it; otherwise the API rejects the request with a 400 error."
+        },
+        {
+          "id": "D",
+          "text": "Run the lookup, then send a user message whose first block is a tool_result with the matching tool_use_id.",
+          "rationale": "The application executes client tools and returns the output as a tool_result, first in the next user message and linked by tool_use_id."
+        }
+      ],
+      "correctOptionIds": [
+        "D"
+      ],
+      "explanation": "For client tools, Claude only requests the call; the application executes it and returns the output in a tool_result block in the user message that immediately follows the assistant's tool_use message. If the lookup fails, return the tool_result with is_error set to true and an instructive message.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T03",
+        "T102"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCDV-F-SEED-003",
+      "tags": [
+        "client-tool-lifecycle",
+        "tool-result-format"
+      ]
+    },
+    {
+      "id": "CCDV-F-SEED-004",
+      "version": 2,
+      "examCode": "CCDV-F",
+      "locale": "en",
+      "domainId": "D2",
+      "objective": "Claude API Mechanics",
+      "scenarioId": null,
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "A report-generation request returns HTTP 200 with stop_reason \"max_tokens\", and the text ends halfway through a required section. The application must deliver only complete reports that pass its section checks. Which handling is most appropriate?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Treat the report as final, because a 200 status with a stop_reason set means generation ended normally.",
+          "rationale": "A 200 status only means the request succeeded. max_tokens means the output was cut off at the requested limit, unlike end_turn."
+        },
+        {
+          "id": "B",
+          "text": "Raise max_tokens or ask Claude to continue from the partial output, then re-run the section checks.",
+          "rationale": "This addresses the cause of the truncation and verifies that the assembled report is complete before delivery."
+        },
+        {
+          "id": "C",
+          "text": "Retry the identical request after a short delay, because max_tokens signals a transient capacity limit.",
+          "rationale": "max_tokens reflects the limit set in the request, not server load (overload is reported as overloaded_error); an unchanged retry is likely to truncate again."
+        },
+        {
+          "id": "D",
+          "text": "Switch the request to streaming, because streamed responses are not subject to the max_tokens limit.",
+          "rationale": "Streaming changes how output is delivered, not the output cap; a streamed response also stops at max_tokens."
+        }
+      ],
+      "correctOptionIds": [
+        "B"
+      ],
+      "explanation": "max_tokens means the response hit the requested output limit, so the content is truncated even though the call succeeded. Raise the limit or request a continuation and validate the result; with structured outputs a truncated response may also fail to match the schema.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T04",
+        "T10"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCDV-F-SEED-004",
+      "tags": [
+        "handling-incomplete-model-output",
+        "stop-reasons"
+      ]
+    },
+    {
+      "id": "CCDV-F-SEED-005",
+      "version": 2,
+      "examCode": "CCDV-F",
+      "locale": "en",
+      "domainId": "D2",
+      "objective": "Claude API Mechanics",
+      "scenarioId": null,
+      "questionType": "multiple_response",
+      "selectCount": 2,
+      "stem": "A web application streams Messages API responses. Occasionally a stream starts with HTTP 200 and fails later, and tool inputs arrive as input_json_delta events. Which TWO measures should the client implement?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Handle error events inside the stream, such as overloaded_error, even after an HTTP 200 status.",
+          "rationale": "The API can send an error event mid-stream after the HTTP status was already sent, so the client must process it and record that the response did not complete."
+        },
+        {
+          "id": "B",
+          "text": "Parse each partial_json string as a complete JSON object as soon as its delta event arrives.",
+          "rationale": "Each partial_json value is a fragment of a JSON string and is generally not valid JSON on its own."
+        },
+        {
+          "id": "C",
+          "text": "Read the final stop_reason from the message_start event before rendering any streamed text.",
+          "rationale": "message_start carries a message with empty content; the final stop_reason arrives later in message_delta."
+        },
+        {
+          "id": "D",
+          "text": "Concatenate the partial_json strings for the block and parse the input at content_block_stop.",
+          "rationale": "Accumulating the fragments and parsing once the block stops yields the complete tool input to validate before execution."
+        },
+        {
+          "id": "E",
+          "text": "Treat a ping event as a sign of a stalled stream and restart the request when one arrives.",
+          "rationale": "ping events are a normal part of the stream and can appear at any point; they do not indicate failure."
+        }
+      ],
+      "correctOptionIds": [
+        "A",
+        "D"
+      ],
+      "explanation": "A streamed response can fail after its HTTP status is sent, so the client must handle error events and track whether message_stop arrived. Tool input deltas are partial JSON strings: accumulate them and parse at content_block_stop, or use the SDK streaming helpers.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T05"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCDV-F-SEED-005",
+      "tags": [
+        "streaming-lifecycle-and-tool-arguments"
+      ]
+    },
+    {
+      "id": "CCDV-F-SEED-006",
+      "version": 2,
+      "examCode": "CCDV-F",
+      "locale": "en",
+      "domainId": "D3",
+      "objective": "Claude Code Operation",
+      "scenarioId": null,
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "A CI job must send one prompt to Claude Code, receive a single machine-readable JSON result, and exit without starting an interactive session. Which command matches this requirement?",
+      "options": [
+        {
+          "id": "A",
+          "text": "claude \"Review this diff\" --output-format json",
+          "rationale": "Without -p, claude \"query\" starts an interactive session with an initial prompt; --output-format applies to print mode."
+        },
+        {
+          "id": "B",
+          "text": "claude -p \"Review this diff\" --output-format text",
+          "rationale": "Print mode is correct, but text output is not the machine-readable JSON the job requires."
+        },
+        {
+          "id": "C",
+          "text": "claude -p \"Review this diff\" --input-format stream-json",
+          "rationale": "--input-format controls how input is read in print mode; output stays in the default text format."
+        },
+        {
+          "id": "D",
+          "text": "claude -p \"Review this diff\" --output-format json",
+          "rationale": "-p runs non-interactively and exits, and --output-format json returns the result with session metadata as JSON."
+        }
+      ],
+      "correctOptionIds": [
+        "D"
+      ],
+      "explanation": "-p (--print) runs Claude Code non-interactively, and --output-format json returns one JSON object with the result, session ID, and metadata. CI still needs authentication and tool permissions configured separately; --bare makes scripted runs more reproducible.",
+      "points": 1,
+      "difficulty": "foundational",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T06",
+        "T106"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCDV-F-SEED-006",
+      "tags": [
+        "noninteractive-claude-code-execution",
+        "claude-code-cli"
+      ]
+    },
+    {
+      "id": "CCDV-F-SEED-007",
+      "version": 2,
+      "examCode": "CCDV-F",
+      "locale": "en",
+      "domainId": "D4",
+      "objective": "Debugging and Error Handling",
+      "scenarioId": null,
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "An integration with the Claude API fails intermittently. Logs show some requests returning 401 authentication_error and others returning 429 rate_limit_error. What is the best first improvement to its recovery logic?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Retry both errors with exponential backoff that honors retry-after, since both are transient failures.",
+          "rationale": "Backoff suits 429, but a 401 means the API key is malformed, revoked, or expired; retrying it only delays the fix."
+        },
+        {
+          "id": "B",
+          "text": "Branch on the error type: alert and stop on 401 to fix the credential, and back off on 429.",
+          "rationale": "The two errors have different causes. Credential problems need correction, while rate limits need bounded backoff."
+        },
+        {
+          "id": "C",
+          "text": "Treat both errors as quota problems and request a higher usage tier for the organization.",
+          "rationale": "A higher tier may ease 429s but does nothing for an invalid credential behind the 401s."
+        },
+        {
+          "id": "D",
+          "text": "Raise the SDK max_retries setting so both errors get more automatic attempts before surfacing.",
+          "rationale": "SDK retries target transient failures such as rate limits and 5xx errors; more attempts do not repair an invalid key and hide the cause longer."
+        }
+      ],
+      "correctOptionIds": [
+        "B"
+      ],
+      "explanation": "Classify API errors by type before choosing recovery: 401 is an authentication problem that retries cannot fix, and 429 is handled with bounded backoff that honors retry-after. A spend-cap 429 has no retry-after header and keeps failing until access resumes, so it also needs alerting.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T07"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCDV-F-SEED-007",
+      "tags": [
+        "error-classification",
+        "retries"
+      ]
+    },
+    {
+      "id": "CCDV-F-SEED-008",
+      "version": 2,
+      "examCode": "CCDV-F",
+      "locale": "en",
+      "domainId": "D5",
+      "objective": "Model Selection and Tradeoffs",
+      "scenarioId": null,
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "A support-ticket classifier meets its accuracy target but exceeds its p95 latency budget. The team is considering a smaller, faster model. What evidence should decide the switch?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Accuracy and p95 latency for each model on the same examples that were used to tune the prompt.",
+          "rationale": "Tuning examples have shaped the prompt, so scoring on them overstates how each model generalizes."
+        },
+        {
+          "id": "B",
+          "text": "Public benchmark scores and vendor latency comparisons, without running the task prompts.",
+          "rationale": "General benchmarks and published comparisons do not measure this classifier's prompts, data, or edge cases."
+        },
+        {
+          "id": "C",
+          "text": "Accuracy and p95 latency for each model on a held-out set of representative tickets.",
+          "rationale": "A representative held-out evaluation measures both sides of the trade-off on the actual task."
+        },
+        {
+          "id": "D",
+          "text": "Accuracy and p95 latency for each model on held-out tickets from only the most common category.",
+          "rationale": "Sampling one category hides failures on rarer ticket types that the classifier must still handle."
+        }
+      ],
+      "correctOptionIds": [
+        "C"
+      ],
+      "explanation": "Build a task-specific evaluation set and compare candidate models on accuracy, edge cases, and latency using the real prompts and data. Reusing tuning examples or a narrow sample makes a faster model look safer than it is.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T08"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCDV-F-SEED-008",
+      "tags": [
+        "model-selection-through-evaluation"
+      ]
+    },
+    {
+      "id": "CCDV-F-SEED-009",
+      "version": 2,
+      "examCode": "CCDV-F",
+      "locale": "en",
+      "domainId": "D5",
+      "objective": "Cost and Token Management",
+      "scenarioId": null,
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "Before each Messages API call, a service assembles a system prompt, client tool definitions, and retrieved plain-text passages; it uses no server tools and no file or URL document sources. It must trim passages when the input would exceed its context budget, before the generation request is sent. Which approach is most appropriate?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Send the planned system, tools, and messages to the count_tokens endpoint and check the budget.",
+          "rationale": "Token counting accepts the same system, tools, and messages as the planned request and runs before generation."
+        },
+        {
+          "id": "B",
+          "text": "Estimate tokens with a fixed characters-per-token ratio applied to the passages and user message.",
+          "rationale": "A heuristic ignores the tool definitions and system prompt and does not reflect the model's tokenizer."
+        },
+        {
+          "id": "C",
+          "text": "Send the request, read usage.input_tokens from the response, and trim passages on the next call.",
+          "rationale": "Usage is reported only after the over-budget request has already been sent."
+        },
+        {
+          "id": "D",
+          "text": "Count each passage once with an earlier model and reuse those counts for every current model.",
+          "rationale": "Newer models use a different tokenizer that can produce noticeably more tokens, so counts should be taken against the target model."
+        }
+      ],
+      "correctOptionIds": [
+        "A"
+      ],
+      "explanation": "count_tokens returns an estimate for the full planned input and can differ slightly from actual usage, so leave headroom. It does not support server tools or url/file document sources, which is why the stem limits the input to text and client tools.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T09"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCDV-F-SEED-009",
+      "tags": [
+        "input-token-budgeting",
+        "token-counting"
+      ]
+    },
+    {
+      "id": "CCDV-F-SEED-010",
+      "version": 2,
+      "examCode": "CCDV-F",
+      "locale": "en",
+      "domainId": "D6",
+      "objective": "Output Handling",
+      "scenarioId": null,
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "An invoice extraction request uses structured outputs with a JSON schema. The response is schema-valid, but its invoice_total does not equal the sum of the extracted line items, and the source document shows a third value. What should the application do?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Add minimum and maximum bounds on invoice_total so constrained decoding rejects wrong totals.",
+          "rationale": "Numeric bounds are not enforced by constrained decoding (SDKs move them into descriptions), and a range cannot detect a wrong sum anyway."
+        },
+        {
+          "id": "B",
+          "text": "Check the total against the line items and the source document, and send mismatches to review.",
+          "rationale": "Schema compliance and factual correctness are different checks; a business-rule check grounded in the source catches the error."
+        },
+        {
+          "id": "C",
+          "text": "Retry until two consecutive responses return the same total, then accept the agreed value.",
+          "rationale": "Agreement between responses is not evidence; the same misreading can repeat."
+        },
+        {
+          "id": "D",
+          "text": "Set strict: true on the extraction tool so the extracted values are guaranteed to match the document.",
+          "rationale": "Strict tool use guarantees that inputs follow the schema, not that values are accurate."
+        }
+      ],
+      "correctOptionIds": [
+        "B"
+      ],
+      "explanation": "Structured outputs guarantee the shape of the response, not the truth of its values. Validate financial relationships and source evidence after parsing, and route failures to correction or review.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T10"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCDV-F-SEED-010",
+      "tags": [
+        "structural-versus-semantic-validation"
+      ]
+    },
+    {
+      "id": "CCDV-F-SEED-011",
+      "version": 2,
+      "examCode": "CCDV-F",
+      "locale": "en",
+      "domainId": "D7",
+      "objective": "AI Application Security",
+      "scenarioId": null,
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "A repository-review agent is built with the Claude Agent SDK and has no MCP servers configured. It must read and search files, and it must be unable to edit files or run shell commands in any permission mode. Which configuration best enforces this boundary?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Set allowedTools to [\"Read\", \"Glob\", \"Grep\"] and leave all other options at their defaults.",
+          "rationale": "allowedTools only pre-approves the listed tools. Unlisted tools such as Bash and Edit remain available and fall through to the permission mode."
+        },
+        {
+          "id": "B",
+          "text": "Set permissionMode to \"plan\" so that the agent explores the repository without making changes.",
+          "rationale": "Plan mode sends edits to the canUseTool callback instead of removing the tools, and read-only shell commands can still run."
+        },
+        {
+          "id": "C",
+          "text": "Add \"Bash\", \"Edit\", \"Write\", and \"NotebookEdit\" to disallowedTools and keep the read tools.",
+          "rationale": "A bare tool name in disallowedTools removes that tool's definition, so Claude cannot attempt it in any mode, including bypassPermissions."
+        },
+        {
+          "id": "D",
+          "text": "Add a CLAUDE.md instruction telling the agent never to edit files or run shell commands.",
+          "rationale": "CLAUDE.md is loaded as context, not enforced configuration; it does not remove any capability."
+        }
+      ],
+      "correctOptionIds": [
+        "C"
+      ],
+      "explanation": "Express capability boundaries in permission configuration, not in instructions. Pre-approval (allowedTools) and removal (bare disallowedTools entries) are different controls; only removal guarantees the tool cannot be called.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T104",
+        "T11",
+        "T15"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCDV-F-SEED-011",
+      "tags": [
+        "least-privilege-agent-permissions",
+        "agent-sdk-permissions"
+      ]
+    },
+    {
+      "id": "CCDV-F-SEED-012",
+      "version": 2,
+      "examCode": "CCDV-F",
+      "locale": "en",
+      "domainId": "D8",
+      "objective": "MCP Server Development",
+      "scenarioId": null,
+      "questionType": "multiple_response",
+      "selectCount": 2,
+      "stem": "Under the MCP 2025-06-18 transport specification, a desktop client launches a local MCP server as a child process, while a separately hosted MCP server serves many remote clients. Which TWO transport choices are appropriate?",
+      "options": [
+        {
+          "id": "A",
+          "text": "HTTP+SSE with separate SSE and POST endpoints, as the current standard transport for the hosted server.",
+          "rationale": "HTTP+SSE is the transport from protocol version 2024-11-05; in 2025-06-18 it is replaced by Streamable HTTP and kept only for backwards compatibility."
+        },
+        {
+          "id": "B",
+          "text": "WebSocket, as the standard transport the specification defines for hosted multi-client servers.",
+          "rationale": "The specification defines only stdio and Streamable HTTP as standard; anything else is a custom transport."
+        },
+        {
+          "id": "C",
+          "text": "stdio between the desktop client and the local server process that the client launches.",
+          "rationale": "In stdio, the client launches the server as a subprocess and exchanges JSON-RPC messages over stdin and stdout."
+        },
+        {
+          "id": "D",
+          "text": "stdio for the hosted server, with each remote client attaching to the server's standard input.",
+          "rationale": "stdio connects one client to a subprocess it launched; it does not serve independent remote clients."
+        },
+        {
+          "id": "E",
+          "text": "Streamable HTTP for the hosted server, using a single MCP endpoint that accepts POST and GET.",
+          "rationale": "Streamable HTTP runs the server as an independent process that can handle multiple client connections."
+        }
+      ],
+      "correctOptionIds": [
+        "C",
+        "E"
+      ],
+      "explanation": "MCP 2025-06-18 defines two standard transports: stdio for client-launched subprocesses and Streamable HTTP for independently running servers. Remote HTTP servers still need authentication and Origin validation; the transport choice does not provide them.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T12"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCDV-F-SEED-012",
+      "tags": [
+        "mcp-transport-selection"
+      ]
+    }
+  ],
+  "newSources": [
+    {
+      "id": "T101",
+      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-runner",
+      "title": "Tool runner (SDK)",
+      "publisher": "Anthropic",
+      "kind": "technical_doc",
+      "confidence": "high",
+      "checkedAt": "2026-10-03",
+      "status": "reachable",
+      "topic": "Beta Client SDK tool runner: runs the tool loop automatically; tools are functions you define"
+    },
+    {
+      "id": "T102",
+      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls",
+      "title": "Handle tool calls",
+      "publisher": "Anthropic",
+      "kind": "technical_doc",
+      "confidence": "high",
+      "checkedAt": "2026-10-03",
+      "status": "reachable",
+      "topic": "tool_result formatting: user role, tool_use_id, tool_result blocks first, immediate succession, is_error"
+    },
+    {
+      "id": "T104",
+      "url": "https://code.claude.com/docs/en/agent-sdk/permissions",
+      "title": "Configure permissions (Agent SDK)",
+      "publisher": "Anthropic",
+      "kind": "technical_doc",
+      "confidence": "high",
+      "checkedAt": "2026-10-03",
+      "status": "reachable",
+      "topic": "Permission evaluation order; allowedTools pre-approves only; bare disallowedTools removes tools; auto-approved calls skip canUseTool"
+    },
+    {
+      "id": "T105",
+      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/code-execution-tool",
+      "title": "Code execution tool",
+      "publisher": "Anthropic",
+      "kind": "technical_doc",
+      "confidence": "high",
+      "checkedAt": "2026-10-03",
+      "status": "reachable",
+      "topic": "Code execution runs in a sandboxed container on Anthropic infrastructure; files arrive via the Files API"
+    },
+    {
+      "id": "T106",
+      "url": "https://code.claude.com/docs/en/cli-reference",
+      "title": "CLI reference",
+      "publisher": "Anthropic",
+      "kind": "technical_doc",
+      "confidence": "high",
+      "checkedAt": "2026-10-03",
+      "status": "reachable",
+      "topic": "claude \"query\" starts an interactive session; --output-format and --input-format are print-mode options"
+    }
+  ]
+}

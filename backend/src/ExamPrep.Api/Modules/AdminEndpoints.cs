@@ -63,40 +63,19 @@ public static class AdminEndpoints
             });
         });
 
-        g.MapPost("/questions/{id:guid}/transition", async (Guid id, TransitionDto dto, ClaimsPrincipal p, AppDbContext db, Audit audit, TimeProvider clock, CancellationToken ct) =>
+        g.MapPost("/questions/{id:guid}/transition", async (Guid id, TransitionDto dto, ClaimsPrincipal p, AppDbContext db, QuestionWorkflow wf, CancellationToken ct) =>
         {
             var q = await db.Questions.Include(x => x.Versions).SingleOrDefaultAsync(x => x.Id == id, ct);
             if (q is null) return Results.NotFound();
-            var v = q.Versions.OrderByDescending(x => x.VersionNo).First();
-            if (!QuestionStatuses.All.Contains(dto.To)) return Problems.Error(400, "status_unknown", "Unknown status.");
-            if (!Lifecycle.CanTransition(v.Status, dto.To)) return Problems.Error(409, "transition_not_allowed", $"Cannot move from {v.Status} to {dto.To}.");
-            if (dto.To is QuestionStatuses.Quarantined or QuestionStatuses.Retired && string.IsNullOrWhiteSpace(dto.Note))
-                return Problems.Error(400, "note_required", "Explain why the question is quarantined or retired.");
+            var r = await wf.TransitionLatestAsync(q, dto.To, dto.Note, p.UserId(), ct);
+            if (!r.Ok) return Problems.Error(r.Status, r.Code!, r.Message!, r.Details);
+            return Results.Ok(VersionView(q.Versions.OrderByDescending(x => x.VersionNo).First(), q));
+        });
 
-            var cert = await db.Certifications.Include(c => c.Domains).Include(c => c.Languages).SingleAsync(c => c.Id == q.CertificationId, ct);
-            var sources = await db.Sources.ToDictionaryAsync(s => s.Id, ct);
-            var scenarios = (await db.Scenarios.Where(s => s.CertificationId == cert.Id).Select(s => s.Id).ToListAsync(ct)).ToHashSet();
-            var issues = QuestionValidator.Validate(v, cert.Domains.Select(d => d.Code).ToHashSet(), sources.Keys.ToHashSet(), scenarios);
-            var advancing = dto.To is QuestionStatuses.TechnicalReview or QuestionStatuses.EditorialReview or QuestionStatuses.Approved or QuestionStatuses.Published;
-            if (advancing && issues.Any(i => i.Severity == "error"))
-                return Problems.Error(409, "validation_failed", "Fix validation errors before advancing.", issues);
-            if (dto.To is QuestionStatuses.Approved or QuestionStatuses.Published)
-            {
-                var missing = v.SourceIds.Where(s => !sources.ContainsKey(s) || sources[s].Status != "reachable").ToList();
-                if (missing.Count > 0) return Problems.Error(409, "sources_unverified", "Every cited source must be registered and marked reachable before approval.", missing);
-            }
-            if (dto.To == QuestionStatuses.Published && cert.Languages.All(l => l.Locale != v.Locale))
-                return Problems.Error(409, "language_not_verified",
-                    $"Locale '{v.Locale}' is not verified for {cert.Code}. Keep the question in administrative preview until the exam language is verified with evidence.");
-
-            var from = v.Status;
-            v.Status = dto.To; v.StatusNote = dto.Note; v.UpdatedAt = clock.GetUtcNow();
-            if (dto.To == QuestionStatuses.Published)
-                foreach (var old in q.Versions.Where(o => o.Id != v.Id && o.Status == QuestionStatuses.Published))
-                { old.Status = QuestionStatuses.Retired; old.StatusNote = $"Superseded by version {v.VersionNo}"; }
-            audit.Record(p.UserId(), "question.transition", "question_version", v.Id.ToString(), new { q.ExternalId, from, to = dto.To, dto.Note });
-            await db.SaveChangesAsync(ct);
-            return Results.Ok(VersionView(v, q));
+        g.MapPost("/reviews/apply", async (ReviewRecord record, ClaimsPrincipal p, ReviewApplier applier, CancellationToken ct) =>
+        {
+            var (applied, skipped, problems) = await applier.ApplyAsync(record, p.UserId(), ct);
+            return Results.Ok(new { applied, skipped, problems });
         });
 
         g.MapPost("/questions/{id:guid}/versions", async (Guid id, EditQuestionDto dto, ClaimsPrincipal p, AppDbContext db, Audit audit, TimeProvider clock, CancellationToken ct) =>

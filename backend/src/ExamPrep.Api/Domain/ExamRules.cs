@@ -163,8 +163,12 @@ public static class QuestionValidator
 
     public static string Normalize(string s) => string.Join(' ', s.ToLowerInvariant().Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries));
 
+    /// <summary>Rejects active or rendering HTML. Plain XML-style tags are legitimate content in prompt-engineering
+    /// questions (e.g. "&lt;example&gt; tags"); the UI always renders content as escaped text.</summary>
     public static bool ContainsMarkup(string s) =>
-        System.Text.RegularExpressions.Regex.IsMatch(s ?? "", @"<\s*/?\s*[a-zA-Z][^>]*>|javascript:", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+        System.Text.RegularExpressions.Regex.IsMatch(s ?? "",
+            @"<\s*/?\s*(script|style|iframe|frame|object|embed|img|svg|math|link|meta|base|form|input|button|a|video|audio|source|template)\b|<[^>]*\bon[a-z]+\s*=|javascript:|data:text/html",
+            System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
     /// <summary>Jaccard similarity on word 3-shingles of stem+options, for near-duplicate detection.</summary>
     public static double Similarity(QuestionVersion a, QuestionVersion b)

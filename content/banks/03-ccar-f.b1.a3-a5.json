@@ -1,0 +1,1821 @@
+{
+ "schemaVersion": "1.0",
+ "examCode": "CCAR-F",
+ "cases": [],
+ "questions": [
+  {
+   "id": "CCAR-F-B1-A3-001",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A3",
+   "objective": "3.1 Configure CLAUDE.md files with appropriate hierarchy, scoping, and modular organization",
+   "scenarioId": "ARCH-CASE-02",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "In the monorepo, a senior billing engineer keeps detailed billing test-fixture conventions in CLAUDE.local.md at the repository root. Her Claude Code sessions follow them, but a new teammate working on the same branch gets sessions that ignore them. Shared workflows must be reviewed in version control. What should the team change?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Add an @CLAUDE.local.md import line to the root CLAUDE.md so every session expands the local file.",
+     "rationale": "The local file is gitignored and does not exist in the teammate's clone, so the import has nothing to expand, and the content would still bypass review."
+    },
+    {
+     "id": "B",
+     "text": "Have each engineer copy the conventions into ~/.claude/CLAUDE.md during onboarding so every session on their machine loads them.",
+     "rationale": "User-level instructions are personal, are not version-controlled, drift between machines, and load in every project the engineer opens."
+    },
+    {
+     "id": "C",
+     "text": "Put the conventions in services/billing/.claude/settings.json so they apply when billing files are edited.",
+     "rationale": "settings.json configures permissions, environment and similar behavior; it is not where instructions for Claude are loaded from."
+    },
+    {
+     "id": "D",
+     "text": "Move the conventions into a committed project file, such as a billing-scoped rule under .claude/rules/.",
+     "rationale": "Correct. CLAUDE.local.md is meant to be gitignored and personal, so it never reaches other clones. A committed project rule is reviewed in version control, loads for everyone, and a paths field keeps it narrowly scoped to billing."
+    }
+   ],
+   "correctOptionIds": [
+    "D"
+   ],
+   "explanation": "Project-wide conventions belong in committed project memory (CLAUDE.md or .claude/rules/), not in personal scopes such as CLAUDE.local.md or ~/.claude/CLAUDE.md. Path-scoped rules add narrow scoping on top of sharing.",
+   "points": 1,
+   "difficulty": "foundational",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T15"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A3-001",
+   "tags": [
+    "claude-md-hierarchy",
+    "claude-local-md",
+    "monorepo"
+   ]
+  },
+  {
+   "id": "CCAR-F-B1-A3-002",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A3",
+   "objective": "3.1 Configure CLAUDE.md files with appropriate hierarchy, scoping, and modular organization",
+   "scenarioId": "ARCH-CASE-02",
+   "questionType": "multiple_response",
+   "selectCount": 2,
+   "stem": "The root CLAUDE.md had grown to about 900 lines, so an engineer split it into six files referenced with @path imports. /context still shows the same memory-file token usage at launch. The largest sections are about 300 lines of billing-only guidance and the conventions for *.test.ts files found in both the web app and the billing service. Which TWO changes would actually reduce what loads at launch while keeping billing guidance narrowly scoped?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Move the billing-only sections into services/billing/CLAUDE.md, which loads when Claude reads files in that directory.",
+     "rationale": "Correct. CLAUDE.md files in subdirectories below the working directory are not loaded at launch; they are included when Claude reads files in those subdirectories."
+    },
+    {
+     "id": "B",
+     "text": "Nest the imports more deeply so that second-level files are only expanded when Claude needs them.",
+     "rationale": "Imports expand recursively at launch (up to a limited depth), so nesting changes organization but not when the content loads."
+    },
+    {
+     "id": "C",
+     "text": "Convert each imported file into a .claude/rules/ file without frontmatter so it loads selectively.",
+     "rationale": "Rules without a paths field load at launch with the same priority as .claude/CLAUDE.md, so this saves nothing."
+    },
+    {
+     "id": "D",
+     "text": "Move the test conventions into a .claude/rules/ file whose paths field matches **/*.test.ts.",
+     "rationale": "Correct. A path-scoped rule loads only when Claude reads or edits a matching file, which suits conventions spread across many directories."
+    },
+    {
+     "id": "E",
+     "text": "Wrap each @import path in quotes so the file is referenced but loaded only on first use.",
+     "rationale": "A quoted path is not imported at all, so the guidance would simply disappear rather than load lazily."
+    }
+   ],
+   "correctOptionIds": [
+    "A",
+    "D"
+   ],
+   "explanation": "@imports improve organization but do not reduce context cost, because imported files load at launch. Content that matters only for part of the codebase should move to on-demand locations: subdirectory CLAUDE.md files or path-scoped rules.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T15"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A3-002",
+   "tags": [
+    "claude-md-imports",
+    "path-scoped-rules",
+    "context-cost"
+   ]
+  },
+  {
+   "id": "CCAR-F-B1-A3-003",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A3",
+   "objective": "3.2 Create and configure custom slash commands and skills",
+   "scenarioId": "ARCH-CASE-05",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "Reviewers use a project skill, /deep-audit, that scans a whole pull request and produces long intermediate notes. Its SKILL.md frontmatter sets context: fork and agent: Explore so the notes stay out of the main session. The audits it returns ignore the review criteria documented in the project CLAUDE.md. Which change most directly fixes this while keeping the audit isolated?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Remove context: fork so the audit runs inline in the main conversation and sees the CLAUDE.md criteria.",
+     "rationale": "This would load the criteria but defeats the stated goal of keeping verbose audit notes out of the main session."
+    },
+    {
+     "id": "B",
+     "text": "Add allowed-tools: Read to the frontmatter so that the forked agent is permitted to open CLAUDE.md.",
+     "rationale": "allowed-tools only pre-approves tools for the invoking turn; it does not make the agent load or follow CLAUDE.md, and Explore already has read access."
+    },
+    {
+     "id": "C",
+     "text": "State the review criteria in the SKILL.md content itself, since the Explore agent skips CLAUDE.md.",
+     "rationale": "Correct. A forked skill receives the SKILL.md content as its task, and the built-in Explore agent skips CLAUDE.md, so criteria must be in the skill itself (or the skill must use an agent type that loads CLAUDE.md)."
+    },
+    {
+     "id": "D",
+     "text": "Change agent: Explore to agent: Plan so that the forked agent reads the project CLAUDE.md before auditing.",
+     "rationale": "The built-in Plan agent skips CLAUDE.md and git status just like Explore, so the audit would still miss the criteria."
+    }
+   ],
+   "correctOptionIds": [
+    "C"
+   ],
+   "explanation": "With context: fork, the skill content becomes the subagent's prompt and the subagent does not see the conversation. Built-in Explore and Plan agents skip CLAUDE.md to stay lightweight, so a forked skill must be self-contained.",
+   "points": 1,
+   "difficulty": "advanced",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T16",
+    "T17"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A3-003",
+   "tags": [
+    "skills",
+    "context-fork",
+    "explore-agent"
+   ]
+  },
+  {
+   "id": "CCAR-F-B1-A3-004",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A3",
+   "objective": "3.2 Create and configure custom slash commands and skills",
+   "scenarioId": "ARCH-CASE-05",
+   "questionType": "multiple_response",
+   "selectCount": 2,
+   "stem": "A project skill, /triage-pr, runs gh pr view and git diff commands and then writes a summary for the reviewer. While the skill is active, the team wants those read-only commands to run without permission prompts, and it wants the Edit and Write tools to be unavailable. Which TWO frontmatter settings achieve this?",
+   "options": [
+    {
+     "id": "A",
+     "text": "allowed-tools listing only Read and Bash(git diff *), which removes every unlisted tool while the skill runs",
+     "rationale": "allowed-tools pre-approves the listed tools; it does not restrict which tools are available, so unlisted tools such as Edit remain callable under normal permissions."
+    },
+    {
+     "id": "B",
+     "text": "allowed-tools listing Bash(gh pr view *) and Bash(git diff *), pre-approving them for the invoking turn",
+     "rationale": "Correct. allowed-tools grants permission for the listed tools without prompting during the turn that invokes the skill."
+    },
+    {
+     "id": "C",
+     "text": "context: fork, which runs the skill in a read-only subagent that has no file-editing tools",
+     "rationale": "A forked skill uses general-purpose by default, which can edit files; forking isolates context, not tool access."
+    },
+    {
+     "id": "D",
+     "text": "user-invocable: false, which prevents the skill from taking actions on its own initiative",
+     "rationale": "This hides the skill from the / menu so only Claude can invoke it; it does not limit tools."
+    },
+    {
+     "id": "E",
+     "text": "disallowed-tools listing Edit and Write, removing them from the pool while the skill is active",
+     "rationale": "Correct. disallowed-tools removes the listed tools from Claude's available pool while the skill is active."
+    }
+   ],
+   "correctOptionIds": [
+    "B",
+    "E"
+   ],
+   "explanation": "In Claude Code skills, allowed-tools pre-approves tools and disallowed-tools removes them; they solve different problems. Both clear when the user sends the next message, and deny rules in permission settings still apply.",
+   "points": 1,
+   "difficulty": "advanced",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T16"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A3-004",
+   "tags": [
+    "skills",
+    "allowed-tools",
+    "disallowed-tools",
+    "frontmatter"
+   ]
+  },
+  {
+   "id": "CCAR-F-B1-A3-005",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A3",
+   "objective": "3.3 Apply path-specific rules for conditional convention loading",
+   "scenarioId": "ARCH-CASE-02",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "The team added .claude/rules/billing-ledger.md with paths frontmatter intended to match only files under services/billing/. Web developers now report that ledger conventions show up in sessions where Claude touches only apps/web files, and /context lists the rule as loaded from the start of the session. What is the most likely cause?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Its frontmatter fails to parse, so the rule loads as if it had no paths field (claude --debug shows why).",
+     "rationale": "Correct. When the YAML between the markers fails to parse, Claude Code ignores the frontmatter and loads the rule unconditionally, which matches the symptom."
+    },
+    {
+     "id": "B",
+     "text": "Path-scoped rules are always loaded at launch and are filtered only later, once Claude edits a matching file.",
+     "rationale": "Path-scoped rules are not loaded at launch; they load when Claude reads, writes or edits a matching file."
+    },
+    {
+     "id": "C",
+     "text": "Files in .claude/rules/ inherit the scope of the root CLAUDE.md, so a paths field cannot narrow them.",
+     "rationale": "The paths field is exactly the mechanism that narrows a rule; only rules without it load unconditionally."
+    },
+    {
+     "id": "D",
+     "text": "A same-named rule in a developer's ~/.claude/rules/ replaces the project rule and drops its paths field.",
+     "rationale": "User-level and project rules are both discovered and loaded; there is no documented same-name replacement that strips frontmatter."
+    }
+   ],
+   "correctOptionIds": [
+    "A"
+   ],
+   "explanation": "paths is the only frontmatter field Claude Code reads from a rule. If the YAML is invalid, the rule silently becomes unconditional, so validating frontmatter (for example with claude --debug) is part of maintaining path-scoped rules.",
+   "points": 1,
+   "difficulty": "advanced",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T15"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A3-005",
+   "tags": [
+    "path-scoped-rules",
+    "frontmatter",
+    "troubleshooting"
+   ]
+  },
+  {
+   "id": "CCAR-F-B1-A3-006",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A3",
+   "objective": "3.3 Apply path-specific rules for conditional convention loading",
+   "scenarioId": "ARCH-CASE-05",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "The CI review job pipes gh pr diff into claude -p. A rule in .claude/rules/migrations.md, scoped with paths to **/migrations/*.sql, holds the migration review criteria, but findings on migration changes never reflect them. Logs show that Claude evaluated the piped diff without opening any repository files. Interactive sessions should keep loading these criteria only for migration files. What should change?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Broaden the rule's paths pattern to **/* so that it matches every file in the CI checkout.",
+     "rationale": "Matching still requires Claude to read or edit a file, which never happens when the diff arrives on stdin, and the change removes the narrow scope."
+    },
+    {
+     "id": "B",
+     "text": "Have the CI prompt tell Claude to open each changed migration file with Read before judging it.",
+     "rationale": "Correct. Path-scoped rules load when Claude uses Read, Write or Edit on a matching file, so reading the changed migration files brings the criteria into the CI run while interactive scoping stays unchanged."
+    },
+    {
+     "id": "C",
+     "text": "Move the criteria into a migrations/CLAUDE.md file so that its directory scope covers the diff.",
+     "rationale": "Subdirectory CLAUDE.md files also load only when Claude reads files in that directory, so the piped diff does not trigger them."
+    },
+    {
+     "id": "D",
+     "text": "Convert the rule into a skill with the same paths field so that it is activated automatically for the diff.",
+     "rationale": "A skill's paths field also depends on Claude working with matching files, and model-invoked skills are not guaranteed to load."
+    }
+   ],
+   "correctOptionIds": [
+    "B"
+   ],
+   "explanation": "Conditional loading is driven by file tool use, not by text that mentions a path. In CI, make sure the agent actually reads the matching files, or pass the criteria explicitly when it may never open them.",
+   "points": 1,
+   "difficulty": "advanced",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T15",
+    "T06"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A3-006",
+   "tags": [
+    "path-scoped-rules",
+    "ci-review",
+    "rule-triggers"
+   ]
+  },
+  {
+   "id": "CCAR-F-B1-A3-007",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A3",
+   "objective": "3.4 Determine when to use plan mode vs direct execution",
+   "scenarioId": "ARCH-CASE-02",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "To prevent rework, the team committed defaultMode: plan in the repository's .claude/settings.json. Developers now complain that one-line fixes, such as correcting a log label in the web app, require writing and approving a plan, while planning clearly helped when the billing service moved from synchronous calls to an event queue. What is the best adjustment?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Keep plan as the default and add a CLAUDE.md instruction telling Claude to skip planning for small changes.",
+     "rationale": "Plan mode blocks source edits until a plan is approved; an instruction in CLAUDE.md does not lift that block."
+    },
+    {
+     "id": "B",
+     "text": "Keep plan as the default and route small fixes through claude -p, where plan mode restrictions do not apply.",
+     "rationale": "Plan mode keeps its blocks in non-interactive -p runs, so this would not avoid the approval step."
+    },
+    {
+     "id": "C",
+     "text": "Replace the default with acceptEdits so every task, including the queue migration, runs without approval steps.",
+     "rationale": "This removes friction for small fixes but also drops the planning phase that the architectural work benefited from."
+    },
+    {
+     "id": "D",
+     "text": "Remove the project default and enter plan mode per task (Shift+Tab or /plan) when the approach is uncertain.",
+     "rationale": "Correct. Plan mode adds overhead that pays off for multi-file or uncertain changes; small, clearly scoped fixes are better done directly."
+    }
+   ],
+   "correctOptionIds": [
+    "D"
+   ],
+   "explanation": "Choose plan mode per task: use it for large, multi-file or architectural changes with several valid approaches, and use direct execution when the diff can be described in a sentence. A team-wide plan default taxes every small change.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T201",
+    "T204",
+    "T206"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A3-007",
+   "tags": [
+    "plan-mode",
+    "direct-execution",
+    "permission-modes"
+   ]
+  },
+  {
+   "id": "CCAR-F-B1-A3-008",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A3",
+   "objective": "3.4 Determine when to use plan mode vs direct execution",
+   "scenarioId": "ARCH-CASE-06",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "An engineer on the document-extraction service asks Claude Code to replace a legacy date parser. The first phase must locate every call site and fixture across roughly 400 files; the second phase applies an agreed migration. In earlier attempts, discovery output filled the main context before implementation began. Which approach fits best?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Run discovery in the main session, then run /clear and ask Claude to implement the migration it found earlier.",
+     "rationale": "/clear starts a new conversation with empty context, so the discovered call sites would be lost before implementation."
+    },
+    {
+     "id": "B",
+     "text": "Delegate discovery to the Explore subagent, have it return call sites with paths, then plan and implement.",
+     "rationale": "Correct. Explore keeps verbose search output in its own context and returns a summary, preserving the main context for planning and implementation."
+    },
+    {
+     "id": "C",
+     "text": "Have the Explore subagent do the discovery and later resume that same subagent to apply the edits.",
+     "rationale": "Explore is read-only and one-shot; it returns no agent ID and cannot be resumed to make edits."
+    },
+    {
+     "id": "D",
+     "text": "Start with direct execution on the first call site found and let later failures reveal the remaining ones.",
+     "rationale": "Skipping discovery on a 400-file change invites missed call sites and rework, which planning is meant to prevent."
+    }
+   ],
+   "correctOptionIds": [
+    "B"
+   ],
+   "explanation": "Isolate verbose discovery in a subagent such as Explore and bring back only a summary; then plan and execute in the main session. Built-in Explore is read-only and cannot be resumed, so implementation belongs elsewhere.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T17",
+    "T201"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A3-008",
+   "tags": [
+    "explore-agent",
+    "plan-mode",
+    "context-isolation"
+   ]
+  },
+  {
+   "id": "CCAR-F-B1-A3-009",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A3",
+   "objective": "3.5 Apply iterative refinement techniques for progressive improvement",
+   "scenarioId": "ARCH-CASE-06",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "The extraction service's invoice normalizer, written with Claude Code, has three defects found by tests: amounts are rounded before currency conversion, dates near midnight shift by a day because of time zone handling, and the late-fee tier depends on both the normalized date and the converted amount. Fixing them one message at a time has caused regressions in the others. How should the engineer prompt the next iteration?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Keep fixing one defect per message, but ask Claude to rerun only the tests related to that defect.",
+     "rationale": "Sequential fixes suit independent problems; here they interact, and running a subset of tests hides the regressions."
+    },
+    {
+     "id": "B",
+     "text": "Ask Claude to rewrite the normalizer from scratch using a prose description of the correct behavior.",
+     "rationale": "Discarding the failing tests in favor of prose loses the most precise specification of the expected behavior."
+    },
+    {
+     "id": "C",
+     "text": "Send one message covering all three defects, their interactions, and the failing tests, and ask for one verified fix.",
+     "rationale": "Correct. When fixes interact, a single detailed message lets Claude design one consistent change; the failing tests give concrete verification."
+    },
+    {
+     "id": "D",
+     "text": "Ask Claude to fix the most severe defect first and leave code comments flagging the other two defects for a later pass.",
+     "rationale": "Deferring the dependent defects repeats the cycle of partial fixes that caused the regressions."
+    }
+   ],
+   "correctOptionIds": [
+    "C"
+   ],
+   "explanation": "Group interacting issues into one detailed request and iterate against tests; fix independent issues sequentially. Concrete failing cases communicate expectations better than prose.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T204",
+    "P05"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A3-009",
+   "tags": [
+    "iterative-refinement",
+    "test-driven-iteration"
+   ]
+  },
+  {
+   "id": "CCAR-F-B1-A3-010",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A3",
+   "objective": "3.6 Integrate Claude Code into CI/CD pipelines",
+   "scenarioId": "ARCH-CASE-05",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "The pipeline reviews each pull request with claude -p and posts the findings as inline comments. When a developer pushes new commits, the job runs again on a fresh CI runner and reposts many findings that were already raised, including some that have since been fixed. What is the best change?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Pass the prior run's structured findings in the prompt and ask for only new or still-unaddressed issues.",
+     "rationale": "Correct. Giving the reviewer the earlier findings lets it classify each one as fixed, still open or new, so only new or unaddressed issues are posted."
+    },
+    {
+     "id": "B",
+     "text": "Resume the previous review session with --resume so that Claude remembers which findings it already reported.",
+     "rationale": "Session transcripts are stored locally under ~/.claude/projects on the machine that ran them, so a fresh runner does not have them unless they are persisted; it would also carry the whole earlier context."
+    },
+    {
+     "id": "C",
+     "text": "Deduplicate in the posting script by skipping any finding whose file and line already has a comment.",
+     "rationale": "Line numbers shift between commits, fixed issues are not recognized, and a new issue on a commented line would be suppressed."
+    },
+    {
+     "id": "D",
+     "text": "Limit each rerun to the files changed in the newest commit so earlier files are not examined again.",
+     "rationale": "This misses still-unaddressed issues and cross-file effects of the new commit on previously reviewed files."
+    }
+   ],
+   "correctOptionIds": [
+    "A"
+   ],
+   "explanation": "For incremental CI reviews, feed earlier findings back as context and ask for new or still-open issues only. Structured output (--output-format json with --json-schema) makes those prior findings easy to store and pass forward.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T06",
+    "T207"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A3-010",
+   "tags": [
+    "ci-review",
+    "incremental-review",
+    "headless"
+   ]
+  },
+  {
+   "id": "CCAR-F-B1-A3-011",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A3",
+   "objective": "3.6 Integrate Claude Code into CI/CD pipelines",
+   "scenarioId": "ARCH-CASE-05",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "To make CI runs reproducible, the team added --bare to its claude -p review command. Since then, the reviews no longer apply the severity rubric and fixture conventions documented in the project CLAUDE.md, although the JSON output is still valid. What should the team do?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Keep --bare and add --json-schema so that the rubric's severity fields are enforced in the output.",
+     "rationale": "A schema constrains the output shape; it does not supply the rubric that tells Claude how to assign severity."
+    },
+    {
+     "id": "B",
+     "text": "Keep --bare and move the rubric into a project skill, since bare mode still discovers project skills.",
+     "rationale": "Bare mode skips auto-discovery of skills as well as CLAUDE.md."
+    },
+    {
+     "id": "C",
+     "text": "Keep --bare and add the rubric to ~/.claude/CLAUDE.md on the runner image, which bare mode still reads.",
+     "rationale": "Bare mode skips CLAUDE.md discovery, including user-level files."
+    },
+    {
+     "id": "D",
+     "text": "Keep --bare and pass the rubric explicitly, for example with --append-system-prompt-file pointing at a checked-in file.",
+     "rationale": "Correct. Bare mode skips auto-discovery of CLAUDE.md, so context must be supplied with flags such as --append-system-prompt-file."
+    }
+   ],
+   "correctOptionIds": [
+    "D"
+   ],
+   "explanation": "--bare trades automatic context loading for reproducibility; anything the run needs (system prompt additions, settings, MCP servers, agents) must then be passed explicitly. Dropping --bare is the alternative if automatic CLAUDE.md loading is preferred.",
+   "points": 1,
+   "difficulty": "advanced",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T06",
+    "T202"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A3-011",
+   "tags": [
+    "ci",
+    "bare-mode",
+    "claude-md"
+   ]
+  },
+  {
+   "id": "CCAR-F-B1-A4-001",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A4",
+   "objective": "4.1 Design prompts with explicit criteria to improve precision and reduce false positives",
+   "scenarioId": "ARCH-CASE-05",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "The review pipeline reports findings in four categories. Security and correctness findings are usually accepted, but about 60% of performance findings are dismissed, and developers have started ignoring all of the bot's comments. The team must restore trust this sprint while it reworks the performance criteria. What should it do first?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Tell the reviewer to report performance issues only when it is highly confident, and keep all four categories.",
+     "rationale": "General confidence instructions rarely improve precision; the category stays noisy and keeps eroding trust."
+    },
+    {
+     "id": "B",
+     "text": "Pause posting performance findings and rewrite that category with concrete report-versus-skip criteria.",
+     "rationale": "Correct. Pausing the noisy category protects trust in the accurate ones, and explicit categorical criteria are what improve precision before re-enabling it."
+    },
+    {
+     "id": "C",
+     "text": "Have the model attach a 1-10 confidence score to each finding and post only those scored 8 or higher.",
+     "rationale": "Self-reported confidence is poorly calibrated, so the threshold may drop good findings and keep bad ones."
+    },
+    {
+     "id": "D",
+     "text": "Downgrade every performance finding to informational severity so that none of them block merges.",
+     "rationale": "Low-value comments still appear on every pull request, so developers keep learning to ignore the bot."
+    }
+   ],
+   "correctOptionIds": [
+    "B"
+   ],
+   "explanation": "High false-positive categories undermine confidence in accurate ones. Temporarily disable them and replace vague guidance with explicit criteria for what to report and what to skip.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T200",
+    "P05"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A4-001",
+   "tags": [
+    "explicit-criteria",
+    "false-positives",
+    "code-review"
+   ]
+  },
+  {
+   "id": "CCAR-F-B1-A4-002",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A4",
+   "objective": "4.1 Design prompts with explicit criteria to improve precision and reduce false positives",
+   "scenarioId": "ARCH-CASE-04",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "The internal assistant reads tickets and the reference policy repository, then tags tickets that may breach a policy. Its instruction reads: 'Flag tickets that might violate our policies; be careful and thorough.' Reviewers find that most flagged tickets merely mention a policy topic, such as data retention, without describing a violation. Which prompt revision best improves precision?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Tell the assistant to be conservative and flag a ticket only when it is confident that a violation occurred.",
+     "rationale": "Confidence-based wording does not define what a violation is, so the model keeps flagging topic mentions."
+    },
+    {
+     "id": "B",
+     "text": "Ask the assistant to explain its reasoning step by step before each flag so that weak flags filter themselves out.",
+     "rationale": "Reasoning does not supply the missing decision rule, and the flags remain tied to vague criteria."
+    },
+    {
+     "id": "C",
+     "text": "Retrieve the complete policy repository into every request so that the assistant has full context for each decision.",
+     "rationale": "More policy text raises cost and noise but does not tell the assistant when to flag."
+    },
+    {
+     "id": "D",
+     "text": "Name the in-scope policies, flag only actions contradicting a quoted clause, and list topics to skip.",
+     "rationale": "Correct. Explicit, categorical criteria and examples of what not to flag target the observed false positives."
+    }
+   ],
+   "correctOptionIds": [
+    "D"
+   ],
+   "explanation": "Precision improves when the prompt states concrete conditions for reporting and for skipping, rather than general appeals to caution or confidence.",
+   "points": 1,
+   "difficulty": "foundational",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T200",
+    "P05"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A4-002",
+   "tags": [
+    "explicit-criteria",
+    "precision",
+    "policy-classification"
+   ]
+  },
+  {
+   "id": "CCAR-F-B1-A4-003",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A4",
+   "objective": "4.2 Apply few-shot prompting to improve output consistency and quality",
+   "scenarioId": "ARCH-CASE-06",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "The extraction schema allows null for effective_date. On contracts where the date appears only in a signature block or in a header such as 'Dated as of', the model returns null even though a human finds the date easily. Detailed field instructions already describe these locations. What is the most effective next step?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Add 3 to 5 examples in <example> tags of contracts with different layouts and the correct date for each.",
+     "rationale": "Correct. Diverse examples of varied document structures are one of the most reliable ways to fix empty extractions that instructions alone have not fixed."
+    },
+    {
+     "id": "B",
+     "text": "Make effective_date required and non-nullable so the model must always supply a value.",
+     "rationale": "Forcing a value invites fabricated dates for contracts that truly lack one."
+    },
+    {
+     "id": "C",
+     "text": "Repeat the location instructions in capital letters at both the beginning and the end of the prompt.",
+     "rationale": "The instructions already describe the locations; louder repetition does not demonstrate how to apply them."
+    },
+    {
+     "id": "D",
+     "text": "Run a second extraction for every contract and keep whichever of the two results contains a non-null date.",
+     "rationale": "Preferring any non-null value rewards guesses and doubles cost without teaching the model the layouts."
+    }
+   ],
+   "correctOptionIds": [
+    "A"
+   ],
+   "explanation": "Few-shot examples that mirror real layout variation teach the model how to apply instructions to varied documents. Keep the field nullable so genuinely missing dates are not invented.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T200"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A4-003",
+   "tags": [
+    "few-shot",
+    "extraction",
+    "varied-layouts"
+   ]
+  },
+  {
+   "id": "CCAR-F-B1-A4-004",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A4",
+   "objective": "4.2 Apply few-shot prompting to improve output consistency and quality",
+   "scenarioId": "ARCH-CASE-05",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "Review findings are returned through a JSON schema with location, issue, severity, and suggested_fix fields, so every field is always present. Yet many findings say only 'consider refactoring', and some flag the project's approved retry wrapper as a bug. Developers find the comments unhelpful. Which change is most likely to improve their quality?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Add minLength constraints to the issue and suggested_fix fields so the model has to write more detailed text.",
+     "rationale": "Length requirements produce longer text, not more specific or correct findings."
+    },
+    {
+     "id": "B",
+     "text": "Ask the model to rate each finding's usefulness and drop findings that it scores low before posting.",
+     "rationale": "Self-rating without explicit criteria or examples is unreliable and does not teach what a good finding looks like."
+    },
+    {
+     "id": "C",
+     "text": "Add examples of concrete findings with specific fixes, plus one showing the retry wrapper left unflagged.",
+     "rationale": "Correct. Few-shot examples demonstrate the expected specificity and show an acceptable pattern, which reduces false positives while allowing generalization."
+    },
+    {
+     "id": "D",
+     "text": "Mark suggested_fix as optional so the model can leave it out when it cannot propose a specific fix.",
+     "rationale": "This hides vague fixes but does nothing for vague issues or the false positives on the retry wrapper."
+    }
+   ],
+   "correctOptionIds": [
+    "C"
+   ],
+   "explanation": "A schema guarantees fields exist, not that their content is useful. Examples that show good findings and acceptable code patterns shape quality and reduce false positives.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T200",
+    "T10"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A4-004",
+   "tags": [
+    "few-shot",
+    "output-quality",
+    "false-positives"
+   ]
+  },
+  {
+   "id": "CCAR-F-B1-A4-005",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A4",
+   "objective": "4.3 Enforce structured output using tool use and JSON schemas",
+   "scenarioId": "ARCH-CASE-01",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "Before an approval check, the support assistant fills a refund_request tool with order_id, reason, and requested_amount, where requested_amount is a required number. When customers ask for 'a refund' without naming an amount, the tool input contains amounts they never stated, sometimes the full order total. Missing evidence must not be guessed. What schema change best addresses this?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Remove requested_amount and have the approval service always refund the full order total by default.",
+     "rationale": "This replaces one guess with another and changes refund policy instead of capturing what the customer said."
+    },
+    {
+     "id": "B",
+     "text": "Make requested_amount nullable and have the assistant use null when no amount was stated.",
+     "rationale": "Correct. A nullable field lets the model represent missing information honestly instead of fabricating a value to satisfy the schema."
+    },
+    {
+     "id": "C",
+     "text": "Add a minimum of 0.01 to requested_amount so the model cannot submit an empty or zero value.",
+     "rationale": "A minimum still forces a number and pushes the model toward inventing one. Numerical constraints such as minimum are also not supported in strict schemas."
+    },
+    {
+     "id": "D",
+     "text": "Keep the field required and add a description telling the model never to invent an amount.",
+     "rationale": "A required number with no way to say 'unknown' conflicts with the instruction, so fabrication remains likely."
+    }
+   ],
+   "correctOptionIds": [
+    "B"
+   ],
+   "explanation": "Design fields as nullable when the source may not contain the information. Required fields without a null option pressure the model to fabricate values that look valid.",
+   "points": 1,
+   "difficulty": "foundational",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T10",
+    "T203"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A4-005",
+   "tags": [
+    "structured-output",
+    "nullable-fields",
+    "refunds"
+   ]
+  },
+  {
+   "id": "CCAR-F-B1-A4-006",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A4",
+   "objective": "4.3 Enforce structured output using tool use and JSON schemas",
+   "scenarioId": "ARCH-CASE-04",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "The assistant classifies tickets with a strict tool whose category field is an enum of eight values used by reporting dashboards. New request types, such as access reviews, are being forced into the closest category, which distorts reporting. The team wants reliable aggregated reporting and early visibility into emerging request types. Which schema design fits best?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Add an 'other' value with a category_detail string, and an 'unclear' value for unclassifiable tickets.",
+     "rationale": "Correct. The enum keeps aggregation reliable, 'other' plus detail captures emerging types for review, and 'unclear' avoids forced guesses."
+    },
+    {
+     "id": "B",
+     "text": "Replace the enum with a free-text category string so the model can describe any new request type.",
+     "rationale": "Free text breaks consistent aggregation on the dashboards."
+    },
+    {
+     "id": "C",
+     "text": "Keep the eight values and instruct the model to pick the closest match more carefully.",
+     "rationale": "The problem is that no correct value exists for new types; closer matching still misclassifies them."
+    },
+    {
+     "id": "D",
+     "text": "Add every request type seen during the past year to the enum so that no new ticket falls outside of it.",
+     "rationale": "The list stays closed to future types and a much larger enum dilutes reporting categories."
+    }
+   ],
+   "correctOptionIds": [
+    "A"
+   ],
+   "explanation": "For extensible categories, combine a closed enum with an 'other' value and a detail string, and allow an explicit 'unclear' state rather than forcing a choice.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T10"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A4-006",
+   "tags": [
+    "structured-output",
+    "enum-design",
+    "schema-design"
+   ]
+  },
+  {
+   "id": "CCAR-F-B1-A4-007",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A4",
+   "objective": "4.4 Implement validation, retry, and feedback loops for extraction quality",
+   "scenarioId": "ARCH-CASE-06",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "Invoice extractions are schema-valid, but a validator finds that line_items amounts often do not sum to stated_total. Investigation shows that most mismatches come from the model skipping a line item that wraps onto a second page. What retry design is most likely to correct these records?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Resend the original request unchanged, since a second sample often produces a different, valid result.",
+     "rationale": "Without feedback the model has no signal about what went wrong, so the same omission is likely to recur."
+    },
+    {
+     "id": "B",
+     "text": "Enable strict schema validation on the extraction tool so that inconsistent totals are rejected during generation.",
+     "rationale": "Strict schemas eliminate syntax and shape errors; they do not check arithmetic across fields."
+    },
+    {
+     "id": "C",
+     "text": "Drop line_items from the record and keep only stated_total so that the record always passes validation.",
+     "rationale": "This discards required data to make validation pass rather than fixing the extraction."
+    },
+    {
+     "id": "D",
+     "text": "Retry with the document, the failed extraction, and the specific discrepancy, asking it to re-check page breaks.",
+     "rationale": "Correct. Retry with specific error feedback gives the model the context it needs to find the missed line item."
+    }
+   ],
+   "correctOptionIds": [
+    "D"
+   ],
+   "explanation": "Schema enforcement removes syntax errors but not semantic ones. Validate semantics in code and retry with the source, the failed output and the specific error so the model can self-correct.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T10"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A4-007",
+   "tags": [
+    "validation-retry",
+    "semantic-validation",
+    "extraction"
+   ]
+  },
+  {
+   "id": "CCAR-F-B1-A4-008",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A4",
+   "objective": "4.4 Implement validation, retry, and feedback loops for extraction quality",
+   "scenarioId": "ARCH-CASE-06",
+   "questionType": "multiple_response",
+   "selectCount": 2,
+   "stem": "The extraction service retries failed validations by sending the document, the previous output, and the validation errors back to the model. Which TWO failure types should be routed to another remedy, such as human review or fetching an additional document, instead of being retried?",
+   "options": [
+    {
+     "id": "A",
+     "text": "A date was returned as 03/04/2026 although the field description requires ISO 8601 format.",
+     "rationale": "A format mismatch is exactly what retry with error feedback usually fixes."
+    },
+    {
+     "id": "B",
+     "text": "The tax amount was placed in the discount field, and a cross-field validation check detected the mistake.",
+     "rationale": "Wrong-field placement is a semantic error the model can correct when told about it."
+    },
+    {
+     "id": "C",
+     "text": "The payment terms refer to a master agreement that was not included in the submitted documents.",
+     "rationale": "Correct. The information is absent from the source, so retries can only produce guesses."
+    },
+    {
+     "id": "D",
+     "text": "A list of line items came back as one concatenated string from a pipeline without strict schemas.",
+     "rationale": "A structural output error is a good candidate for retry, or for adopting strict schemas."
+    },
+    {
+     "id": "E",
+     "text": "The document states two different totals on different pages, and both values are clearly legible.",
+     "rationale": "Correct. The conflict is in the source itself; the record should be flagged (for example with a conflict field) for human review."
+    }
+   ],
+   "correctOptionIds": [
+    "C",
+    "E"
+   ],
+   "explanation": "Retry is effective for format and structural errors the model can fix from feedback. It is ineffective when the information is missing from the provided sources or when the sources contradict each other.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T10",
+    "T14"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A4-008",
+   "tags": [
+    "validation-retry",
+    "retry-limits",
+    "human-review"
+   ]
+  },
+  {
+   "id": "CCAR-F-B1-A4-009",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A4",
+   "objective": "4.5 Design efficient batch processing strategies",
+   "scenarioId": "ARCH-CASE-01",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "Closed support conversations are quality-scored with the Message Batches API, and each score must be available within 36 hours of the conversation closing. A batch can take up to 24 hours to finish, scoring results need 2 hours of post-processing, and closed conversations wait in a queue until the next scheduled submission. Assuming requests complete within the batch window, what is the longest submission interval that still meets the requirement?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Every 12 hours",
+     "rationale": "A conversation closing just after a submission waits 12 hours, then up to 24 hours plus 2 hours of post-processing: 38 hours, which misses the requirement."
+    },
+    {
+     "id": "B",
+     "text": "Every 24 hours",
+     "rationale": "The worst case is 24 + 24 + 2 = 50 hours."
+    },
+    {
+     "id": "C",
+     "text": "Every 10 hours",
+     "rationale": "Correct. The worst case is 10 hours of queueing + 24 hours of processing + 2 hours of post-processing = 36 hours."
+    },
+    {
+     "id": "D",
+     "text": "Every 6 hours",
+     "rationale": "This meets the requirement with a 30-hour worst case, but it is not the longest interval that does."
+    }
+   ],
+   "correctOptionIds": [
+    "C"
+   ],
+   "explanation": "Worst-case latency equals the submission interval plus the maximum processing window plus downstream work. Requests that expire at 24 hours need a fallback (resubmission or synchronous calls), which consumes margin.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T22"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A4-009",
+   "tags": [
+    "batch-processing",
+    "sla-planning"
+   ]
+  },
+  {
+   "id": "CCAR-F-B1-A4-010",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A4",
+   "objective": "4.5 Design efficient batch processing strategies",
+   "scenarioId": "ARCH-CASE-06",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "The team wants to move nightly document extraction to the Message Batches API. Today, during each extraction, the model calls a vendor lookup tool that an internal MCP server, reachable only from the company network, provides; the application executes it as a client tool, and the lookup can return a recoverable business-level failure. Which design fits the batch API?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Extract in a batch without the lookup, then validate vendor IDs in a separate step that calls the lookup and handles its failures.",
+     "rationale": "Correct. Each batch request is an independent Messages call; a client tool cannot be executed mid-request, so tool-dependent work must move to a separate step or another request round."
+    },
+    {
+     "id": "B",
+     "text": "Keep the lookup as a client tool in each batch request, since the batch service executes client tools and continues internally.",
+     "rationale": "The batch worker runs the server-side loop only for server tools; a client tool is executed by the application, so a request that calls it returns with stop_reason tool_use and needs a follow-up request."
+    },
+    {
+     "id": "C",
+     "text": "Stay on the synchronous API, because batch requests cannot include tool definitions or multi-turn messages.",
+     "rationale": "Batch requests can include tools and multi-turn message histories; the limitation is executing client tools within one request."
+    },
+    {
+     "id": "D",
+     "text": "Submit each document as a batch request and poll every few seconds so tool results can be injected before completion.",
+     "rationale": "Polling only reports batch status; there is no way to inject tool results into an in-flight batch request."
+    }
+   ],
+   "correctOptionIds": [
+    "A"
+   ],
+   "explanation": "The Message Batches API halves cost for latency-tolerant work but processes each request as a single, independent call. Design multi-step tool use as separate stages, and correlate results by custom_id.",
+   "points": 1,
+   "difficulty": "advanced",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T22",
+    "T03",
+    "T208"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A4-010",
+   "tags": [
+    "batch-processing",
+    "tool-use",
+    "pipeline-design"
+   ]
+  },
+  {
+   "id": "CCAR-F-B1-A4-011",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A4",
+   "objective": "4.6 Design multi-instance and multi-pass review architectures",
+   "scenarioId": "ARCH-CASE-02",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A billing engineer had Claude Code write a migration that changes how proration credits are stored. Before opening the pull request, she asked the same session to 'review your changes critically', and it reported no problems. A colleague later found a rounding error in the migration. Which review setup is most likely to catch such issues next time?",
+   "options": [
+    {
+     "id": "A",
+     "text": "In the same session, raise the effort level and ask Claude to re-examine every changed line of the migration.",
+     "rationale": "The session still carries the reasoning that produced the change, so it tends to confirm its own decisions."
+    },
+    {
+     "id": "B",
+     "text": "Ask the same session to list possible flaws first and only then judge whether the change is correct.",
+     "rationale": "Reordering the request does not remove the generator's context and bias toward its own code."
+    },
+    {
+     "id": "C",
+     "text": "Run the same session's review twice and treat any issue reported in both runs as confirmed.",
+     "rationale": "Repeating a biased review adds little independent signal and may filter out real but intermittent findings."
+    },
+    {
+     "id": "D",
+     "text": "Have a separate reviewer, such as a fresh subagent, inspect only the diff against the billing criteria.",
+     "rationale": "Correct. An independent instance without the generator's reasoning evaluates the result on its own terms."
+    }
+   ],
+   "correctOptionIds": [
+    "D"
+   ],
+   "explanation": "Self-review in the generating session is weak because the model retains its reasoning context. An independent reviewer that sees only the diff and the criteria is more effective; tell it to focus on correctness to avoid over-reporting.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T204"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A4-011",
+   "tags": [
+    "independent-review",
+    "writer-reviewer"
+   ]
+  },
+  {
+   "id": "CCAR-F-B1-A4-012",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A4",
+   "objective": "4.6 Design multi-instance and multi-pass review architectures",
+   "scenarioId": "ARCH-CASE-03",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "The coordinator's synthesis agent writes a report from specialist findings. Spot checks show that some sentences cite a source that does not actually support them. The team wants an automated check before delivery that does not depend on the synthesis agent judging its own draft. Which design fits best?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Add an instruction to the synthesis prompt asking it to double-check every citation before it finishes.",
+     "rationale": "This is still self-review by the agent that wrote the draft, which is the dependency the team wants to avoid."
+    },
+    {
+     "id": "B",
+     "text": "Run an independent verification pass that matches each claim to a supporting excerpt and flags the rest.",
+     "rationale": "Correct. A separate instance checking claims against source excerpts makes the report auditable and catches unsupported citations."
+    },
+    {
+     "id": "C",
+     "text": "Ask each specialist to rate the reliability of its sources so that the synthesis agent can weight them accordingly.",
+     "rationale": "Source reliability does not test whether a specific sentence is supported by the source it cites."
+    },
+    {
+     "id": "D",
+     "text": "Re-run the synthesis agent with a larger context window so that it can hold every source at once.",
+     "rationale": "More context does not add an independent check and can worsen recall of specific passages."
+    }
+   ],
+   "correctOptionIds": [
+    "B"
+   ],
+   "explanation": "Use a separate verification pass for claim-level checking: for each claim, find a supporting quote in the cited source or retract the claim. This mirrors citation-verification steps in multi-agent research systems.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T14",
+    "T205"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A4-012",
+   "tags": [
+    "verification-pass",
+    "citations",
+    "multi-pass-review"
+   ]
+  },
+  {
+   "id": "CCAR-F-B1-A5-001",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A5",
+   "objective": "5.1 Manage conversation context to preserve critical information across long interactions",
+   "scenarioId": "ARCH-CASE-01",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A support session covers three orders. Early on, the customer gave the order numbers, and the agent confirmed that an $84.20 refund for one order would be submitted for approval by Friday. After the history was progressively summarized, the summary says only 'customer has refund questions on several orders', and the agent asks for the details again. What design best prevents this?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Summarize less often, waiting until the context window is nearly full before compressing the earlier history.",
+     "rationale": "This delays the loss but the eventual summary can still drop the same amounts, dates and commitments."
+    },
+    {
+     "id": "B",
+     "text": "Tell the summarizer to keep each summary under 100 words so that it stays prominent in context.",
+     "rationale": "Shorter summaries compress more aggressively and lose even more transactional detail."
+    },
+    {
+     "id": "C",
+     "text": "Keep order IDs, amounts, dates, and commitments in a case-facts block sent with each request, outside the summary.",
+     "rationale": "Correct. Transactional facts persisted in a structured block are not exposed to lossy summarization and remain available on every turn."
+    },
+    {
+     "id": "D",
+     "text": "Re-query the order system on every turn instead of keeping facts from earlier in the conversation.",
+     "rationale": "The order system does not hold what the agent promised or what the customer said, such as the Friday commitment."
+    }
+   ],
+   "correctOptionIds": [
+    "C"
+   ],
+   "explanation": "Progressive summarization tends to blur numbers, dates and stated expectations. Extract those facts into a persistent structured block included in each request, separate from the summarized narrative.",
+   "points": 1,
+   "difficulty": "foundational",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T18",
+    "P05"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A5-001",
+   "tags": [
+    "context-preservation",
+    "case-facts",
+    "summarization"
+   ]
+  },
+  {
+   "id": "CCAR-F-B1-A5-002",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A5",
+   "objective": "5.1 Manage conversation context to preserve critical information across long interactions",
+   "scenarioId": "ARCH-CASE-03",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "The coordinator concatenates twelve specialist reports of several thousand tokens each and asks the synthesis agent for a final report. Findings from reports in the middle of the input are often missing from the result, while the first and last reports are well represented. Which change best mitigates this?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Put a key-findings summary for every report at the top and give each full report a labeled section header.",
+     "rationale": "Correct. A front-loaded summary keeps every report's main findings in a strong position, and clear sections help the model locate details."
+    },
+    {
+     "id": "B",
+     "text": "Shuffle the order of the reports on each run so that no single specialist is consistently placed in the middle.",
+     "rationale": "Shuffling only moves the loss around; some reports still land in the weak middle positions."
+    },
+    {
+     "id": "C",
+     "text": "Ask every specialist to write a longer, more detailed report so that its findings stand out more.",
+     "rationale": "Longer reports increase total length and make middle content even harder to recall."
+    },
+    {
+     "id": "D",
+     "text": "Move the synthesis instructions ahead of all twelve reports so the model reads its task first.",
+     "rationale": "Guidance for long inputs recommends placing long documents first and the query or instructions after them."
+    }
+   ],
+   "correctOptionIds": [
+    "A"
+   ],
+   "explanation": "Long inputs suffer position effects. Place key findings summaries where they are reliably processed, structure details with explicit headers, and put the task after the long material.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T200",
+    "T18"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A5-002",
+   "tags": [
+    "lost-in-the-middle",
+    "context-ordering",
+    "synthesis"
+   ]
+  },
+  {
+   "id": "CCAR-F-B1-A5-003",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A5",
+   "objective": "5.2 Design effective escalation and ambiguity resolution patterns",
+   "scenarioId": "ARCH-CASE-01",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A caller gives the name 'J. Alvarez' and asks for a refund on 'my last order'. The customer lookup returns three accounts with that name, two of which have recent orders. Refund decisions must be tied to the correct account. What should the assistant do?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Select the account whose most recent order is closest to today's date and continue with that order.",
+     "rationale": "This is a heuristic guess; a wrong match could refund the wrong customer."
+    },
+    {
+     "id": "B",
+     "text": "Escalate to a human agent, since any lookup that returns more than one match is outside the assistant's scope.",
+     "rationale": "Ambiguous matches are routinely resolved by asking for more information; escalating them all wastes human capacity."
+    },
+    {
+     "id": "C",
+     "text": "Read out the recent orders from all three accounts and ask the caller which of them is theirs.",
+     "rationale": "This discloses other customers' order details to an unverified caller."
+    },
+    {
+     "id": "D",
+     "text": "Ask the caller for an additional identifier, such as an order number or account email, before looking up the order.",
+     "rationale": "Correct. Multiple matches call for clarification with a further identifier rather than heuristic selection."
+    }
+   ],
+   "correctOptionIds": [
+    "D"
+   ],
+   "explanation": "When a lookup returns several candidates, request an additional identifier instead of choosing by heuristics; escalate only when clarification cannot resolve it or policy requires it.",
+   "points": 1,
+   "difficulty": "foundational",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "P05"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A5-003",
+   "tags": [
+    "ambiguity-resolution",
+    "customer-identification",
+    "escalation"
+   ]
+  },
+  {
+   "id": "CCAR-F-B1-A5-004",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A5",
+   "objective": "5.3 Implement error propagation strategies across multi-agent systems",
+   "scenarioId": "ARCH-CASE-04",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A ticket-search subagent returns an empty list both when the ticketing API times out and when a query genuinely matches nothing. The assistant then tells users 'there are no related tickets', including during outages. How should the subagent report results to the coordinating assistant?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Retry each timeout up to five times inside the subagent and return an empty list if every attempt fails.",
+     "rationale": "Local retry is good, but returning an empty list after exhausting retries still disguises an outage as a valid result."
+    },
+    {
+     "id": "B",
+     "text": "Return a status separating an access failure (with the attempted query) from a successful zero-match search.",
+     "rationale": "Correct. The coordinator can then retry, try another approach or tell the user the search was unavailable, instead of reporting that nothing exists."
+    },
+    {
+     "id": "C",
+     "text": "Raise an exception on any timeout so that the whole request fails and the user is asked to try again later.",
+     "rationale": "Failing the entire request discards other useful work and gives the coordinator no chance to recover."
+    },
+    {
+     "id": "D",
+     "text": "Return one error code for every non-success outcome so that the coordinator handles all failures the same way.",
+     "rationale": "A single generic code hides whether a retry, an alternative source or a user message is appropriate."
+    }
+   ],
+   "correctOptionIds": [
+    "B"
+   ],
+   "explanation": "Distinguish access failures from valid empty results and include structured context (failure type, what was attempted, partial results) so the coordinator can make an informed recovery decision.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T23",
+    "T19"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A2-003",
+   "tags": [
+    "error-propagation",
+    "empty-vs-failure",
+    "subagents"
+   ]
+  },
+  {
+   "id": "CCAR-F-B1-A5-005",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A5",
+   "objective": "5.3 Implement error propagation strategies across multi-agent systems",
+   "scenarioId": "ARCH-CASE-03",
+   "questionType": "multiple_response",
+   "selectCount": 2,
+   "stem": "In a long research run, the patent-database specialist hits intermittent timeouts, and one licensed source is unavailable for the whole session. The final report must remain useful and be honest about its limits. Which TWO design choices handle this best?",
+   "options": [
+    {
+     "id": "A",
+     "text": "The coordinator stops the run whenever any specialist reports a failure, so that no report is ever incomplete.",
+     "rationale": "Terminating the whole workflow on a single failure discards the useful findings already gathered."
+    },
+    {
+     "id": "B",
+     "text": "The specialist retries timeouts locally, escalating unresolved ones with the queries tried and partial results.",
+     "rationale": "Correct. Local recovery handles transient errors, and structured escalation gives the coordinator what it needs to decide next steps."
+    },
+    {
+     "id": "C",
+     "text": "The specialist reports the unavailable source as a successful search with no results so synthesis is not blocked.",
+     "rationale": "Suppressing the failure makes a coverage gap look like evidence of absence."
+    },
+    {
+     "id": "D",
+     "text": "The synthesis output marks which topics are well supported and which have gaps from the unavailable source.",
+     "rationale": "Correct. Coverage annotations keep the report honest about what could not be checked."
+    },
+    {
+     "id": "E",
+     "text": "The synthesis agent fills the missing topic from its own background knowledge so every planned section is covered.",
+     "rationale": "Unsourced content breaks provenance and hides the gap from readers."
+    }
+   ],
+   "correctOptionIds": [
+    "B",
+    "D"
+   ],
+   "explanation": "Recover locally from transient failures, propagate unresolved ones with context, and make remaining gaps visible in the output. Both silent suppression and whole-workflow termination are anti-patterns.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T205",
+    "T18"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A5-005",
+   "tags": [
+    "error-propagation",
+    "coverage-annotations",
+    "multi-agent"
+   ]
+  },
+  {
+   "id": "CCAR-F-B1-A5-006",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A5",
+   "objective": "5.4 Manage context effectively in large codebase exploration",
+   "scenarioId": "ARCH-CASE-02",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "During a multi-hour Claude Code session tracing how refunds flow through the billing service, Claude's answers start to contradict earlier findings and refer to 'the usual service layer' instead of the specific classes it identified an hour earlier. Several more questions remain. What is the best way to continue?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Run /clear and redo the exploration from the beginning, asking the remaining questions as they come up.",
+     "rationale": "Starting over discards the findings and repeats the expensive discovery that caused the context pressure."
+    },
+    {
+     "id": "B",
+     "text": "Add the session's findings to the root CLAUDE.md so they are reloaded in every teammate's future sessions.",
+     "rationale": "Transient investigation notes do not belong in shared, always-loaded instructions, and billing guidance should stay narrowly scoped."
+    },
+    {
+     "id": "C",
+     "text": "Have Claude record key classes and call paths in a scratchpad file, run /compact, and consult the file.",
+     "rationale": "Correct. A scratchpad persists specific findings outside the context window, and compaction frees space for the remaining work."
+    },
+    {
+     "id": "D",
+     "text": "Keep the session going and instruct Claude to always name concrete classes rather than general patterns.",
+     "rationale": "An instruction does not restore details that have degraded in a crowded context."
+    }
+   ],
+   "correctOptionIds": [
+    "C"
+   ],
+   "explanation": "In long explorations, persist key findings in a scratchpad file, compact verbose history, and delegate narrow questions to subagents so the main context keeps a high-level view.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T18",
+    "T206"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A5-006",
+   "tags": [
+    "codebase-exploration",
+    "scratchpad",
+    "compact"
+   ]
+  },
+  {
+   "id": "CCAR-F-B1-A5-007",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A5",
+   "objective": "5.5 Design human review workflows and confidence calibration",
+   "scenarioId": "ARCH-CASE-06",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "Extraction accuracy on a 2,000-document sample is 97%, and the operations lead proposes ending human review of high-confidence results. The sample is mostly typed invoices; handwritten delivery notes and multi-currency statements are a small share of it but a growing share of traffic. What should the team do before reducing review?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Measure accuracy by document type and by field, and confirm each segment meets the target first.",
+     "rationale": "Correct. An aggregate figure can hide poor performance on small segments; segment-level validation is needed before removing review."
+    },
+    {
+     "id": "B",
+     "text": "Accept the proposal, because a 97% overall accuracy implies that each document type is very likely above 90%.",
+     "rationale": "A small segment can perform far worse without moving the overall figure much."
+    },
+    {
+     "id": "C",
+     "text": "Raise the automation confidence threshold until the overall sample accuracy reaches 99%.",
+     "rationale": "This still optimizes an aggregate dominated by typed invoices and says nothing about the weak segments."
+    },
+    {
+     "id": "D",
+     "text": "Enlarge the sample to 10,000 documents drawn the same way and recompute the overall accuracy.",
+     "rationale": "A bigger sample with the same mix still underrepresents the growing document types."
+    }
+   ],
+   "correctOptionIds": [
+    "A"
+   ],
+   "explanation": "Validate accuracy by document type and field before automating, and keep monitoring as traffic mix changes. Aggregate metrics can mask segment-level failures.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "P05"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A5-007",
+   "tags": [
+    "human-review",
+    "accuracy-segmentation"
+   ]
+  },
+  {
+   "id": "CCAR-F-B1-A5-008",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A5",
+   "objective": "5.5 Design human review workflows and confidence calibration",
+   "scenarioId": "ARCH-CASE-04",
+   "questionType": "multiple_response",
+   "selectCount": 2,
+   "stem": "The assistant now auto-routes tickets and outputs a confidence score for each field (team, priority, category). Two reviewers can check about 5% of tickets per day. The team wants reviewer time spent where errors are likely while still detecting new error patterns among auto-accepted tickets. Which TWO practices fit best?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Calibrate per-field thresholds on a labeled validation set; route tickets below them or with conflicts to review.",
+     "rationale": "Correct. Calibration turns raw scores into usable routing thresholds, and ambiguous or contradictory inputs deserve human attention."
+    },
+    {
+     "id": "B",
+     "text": "Treat the model's confidence score as the probability of being correct and auto-accept anything above 0.9.",
+     "rationale": "Uncalibrated model confidence is not a reliable probability of correctness."
+    },
+    {
+     "id": "C",
+     "text": "Have reviewers check only the low-confidence tickets, because high-confidence tickets are already the most accurate.",
+     "rationale": "This leaves no measurement of errors among auto-accepted tickets, so new failure patterns go unnoticed."
+    },
+    {
+     "id": "D",
+     "text": "Fill the review queue with a uniform random sample of all tickets, ignoring confidence and ticket type.",
+     "rationale": "Uniform sampling wastes scarce capacity on easy cases and underrepresents rare ticket types."
+    },
+    {
+     "id": "E",
+     "text": "Review a stratified random sample of high-confidence, auto-accepted tickets by type to track error rates.",
+     "rationale": "Correct. Stratified sampling of high-confidence output measures ongoing error rates across segments and surfaces novel errors."
+    }
+   ],
+   "correctOptionIds": [
+    "A",
+    "E"
+   ],
+   "explanation": "Route low-confidence and ambiguous items to humans using thresholds calibrated on labeled data, and keep a stratified sample of high-confidence output under review to detect drift and new error patterns.",
+   "points": 1,
+   "difficulty": "advanced",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "P05"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A5-008",
+   "tags": [
+    "confidence-calibration",
+    "stratified-sampling",
+    "human-review"
+   ]
+  },
+  {
+   "id": "CCAR-F-B1-A5-009",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A5",
+   "objective": "5.6 Preserve information provenance and handle uncertainty in multi-source synthesis",
+   "scenarioId": "ARCH-CASE-03",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "Two credible sources give different figures for the same market: one reports 18% annual growth from a 2023 survey, and the other reports 11% from 2025 filings. The specialist summaries passed to synthesis contained only the figures, and the final report stated 11% as the growth rate without mentioning the other source. How should the pipeline change?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Instruct the synthesis agent to prefer the most recent figure whenever sources disagree and report only that value.",
+     "rationale": "Silently choosing one value hides a real disagreement and the methodological differences behind it."
+    },
+    {
+     "id": "B",
+     "text": "Require claim-source mappings with dates from specialists, and have synthesis report both figures with attribution.",
+     "rationale": "Correct. Preserved claim-source mappings with dates let synthesis report the conflict with attribution and interpret the time difference correctly."
+    },
+    {
+     "id": "C",
+     "text": "Have the synthesis agent average the two figures and cite both sources for the combined estimate.",
+     "rationale": "An average is a number neither source reported, so it misattributes a fabricated value to both."
+    },
+    {
+     "id": "D",
+     "text": "Ask a specialist to find a third source and report whichever of the two figures that source agrees with.",
+     "rationale": "A tie-breaker vote still drops attribution and ignores that the figures come from different periods."
+    }
+   ],
+   "correctOptionIds": [
+    "B"
+   ],
+   "explanation": "Keep claim-source mappings, including publication or collection dates, through every summarization step. Present conflicting credible figures with attribution instead of picking one, and use dates to tell real contradictions from temporal change.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T205",
+    "T14"
+   ],
+   "sourceCheckedAt": "2026-10-03",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B1-A5-009",
+   "tags": [
+    "provenance",
+    "conflicting-sources",
+    "temporal-data"
+   ]
+  }
+ ],
+ "newSources": [
+  {
+   "id": "T200",
+   "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+   "title": "Prompting best practices",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-03",
+   "status": "reachable",
+   "topic": "Examples (few-shot), clarity, long context prompting"
+  },
+  {
+   "id": "T201",
+   "url": "https://code.claude.com/docs/en/permission-modes",
+   "title": "Claude Code permission modes",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-03",
+   "status": "reachable",
+   "topic": "Plan mode, defaultMode, plan mode in -p runs"
+  },
+  {
+   "id": "T202",
+   "url": "https://code.claude.com/docs/en/cli-reference",
+   "title": "Claude Code CLI reference",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-03",
+   "status": "reachable",
+   "topic": "--json-schema, --append-system-prompt-file, --bare and related flags"
+  },
+  {
+   "id": "T203",
+   "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools",
+   "title": "Define tools",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-03",
+   "status": "reachable",
+   "topic": "tool_choice options and forced tool use support"
+  },
+  {
+   "id": "T204",
+   "url": "https://code.claude.com/docs/en/best-practices",
+   "title": "Claude Code best practices",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-03",
+   "status": "reachable",
+   "topic": "Plan mode overhead, writer/reviewer pattern, verification, course correction"
+  },
+  {
+   "id": "T205",
+   "url": "https://www.anthropic.com/engineering/multi-agent-research-system",
+   "title": "How we built our multi-agent research system",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-03",
+   "status": "reachable",
+   "topic": "Delegation, external memory, citation agent, error resumption"
+  },
+  {
+   "id": "T206",
+   "url": "https://code.claude.com/docs/en/commands",
+   "title": "Claude Code commands",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-03",
+   "status": "reachable",
+   "topic": "/plan, /compact, /context, /memory"
+  },
+  {
+   "id": "T207",
+   "url": "https://code.claude.com/docs/en/sessions",
+   "title": "Claude Code sessions",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-03",
+   "status": "reachable",
+   "topic": "--resume, --continue and local transcript storage"
+  },
+  {
+   "id": "T208",
+   "url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-connector",
+   "title": "MCP connector",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-03",
+   "status": "reachable",
+   "topic": "MCP connector requires a publicly exposed HTTP server"
+  }
+ ]
+}

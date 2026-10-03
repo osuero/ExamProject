@@ -1,0 +1,695 @@
+{
+  "schemaVersion": "1.0",
+  "examCode": "CCAR-F",
+  "cases": [
+    {
+      "id": "ARCH-CASE-01",
+      "title": "Customer support with controlled refunds",
+      "text": "A support assistant reads order history and may initiate refunds. Refunds above a fixed threshold require approval. Missing policy evidence must not be guessed."
+    },
+    {
+      "id": "ARCH-CASE-02",
+      "title": "Shared repository development",
+      "text": "A team uses Claude Code in a monorepo containing a web application and a billing service. Shared workflows are reviewed in version control, and billing instructions should remain narrowly scoped."
+    },
+    {
+      "id": "ARCH-CASE-03",
+      "title": "Multi-agent research",
+      "text": "A coordinator delegates research to specialists. The work spans long sessions and must retain sources, unresolved disagreements, and explicit task boundaries."
+    },
+    {
+      "id": "ARCH-CASE-04",
+      "title": "Developer productivity through MCP",
+      "text": "An internal assistant accesses a ticketing system and a repository of reference policies. The team wants clear tool selection and reference content that applications can retrieve."
+    },
+    {
+      "id": "ARCH-CASE-05",
+      "title": "Automated code review",
+      "text": "A review pipeline uses Claude to inspect pull requests. Reports must be tied to explicit review criteria, while the workflow must distinguish findings from execution failures."
+    },
+    {
+      "id": "ARCH-CASE-06",
+      "title": "Document extraction operations",
+      "text": "A document-processing service extracts records asynchronously. Some requests fail independently, and an MCP lookup tool may also report a recoverable business-level failure."
+    }
+  ],
+  "questions": [
+    {
+      "id": "CCAR-F-SEED-001",
+      "version": 2,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A1",
+      "objective": "1.5 Apply Agent SDK hooks for tool call interception and data normalization",
+      "scenarioId": "ARCH-CASE-01",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "The support assistant is built with the Claude Agent SDK and calls a custom process_refund tool whose input includes an amount. Refunds of 500 USD or less should run without interruption; larger refunds must pause for a supervisor's approval in the same session before they execute. Which control best enforces this?",
+      "options": [
+        {
+          "id": "A",
+          "text": "A PostToolUse hook on process_refund that checks the amount and escalates large refunds for approval.",
+          "rationale": "PostToolUse runs after the tool has executed, so the refund has already been issued when the check happens."
+        },
+        {
+          "id": "B",
+          "text": "Add process_refund to allowedTools and check the amount inside the application's canUseTool callback.",
+          "rationale": "A tool approved by an allow rule never reaches canUseTool, so the amount check would be silently skipped."
+        },
+        {
+          "id": "C",
+          "text": "A PreToolUse hook whose matcher pattern selects process_refund calls over 500 USD and returns \"ask\".",
+          "rationale": "Matchers match the tool name only, not its arguments; the amount must be read from tool_input inside the callback."
+        },
+        {
+          "id": "D",
+          "text": "A PreToolUse hook on process_refund that reads tool_input.amount and returns \"ask\" above 500 USD.",
+          "rationale": "PreToolUse runs before execution and receives the tool input; \"ask\" routes the call for approval, while small refunds can return \"allow\"."
+        }
+      ],
+      "correctOptionIds": [
+        "D"
+      ],
+      "explanation": "A business rule that must hold every time belongs in a pre-execution hook rather than in prompt instructions. If approval happens outside the session, the hook can instead return \"deny\" with a reason and route to escalation; the refund service should still enforce its own limit.",
+      "points": 1,
+      "difficulty": "advanced",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T103",
+        "T104",
+        "T13"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-SEED-001",
+      "tags": [
+        "pre-execution-controls",
+        "agent-sdk-hooks"
+      ]
+    },
+    {
+      "id": "CCAR-F-SEED-002",
+      "version": 2,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A5",
+      "objective": "5.2 Design effective escalation and ambiguity resolution patterns",
+      "scenarioId": "ARCH-CASE-01",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "A customer asks for compensation because a carrier delay made an order arrive late. The assistant retrieves the order, but the refund policy covers only returns and damaged items and says nothing about late deliveries. Answers must be grounded in policy. What should the assistant do?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Say that the policy does not address this situation and escalate with a structured case summary.",
+          "rationale": "The policy is silent, so neither approval nor refusal is grounded; escalation with the case details lets a human decide."
+        },
+        {
+          "id": "B",
+          "text": "Apply the damaged-item rule as the closest match and tell the customer it is an approximation.",
+          "rationale": "Labeling it an approximation does not make it policy; the outcome is still a guess presented as a decision."
+        },
+        {
+          "id": "C",
+          "text": "Ask the model to rate its confidence and approve the compensation if the score is high enough.",
+          "rationale": "Self-reported confidence is an unreliable proxy and does not supply the missing policy basis."
+        },
+        {
+          "id": "D",
+          "text": "Decline the request, since the policy lists no compensation rule that covers late deliveries.",
+          "rationale": "Silence is a gap, not a prohibition; declining presents an unstated rule as established policy."
+        }
+      ],
+      "correctOptionIds": [
+        "A"
+      ],
+      "explanation": "Policy gaps are an escalation trigger: the assistant should state what the evidence does and does not cover. The handoff should carry a structured summary (customer, order, request, relevant policy) because the human agent may not see the transcript.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T14"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-SEED-002",
+      "tags": [
+        "grounded-uncertainty-and-escalation"
+      ]
+    },
+    {
+      "id": "CCAR-F-SEED-003",
+      "version": 2,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A3",
+      "objective": "3.3 Apply path-specific rules for conditional convention loading",
+      "scenarioId": "ARCH-CASE-02",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "Billing code in the monorepo lives in services/billing/, in db/migrations/billing_*.sql, and in shared/payments/. The billing team's instructions should load only when Claude reads or edits those files, and they must be committed and reviewed with the code. Which configuration best meets this?",
+      "options": [
+        {
+          "id": "A",
+          "text": "A services/billing/CLAUDE.md file, which loads when Claude reads files in that directory.",
+          "rationale": "A nested CLAUDE.md loads on demand for its own subtree only, so the migrations and shared/payments files are not covered."
+        },
+        {
+          "id": "B",
+          "text": "A Billing section in the root CLAUDE.md that tells Claude to apply it only to billing files.",
+          "rationale": "The root CLAUDE.md loads in every session, so the billing text occupies context for unrelated work."
+        },
+        {
+          "id": "C",
+          "text": "A .claude/rules/billing.md file whose paths: frontmatter lists globs for all three locations.",
+          "rationale": "Rules with a paths field load only when Claude reads or edits a matching file, and globs can span several directories."
+        },
+        {
+          "id": "D",
+          "text": "A .claude/rules/billing.md file whose description: frontmatter names the billing directories.",
+          "rationale": "paths is the only frontmatter field Claude Code reads from a rule; other fields are ignored, so this rule loads unconditionally."
+        }
+      ],
+      "correctOptionIds": [
+        "C"
+      ],
+      "explanation": "Path-scoped rules use glob patterns in the paths frontmatter field and suit conventions that span multiple directories, which a single nested CLAUDE.md cannot cover. Like CLAUDE.md, rules are context, not enforced permissions.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T15"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-SEED-003",
+      "tags": [
+        "path-scoped-project-instructions",
+        "claude-rules"
+      ]
+    },
+    {
+      "id": "CCAR-F-SEED-004",
+      "version": 2,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A3",
+      "objective": "3.2 Create and configure custom slash commands and skills",
+      "scenarioId": "ARCH-CASE-02",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "The team wants a reusable /review-billing workflow, with a checklist and a supporting script, that every developer who checks out the monorepo can invoke and that changes only through code review. Where should the skill be defined?",
+      "options": [
+        {
+          "id": "A",
+          "text": "In ~/.claude/skills/review-billing/SKILL.md on each developer's machine, copied from a wiki.",
+          "rationale": "Personal skills apply to one user; copies drift and are not reviewed with the repository."
+        },
+        {
+          "id": "B",
+          "text": "In .claude/skills/review-billing/SKILL.md, committed to the repository with its script.",
+          "rationale": "A project skill is shared by committing it, can bundle supporting files, and changes go through code review."
+        },
+        {
+          "id": "C",
+          "text": "In a long review-procedure section of the root CLAUDE.md that every session loads.",
+          "rationale": "CLAUDE.md is meant for facts needed in every session; a multi-step procedure there is not an invocable workflow and costs context everywhere."
+        },
+        {
+          "id": "D",
+          "text": "In a CLAUDE.local.md file at the repository root that holds the checklist and the steps.",
+          "rationale": "CLAUDE.local.md is for personal project preferences and is normally gitignored, so it is not shared or reviewed."
+        }
+      ],
+      "correctOptionIds": [
+        "B"
+      ],
+      "explanation": "Project skills such as .claude/skills/review-billing/SKILL.md reach everyone who checks out the repository. Skills load their instructions on demand and can include supporting files; keep any operational permissions they need constrained separately.",
+      "points": 1,
+      "difficulty": "foundational",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T16",
+        "T15"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-SEED-004",
+      "tags": [
+        "sharing-project-skills"
+      ]
+    },
+    {
+      "id": "CCAR-F-SEED-005",
+      "version": 2,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A1",
+      "objective": "1.3 Configure subagent invocation, context passing, and spawning",
+      "scenarioId": "ARCH-CASE-03",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "The coordinator delegates to a research specialist with only the prompt \"research the alternative\". The specialist returns a well-sourced answer about a different alternative than the one the coordinator meant. What should the coordinator change first?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Write a self-contained brief naming the alternative, constraints, sources, and expected output.",
+          "rationale": "A subagent sees only what the delegation provides, so the brief must define the target, boundaries, and output contract."
+        },
+        {
+          "id": "B",
+          "text": "Forward the coordinator's full conversation history to the specialist with every delegation.",
+          "rationale": "This floods the specialist with unrelated context and still leaves the task boundary implicit, which the case requires to be explicit."
+        },
+        {
+          "id": "C",
+          "text": "Rely on the shared CLAUDE.md files, which give the specialist the coordinator's working context.",
+          "rationale": "Subagents do load CLAUDE.md, but it holds project instructions, not the coordinator's conversation or which alternative is meant."
+        },
+        {
+          "id": "D",
+          "text": "Keep the short prompt but add step-by-step search procedures for the specialist to follow.",
+          "rationale": "Procedures do not identify the alternative; goals and quality criteria work better than scripted steps."
+        }
+      ],
+      "correctOptionIds": [
+        "A"
+      ],
+      "explanation": "A subagent starts with a fresh context and does not see the coordinator's conversation history. The delegation message must carry the goal, constraints, relevant prior findings, and the expected output format.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T17"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-SEED-005",
+      "tags": [
+        "self-contained-delegation",
+        "subagent-context"
+      ]
+    },
+    {
+      "id": "CCAR-F-SEED-006",
+      "version": 2,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A5",
+      "objective": "5.1 Manage conversation context to preserve critical information across long interactions",
+      "scenarioId": "ARCH-CASE-03",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "After many research rounds, raw tool output fills most of the coordinator's context window. The coordinator must keep track of sources, decisions, and unresolved disagreements across the long session. Which change best preserves useful continuity?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Rely on automatic compaction alone to summarize the conversation whenever the context window fills.",
+          "rationale": "Compaction helps with volume, but aggressive summarization can drop subtle details such as provenance and open disagreements."
+        },
+        {
+          "id": "B",
+          "text": "Raise max_tokens on coordinator requests so that more raw tool output fits into each turn.",
+          "rationale": "max_tokens limits the output of a response; it does not enlarge the context window available for input."
+        },
+        {
+          "id": "C",
+          "text": "Have each specialist return a short prose summary with source references removed for brevity.",
+          "rationale": "Shorter returns help, but removing references breaks the provenance the case requires."
+        },
+        {
+          "id": "D",
+          "text": "Keep structured notes of sources, decisions, and open disputes, and re-fetch details by reference.",
+          "rationale": "Notes persisted outside the context window keep high-value state, and identifiers let details be reloaded just in time."
+        }
+      ],
+      "correctOptionIds": [
+        "D"
+      ],
+      "explanation": "Structured note-taking and just-in-time retrieval keep long-horizon state compact without losing provenance. Tool-result clearing and compaction can complement them but should not be the only record of decisions and open questions.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T18"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-SEED-006",
+      "tags": [
+        "long-horizon-context-management"
+      ]
+    },
+    {
+      "id": "CCAR-F-SEED-007",
+      "version": 2,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A2",
+      "objective": "2.1 Design effective tool interfaces with clear descriptions and boundaries",
+      "scenarioId": "ARCH-CASE-04",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "The assistant repeatedly calls archive_ticket when it should read a ticket's history. The current descriptions are \"Handles ticket records\" for archive_ticket and \"Gets ticket info\" for get_ticket_history. Which change most directly addresses this selection problem?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Add a system-prompt line telling the assistant to prefer get_ticket_history when it is unsure.",
+          "rationale": "This patches one symptom but leaves both contracts ambiguous, including the archival side effect."
+        },
+        {
+          "id": "B",
+          "text": "Rewrite both descriptions to state each tool's purpose, side effects, inputs, and when not to use it.",
+          "rationale": "Explicit descriptions give the model the boundary between a read operation and a state-changing archival action."
+        },
+        {
+          "id": "C",
+          "text": "Move archive_ticket to the end of the tools array so the model considers it after the read tool.",
+          "rationale": "Tool order is not a documented selection mechanism, and the vague descriptions remain."
+        },
+        {
+          "id": "D",
+          "text": "Merge both into one ticket tool with an action parameter and keep the existing short descriptions.",
+          "rationale": "Consolidation can help, but with vague descriptions the same ambiguity moves into the parameter choice."
+        }
+      ],
+      "correctOptionIds": [
+        "B"
+      ],
+      "explanation": "Claude selects tools from their names, descriptions, and schemas, so describe each tool as you would to a new teammate, including side effects and when not to use it. Small description changes can produce large improvements in tool selection.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T19"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-SEED-007",
+      "tags": [
+        "distinct-tool-contracts",
+        "tool-descriptions"
+      ]
+    },
+    {
+      "id": "CCAR-F-SEED-008",
+      "version": 2,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A2",
+      "objective": "2.4 Integrate MCP servers into Claude Code and agent workflows",
+      "scenarioId": "ARCH-CASE-04",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "The MCP server exposes a read-only policy handbook identified by a URI. The client application, not the model, decides when to load the handbook into context. Under MCP 2025-06-18, which MCP feature most directly models this?",
+      "options": [
+        {
+          "id": "A",
+          "text": "A tool, which the model discovers and invokes on its own to return the handbook text.",
+          "rationale": "Tools are model-controlled; they can return the text, but then the model decides when it loads."
+        },
+        {
+          "id": "B",
+          "text": "A prompt, which the user selects as a template that injects the handbook into a message.",
+          "rationale": "Prompts are user-controlled templates, not application-driven reference content."
+        },
+        {
+          "id": "C",
+          "text": "A resource, which the client lists and reads by URI with resources/read when it needs it.",
+          "rationale": "Resources are application-driven, URI-identified context that the host decides how to include."
+        },
+        {
+          "id": "D",
+          "text": "A sampling request, in which the server asks the client's model to produce the handbook text.",
+          "rationale": "Sampling asks the client's model to generate text; it does not retrieve existing reference content."
+        }
+      ],
+      "correctOptionIds": [
+        "C"
+      ],
+      "explanation": "MCP separates control: resources are application-driven, tools are model-controlled, and prompts are user-controlled. Choose the primitive that matches who decides when content enters context.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T20",
+        "T23",
+        "T107"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-SEED-008",
+      "tags": [
+        "mcp-resources-for-reference-content"
+      ]
+    },
+    {
+      "id": "CCAR-F-SEED-009",
+      "version": 2,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A4",
+      "objective": "4.1 Design prompts with explicit criteria to improve precision and reduce false positives",
+      "scenarioId": "ARCH-CASE-05",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "The review pipeline's reports flag many harmless naming differences as serious defects, and developers have started ignoring the reports. Which prompt revision should be tested first?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Tell the reviewer to be more conservative and to report only issues it feels confident about.",
+          "rationale": "A vague call for caution gives no decision boundary and may suppress real defects along with the noise."
+        },
+        {
+          "id": "B",
+          "text": "Ask the reviewer for a confidence score per finding and publish only findings scored above 0.8.",
+          "rationale": "Self-reported confidence is poorly calibrated and does not define what counts as a defect."
+        },
+        {
+          "id": "C",
+          "text": "Run a second pass with the same prompt and keep only the findings that both passes report.",
+          "rationale": "With the same unclear criteria, both passes tend to repeat the same false positives."
+        },
+        {
+          "id": "D",
+          "text": "Define what counts as a defect and add examples that label naming differences as non-issues.",
+          "rationale": "Explicit criteria plus relevant negative examples target the observed false-positive pattern directly."
+        }
+      ],
+      "correctOptionIds": [
+        "D"
+      ],
+      "explanation": "Precision improves when the prompt states explicit criteria and shows relevant, diverse examples, including cases that are not defects. Measure the revision on held-out pull requests rather than assuming it removes every false positive.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T21"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-SEED-009",
+      "tags": [
+        "review-criteria-and-representative-examples"
+      ]
+    },
+    {
+      "id": "CCAR-F-SEED-010",
+      "version": 2,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A3",
+      "objective": "3.6 Integrate Claude Code into CI/CD pipelines",
+      "scenarioId": "ARCH-CASE-05",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "CI runs claude -p with --output-format json and a --json-schema describing findings. Some runs fail before any review is produced. How should the workflow distinguish those runs from successful reviews that contain no findings?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Fail the job on a non-zero exit status, then validate structured_output against the schema.",
+          "rationale": "Exit status separates failed runs, and schema validation confirms that a usable review payload exists."
+        },
+        {
+          "id": "B",
+          "text": "Treat any run whose stdout parses as JSON as successful, then read the findings from it.",
+          "rationale": "Failures inside the run are printed as the result on stdout, so valid JSON can come from a failed run."
+        },
+        {
+          "id": "C",
+          "text": "Treat a missing or empty findings array as a clean review and post an approval comment.",
+          "rationale": "A missing findings field can mean the review never ran; only an empty list from a successful run is clean."
+        },
+        {
+          "id": "D",
+          "text": "Check stderr only; if it is empty, the review completed and the findings can be posted.",
+          "rationale": "stderr carries pre-run errors such as invalid flags; in-run failures are reported on stdout."
+        }
+      ],
+      "correctOptionIds": [
+        "A"
+      ],
+      "explanation": "Treat execution state and review content as separate checks: claude -p exits non-zero when a run fails, and in-run failures appear in the stdout result. Publish only schema-valid structured_output from successful runs.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T06",
+        "T106"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-SEED-010",
+      "tags": [
+        "reliable-ci-review-outcomes",
+        "claude-code-ci"
+      ]
+    },
+    {
+      "id": "CCAR-F-SEED-011",
+      "version": 2,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A4",
+      "objective": "4.5 Design efficient batch processing strategies",
+      "scenarioId": "ARCH-CASE-06",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "A Message Batches job returns results in a different order from the submitted documents. Most requests succeeded; some errored with invalid_request_error, some errored with server errors, and a few expired. What is the best reconciliation strategy?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Match results to documents by line position in the results file, then resend the failed lines.",
+          "rationale": "Batch results can be returned in any order, so position is not a reliable request-to-result link."
+        },
+        {
+          "id": "B",
+          "text": "Resubmit the whole batch whenever any of its requests has errored or expired, for consistency.",
+          "rationale": "Requests succeed or fail independently; resubmitting successes wastes cost and time."
+        },
+        {
+          "id": "C",
+          "text": "Match by custom_id; resend expired and server-error items, fixing invalid ones first.",
+          "rationale": "custom_id links each result to its request, and only invalid requests need their body corrected before resending."
+        },
+        {
+          "id": "D",
+          "text": "Match by custom_id, then resend every errored and expired request unchanged in a new batch.",
+          "rationale": "Correlation is right, but invalid_request_error items will fail again unless their request body is fixed."
+        }
+      ],
+      "correctOptionIds": [
+        "C"
+      ],
+      "explanation": "Correlate batch results by custom_id and handle each request's outcome independently. Invalid requests need fixing before resubmission, while server errors and expired items can be resent directly; errored and expired requests are not billed.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T22"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-SEED-011",
+      "tags": [
+        "batch-correlation-and-partial-failure"
+      ]
+    },
+    {
+      "id": "CCAR-F-SEED-012",
+      "version": 2,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A2",
+      "objective": "2.2 Implement structured error responses for MCP tools",
+      "scenarioId": "ARCH-CASE-06",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "An MCP lookup tool receives valid arguments, but the upstream system rejects the operation because the customer account is closed. This is a business-rule failure that the agent could explain or route. How should the tool report it to the client?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Return a JSON-RPC error with code -32603 (internal error) that describes the closed account.",
+          "rationale": "JSON-RPC errors are for protocol-level problems; a business-rule failure during execution belongs in the tool result."
+        },
+        {
+          "id": "B",
+          "text": "Return a tool result with isError: true and a message giving the cause and whether retry helps.",
+          "rationale": "Tool execution errors, including business-logic errors, are reported in the result with isError so the model can react."
+        },
+        {
+          "id": "C",
+          "text": "Return a JSON-RPC error with code -32602 (invalid params), since the request cannot be fulfilled.",
+          "rationale": "The arguments were valid; invalid params describes a different failure than a rejected business operation."
+        },
+        {
+          "id": "D",
+          "text": "Return a successful result with empty content so the agent treats it as a lookup with no match.",
+          "rationale": "This disguises a failure as a valid empty result and prevents correct recovery."
+        }
+      ],
+      "correctOptionIds": [
+        "B"
+      ],
+      "explanation": "MCP uses JSON-RPC errors for protocol issues such as unknown tools or invalid arguments, and isError: true results for failures during execution. Include actionable, non-sensitive details such as category and retryability.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T23"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-SEED-012",
+      "tags": [
+        "mcp-tool-errors-versus-protocol-errors"
+      ]
+    }
+  ],
+  "newSources": [
+    {
+      "id": "T103",
+      "url": "https://code.claude.com/docs/en/agent-sdk/hooks",
+      "title": "Intercept and control agent behavior with hooks (Agent SDK)",
+      "publisher": "Anthropic",
+      "kind": "technical_doc",
+      "confidence": "high",
+      "checkedAt": "2026-10-03",
+      "status": "reachable",
+      "topic": "Agent SDK hooks: PreToolUse/PostToolUse, matchers match tool names only, permissionDecision allow/deny/ask/defer"
+    },
+    {
+      "id": "T104",
+      "url": "https://code.claude.com/docs/en/agent-sdk/permissions",
+      "title": "Configure permissions (Agent SDK)",
+      "publisher": "Anthropic",
+      "kind": "technical_doc",
+      "confidence": "high",
+      "checkedAt": "2026-10-03",
+      "status": "reachable",
+      "topic": "Permission evaluation order; allowedTools pre-approves only; bare disallowedTools removes tools; auto-approved calls skip canUseTool"
+    },
+    {
+      "id": "T106",
+      "url": "https://code.claude.com/docs/en/cli-reference",
+      "title": "CLI reference",
+      "publisher": "Anthropic",
+      "kind": "technical_doc",
+      "confidence": "high",
+      "checkedAt": "2026-10-03",
+      "status": "reachable",
+      "topic": "claude \"query\" starts an interactive session; --output-format and --input-format are print-mode options"
+    },
+    {
+      "id": "T107",
+      "url": "https://modelcontextprotocol.io/specification/2025-06-18/server/prompts",
+      "title": "MCP 2025-06-18 prompts",
+      "publisher": "Model Context Protocol",
+      "kind": "technical_doc",
+      "confidence": "high",
+      "checkedAt": "2026-10-03",
+      "status": "reachable",
+      "topic": "Prompts are user-controlled templates"
+    }
+  ]
+}

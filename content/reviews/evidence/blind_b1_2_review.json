@@ -1,0 +1,830 @@
+[
+ {
+  "id": "CCAR-F-B1-A5-001",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Compaction/summarization trades detail for space; persisting key facts outside the summarized history (structured note-taking) preserves them",
+    "url": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "No technical premise at risk; distractors plausible (A delays but does not prevent loss; D loses commitments that only exist in conversation)."
+  ],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B1-D2-008",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "PDFs are processed as extracted text plus page images, so Claude can read charts and tables",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/pdf-support",
+    "supported": true
+   },
+   {
+    "claim": "Uploaded PDFs can be referenced by file_id in a document block",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/pdf-support",
+    "supported": true
+   },
+   {
+    "claim": ".docx is not supported in document blocks (must convert to PDF or text)",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/pdf-support",
+    "supported": true
+   },
+   {
+    "claim": "Place PDFs/documents before the text question",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/pdf-support",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "D is a reasonable-sounding distractor but loses table/text context outside chart pages and puts images after the question, contrary to ordering guidance."
+  ],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B1-D5-009",
+  "chosen": [
+   "B",
+   "E"
+  ],
+  "confidence": "medium",
+  "verdict": "revise",
+  "verifiedFacts": [
+   {
+    "claim": "Batch discount and prompt-caching discounts stack",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+    "supported": true
+   },
+   {
+    "claim": "Docs recommend the 1-hour cache duration for batches because batches can take longer than 5 minutes",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+    "supported": true
+   },
+   {
+    "claim": "Cache hits in batches are best-effort (typically 30%-98%)",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+    "supported": true
+   },
+   {
+    "claim": "max_tokens: 0 pre-warming exists but is rejected inside a Message Batches request",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+    "supported": true
+   },
+   {
+    "claim": "A cache entry only becomes available after the first response begins; wait for it before sending parallel requests",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Option A is partially supported by the batch-processing page's own tip 'Maintain a steady stream of requests to prevent cache entries from expiring after their 5-minute lifetime', so a candidate could defend A by citing the docs; B+E remain the best pair, but A is not cleanly wrong.",
+   "Option C is version-sensitive (max_tokens: 0 pre-warming is a recent feature); it is correctly wrong today because it is rejected inside batches."
+  ],
+  "suggestedFix": "Rewrite A so its stated rationale contradicts the docs, e.g. 'Use the default 5-minute TTL, since batch requests are processed in submission order within a few minutes, keeping the entry warm.' Optionally note in the rationale that the docs' 'steady stream' tip applies to the 5-minute TTL but that the explicit batch recommendation is the 1-hour TTL."
+ },
+ {
+  "id": "CCAR-F-B1-A1-008",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "AgentDefinition.tools omitted -> subagent inherits every tool available to subagents (incl. MCP tools)",
+    "url": "https://code.claude.com/docs/en/agent-sdk/subagents",
+    "supported": true
+   },
+   {
+    "claim": "Listing tools gives the subagent only those tools; omitted tools are not in its session at all",
+    "url": "https://code.claude.com/docs/en/agent-sdk/subagents",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "C is a weak/incoherent distractor (removing Agent from allowedTools does not create per-call approval for subagent tools); consider replacing with disallowedTools-less but plausible alternative such as 'set permissionMode to plan' if a stronger distractor is wanted. Minor."
+  ],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B1-A3-001",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "CLAUDE.local.md is for personal project-specific preferences and should be added to .gitignore",
+    "url": "https://code.claude.com/docs/en/memory",
+    "supported": true
+   },
+   {
+    "claim": "Rules in .claude/rules/ are committed project files and can be path-scoped",
+    "url": "https://code.claude.com/docs/en/memory",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "A is a good distractor: importing a gitignored file does nothing on a teammate's machine where it does not exist."
+  ],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B1-D2-014",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "strict: true guarantees tool inputs match the JSON Schema via constrained sampling",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/strict-tool-use",
+    "supported": true
+   },
+   {
+    "claim": "Strict schemas use enum, required, and additionalProperties: false",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/strict-tool-use",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-SEED-001",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Prompt chaining is a fixed sequence of steps with programmatic checks (gates) on intermediate steps",
+    "url": "https://www.anthropic.com/engineering/building-effective-agents",
+    "supported": true
+   },
+   {
+    "claim": "Orchestrator-workers dynamically decides subtasks (not fixed/reproducible)",
+    "url": "https://www.anthropic.com/engineering/building-effective-agents",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B1-A1-007",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "A subagent receives only its prompt string from the parent, not the parent's conversation history",
+    "url": "https://code.claude.com/docs/en/agent-sdk/subagents",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B1-D1-008",
+  "chosen": [
+   "C",
+   "E"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "clear_tool_uses_20250919 clears oldest tool results once a threshold is exceeded and replaces them with placeholder text",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/context-editing",
+    "supported": true
+   },
+   {
+    "claim": "Subagents work in isolated context and return condensed results",
+    "url": "https://code.claude.com/docs/en/agent-sdk/subagents",
+    "supported": true
+   },
+   {
+    "claim": "Tool result clearing and sub-agent architectures are recommended context-pollution mitigations",
+    "url": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B1-A2-007",
+  "chosen": [
+   "B",
+   "E"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Local scope is the default for claude mcp add and is stored privately in ~/.claude.json per project",
+    "url": "https://code.claude.com/docs/en/mcp",
+    "supported": true
+   },
+   {
+    "claim": "User scope is stored in ~/.claude.json and available across all of the user's projects",
+    "url": "https://code.claude.com/docs/en/mcp",
+    "supported": true
+   },
+   {
+    "claim": ".mcp.json supports ${VAR} expansion including in headers",
+    "url": "https://code.claude.com/docs/en/mcp",
+    "supported": true
+   },
+   {
+    "claim": "Project-scoped .mcp.json servers require per-user approval",
+    "url": "https://code.claude.com/docs/en/mcp",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B1-A4-001",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Explicit criteria for what to report vs skip improve precision (general prompting guidance: be explicit/specific)",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Premise is design judgment rather than a documented API fact; consistent with the case's 'explicit review criteria'. C (self-reported confidence threshold) is a plausible distractor."
+  ],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B1-D5-001",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Even with temperature 0 results are not fully deterministic",
+    "url": "https://platform.claude.com/docs/en/about-claude/glossary",
+    "supported": true
+   },
+   {
+    "claim": "Starting with Claude 4.6, each model ID is a single fixed snapshot (pinning does not make sampling deterministic)",
+    "url": "https://platform.claude.com/docs/en/release-notes/system-prompts",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B1-D2-016",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Committing a project-scope enabledPlugins entry turns the plugin on but doesn't download it; each collaborator runs claude plugin install <name>@<marketplace> --scope project once",
+    "url": "https://code.claude.com/docs/en/discover-plugins",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-SEED-003",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "tool_result blocks go in the user message and must come first in the content array; any text after",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B1-D2-002",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Tools let deterministic application code perform operations and return results Claude then explains",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Design-judgment item; distractors (A, C, D) are plausible but none guarantee policy-correct amounts."
+  ],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B1-D2-013",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Put longform data at the top and queries at the end (up to 30% quality improvement)",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "supported": true
+   },
+   {
+    "claim": "Wrap each document in <document> tags with <document_content> and <source> subtags",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Minor wording: option says 'source and content subtags'; docs name them <source> and <document_content>. Acceptable."
+  ],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B1-D6-005",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Tell Claude what to do instead of what not to do (e.g., 'smoothly flowing prose' instead of 'Do not use markdown')",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "supported": true
+   },
+   {
+    "claim": "Adding context/motivation, e.g., response read aloud by a text-to-speech engine",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "supported": true
+   },
+   {
+    "claim": "Last-turn prefill is not supported starting with Claude 4.6 models",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-SEED-007",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Tool descriptions should clearly state purpose and usage; vague descriptions hurt tool selection",
+    "url": "https://www.anthropic.com/engineering/writing-tools-for-agents",
+    "supported": true
+   },
+   {
+    "claim": "Detailed descriptions are the most important factor in tool performance",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B1-D2-012",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "claude.ai uses a system prompt providing the current date and encouraging Markdown code; these do not apply to the API",
+    "url": "https://platform.claude.com/docs/en/release-notes/system-prompts",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B1-A1-012",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "PostToolUse hooks can set updatedToolOutput to replace a tool's output before Claude sees it; works for any tool in both SDKs",
+    "url": "https://code.claude.com/docs/en/agent-sdk/hooks",
+    "supported": true
+   },
+   {
+    "claim": "updatedMCPToolOutput is the older MCP-only field and is deprecated; prefer updatedToolOutput",
+    "url": "https://code.claude.com/docs/en/hooks",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Version-sensitive: field naming changed (updatedMCPToolOutput -> updatedToolOutput). Current docs support the option as written; recheck on future doc updates."
+  ],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B1-D8-004",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Prompts are user-controlled and may be exposed as slash commands",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/server/prompts",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B1-A3-005",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "If rule frontmatter YAML doesn't parse, Claude Code ignores it and loads the rule as if it had no paths; run claude --debug to see the parse error",
+    "url": "https://code.claude.com/docs/en/memory",
+    "supported": true
+   },
+   {
+    "claim": "Path-scoped rules trigger when Claude reads/writes/edits matching files (not loaded at launch)",
+    "url": "https://code.claude.com/docs/en/memory",
+    "supported": true
+   },
+   {
+    "claim": "User-level and project rules both load; neither overrides the other",
+    "url": "https://code.claude.com/docs/en/memory",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B1-A5-006",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Structured note-taking persisted outside the context window combined with compaction preserves key details",
+    "url": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B1-A2-001",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "System prompt instructions influence which tool Claude picks under auto tool choice",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B1-A1-005",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Coordinator/orchestrator-centred multi-agent design with lead agent tracking subagent outputs",
+    "url": "https://www.anthropic.com/engineering/multi-agent-research-system",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B1-A3-010",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "--output-format json / structured output available for claude -p pipelines",
+    "url": "https://code.claude.com/docs/en/headless",
+    "supported": true
+   },
+   {
+    "claim": "--resume locates sessions stored on the local machine (or via a transcript file path); a fresh runner lacks them",
+    "url": "https://code.claude.com/docs/en/cli-reference",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "B is version-sensitive: --resume can accept a .jsonl transcript path, so a pipeline that persisted transcripts could resume; the stem's 'fresh CI runner' keeps B wrong."
+  ],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B1-D2-018",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "plugin.json dependencies accept objects {name, version} with semver ranges",
+    "url": "https://code.claude.com/docs/en/plugins/dependencies",
+    "supported": true
+   },
+   {
+    "claim": "~2.1.0 keeps receiving 2.1.x patches and never moves to 2.2; constraints resolve against maintainer git tags",
+    "url": "https://code.claude.com/docs/en/plugins/dependencies",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Mild word-overlap cue: D's 'accepts patches within 2.1' mirrors the stem's '2.1.x patch fixes'. Still requires semver knowledge to rule out ^ and =."
+  ],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B1-A3-009",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Give Claude specific, complete context and verification criteria (tests) in one request",
+    "url": "https://code.claude.com/docs/en/best-practices",
+    "supported": "unclear"
+   }
+  ],
+  "issues": [
+   "Premise is workflow judgment (iterative refinement guidance); no doc contradiction found."
+  ],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-SEED-003",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "paths frontmatter scopes rules to matching files across directories; committed in .claude/rules/",
+    "url": "https://code.claude.com/docs/en/memory",
+    "supported": true
+   },
+   {
+    "claim": "paths is the only frontmatter field Claude Code reads from a rule; other fields like description are ignored",
+    "url": "https://code.claude.com/docs/en/memory",
+    "supported": true
+   },
+   {
+    "claim": "Subdirectory CLAUDE.md loads on demand only for files in that directory",
+    "url": "https://code.claude.com/docs/en/memory",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-SEED-010",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "claude -p exits 0 on success and non-zero when the run fails; in-run failures are printed as the result on stdout",
+    "url": "https://code.claude.com/docs/en/headless",
+    "supported": true
+   },
+   {
+    "claim": "With --output-format json and --json-schema the structured output is in the structured_output field",
+    "url": "https://code.claude.com/docs/en/headless",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B1-A2-006",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "tool_choice type 'tool' forces a specific tool; 'auto' lets Claude decide",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools",
+    "supported": true
+   },
+   {
+    "claim": "Forced tool use fails with manual extended thinking and on some newer models (Opus 5.5, Sonnet 5.5, etc.)",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Version-sensitive: stem correctly guards with 'model and configuration that support forced tool use'. Keep that clause."
+  ],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-SEED-012",
+  "chosen": [
+   "C",
+   "E"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Spec defines two standard transports: stdio and Streamable HTTP",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/basic/transports",
+    "supported": true
+   },
+   {
+    "claim": "Streamable HTTP replaces HTTP+SSE; server provides a single MCP endpoint supporting POST and GET and can handle multiple clients",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/basic/transports",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B1-A3-002",
+  "chosen": [
+   "A",
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Imported files are expanded and loaded at launch; imports don't reduce context cost; max depth four hops",
+    "url": "https://code.claude.com/docs/en/memory",
+    "supported": true
+   },
+   {
+    "claim": "Subdirectory CLAUDE.md files load when Claude reads files in those directories",
+    "url": "https://code.claude.com/docs/en/memory",
+    "supported": true
+   },
+   {
+    "claim": "Rules without paths frontmatter load at launch",
+    "url": "https://code.claude.com/docs/en/memory",
+    "supported": true
+   },
+   {
+    "claim": "A path wrapped in quotes isn't imported at all",
+    "url": "https://code.claude.com/docs/en/memory",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "E is half-true: a quoted @path is indeed not imported (so it would reduce launch load), but it is never loaded 'on first use' and the guidance is lost; it is wrong but a pedantic candidate could argue it 'reduces what loads'. The 'keeping billing guidance narrowly scoped' clause rules it out. Acceptable."
+  ],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B1-A4-009",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Batches may take up to 24 hours (expire if not done within 24h); most finish within 1 hour",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Arithmetic: worst-case wait I + 24 + 2 <= 36 -> I <= 10 h. Style: numeric options are not in ascending order (12, 24, 10, 6); consider ordering 6, 10, 12, 24."
+  ],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B1-D1-007",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Memory tool is client-side; /memories is a prefix your handler maps to storage such as per-user directories or database keys",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool",
+    "supported": true
+   },
+   {
+    "claim": "Handler must reject paths outside /memories (path traversal protection)",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool",
+    "supported": true
+   },
+   {
+    "claim": "Cache lifetime is 5 min or 1 hour, not weeks",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-SEED-012",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Tool execution errors, including business logic errors, are reported in results with isError: true; protocol errors (e.g., -32602) are for issues like unknown tools/invalid arguments",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/server/tools",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ }
+]

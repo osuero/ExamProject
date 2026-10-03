@@ -19,6 +19,8 @@ builder.Services.AddScoped<Audit>();
 builder.Services.AddScoped<AttemptService>();
 builder.Services.AddScoped<ContentImporter>();
 builder.Services.AddScoped<Bootstrapper>();
+builder.Services.AddScoped<QuestionWorkflow>();
+builder.Services.AddScoped<ReviewApplier>();
 
 var emailMode = cfg["Email:Mode"] ?? "outbox";
 if (emailMode == "smtp") builder.Services.AddScoped<IEmailSender, SmtpEmailSender>();

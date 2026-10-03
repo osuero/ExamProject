@@ -1,0 +1,197 @@
+<div class="page">
+  <h1>Administration</h1>
+  <div class="toolbar">
+    <label class="field inline">Exam
+      <select [value]="cert()" (change)="setCert($any($event.target).value)">
+        @for (c of certs(); track c.code) { <option [value]="c.code">{{ c.code }}: {{ c.title }}</option> }
+      </select>
+    </label>
+  </div>
+  <div class="tabs" role="tablist" aria-label="Admin sections">
+    @for (t of [['questions','Questions'],['coverage','Coverage and quality'],['imports','Import'],['sources','Sources'],['exam','Exam profile and languages'],['audit','Audit log']]; track t[0]) {
+      <button type="button" role="tab" [attr.aria-selected]="tab() === t[0]" (click)="show($any(t[0]))">{{ t[1] }}</button>
+    }
+  </div>
+  @if (message()) { <div class="notice ok" role="status">{{ message() }}</div> }
+  @if (error()) { <div class="notice error" role="alert">{{ error() }}</div> }
+
+  <div role="tabpanel">
+  @switch (tab()) {
+    @case ('questions') {
+      <div class="filters">
+        <label class="field inline">Status
+          <select [value]="status()" (change)="status.set($any($event.target).value); refresh()">
+            <option value="">All</option>
+            @for (s of statuses; track s) { <option [value]="s">{{ statusLabel(s) }}</option> }
+          </select>
+        </label>
+        <label class="field inline">Domain
+          <select [value]="domain()" (change)="domain.set($any($event.target).value); refresh()">
+            <option value="">All</option>
+            @for (d of domainsOf(); track d.code) { <option [value]="d.code">{{ d.code }} {{ d.name }}</option> }
+          </select>
+        </label>
+        <span class="muted small">{{ rows().length }} questions</span>
+      </div>
+      <div class="table-scroll">
+        <table class="data">
+          <thead><tr><th scope="col">Id</th><th scope="col">Status</th><th scope="col">Domain</th><th scope="col">Type</th><th scope="col">Stem</th></tr></thead>
+          <tbody>
+            @for (r of rows(); track r.questionId) {
+              <tr>
+                <td><a [routerLink]="['/admin/questions', r.questionId]">{{ r.externalId }}</a> <span class="small muted">v{{ r.version }}</span></td>
+                <td><span class="tag" [class.ok]="r.status === 'published'" [class.bad]="r.status === 'quarantined'">{{ statusLabel(r.status) }}</span></td>
+                <td>{{ r.domainCode }}</td>
+                <td class="small">{{ r.questionType === 'multiple_response' ? 'multiple' : 'single' }}</td>
+                <td class="stemcell">{{ r.stem }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+    @case ('coverage') {
+      @if (coverage(); as c) {
+        <p>Editorial target: {{ c.editorialTarget }} questions for this exam (a product goal, not an official requirement).</p>
+        <div class="table-scroll">
+          <table class="data">
+            <thead><tr><th scope="col">Domain</th><th scope="col">Weight</th><th scope="col">Items in a simulation</th><th scope="col">Target</th>
+              @for (s of statuses; track s) { <th scope="col">{{ statusLabel(s) }}</th> }</tr></thead>
+            <tbody>
+              @for (d of c.domains; track d.code) {
+                <tr><th scope="row">{{ d.code }} {{ d.name }}</th><td>{{ d.weightPercent }}%</td><td>{{ d.simulationItems }}</td><td>{{ d.bankTarget }}</td>
+                  @for (s of statuses; track s) { <td>{{ d.byStatus[s] }}</td> }</tr>
+              }
+              <tr class="total"><th scope="row">Total</th><td></td><td></td><td>{{ c.editorialTarget }}</td>
+                @for (s of statuses; track s) { <td>{{ c.totals[s] }}</td> }</tr>
+            </tbody>
+          </table>
+        </div>
+      }
+      @if (stats(); as s) {
+        <h2>Answer-key cues</h2>
+        <p class="small muted">{{ s.note }}</p>
+        <ul>
+          <li>Sample: {{ s.sampleSize }} questions ({{ s.singleChoiceItems }} single answer).</li>
+          <li>Correct option is the longest in {{ s.correctIsLongest }} single-answer questions; about {{ s.expectedIfRandom }} expected by chance.</li>
+          <li>Stored key letters: @for (k of objectKeys(s.keyPositions); track k) { {{ k }}={{ s.keyPositions[k] }} }</li>
+          <li>Questions flagged with a length cue: {{ s.lengthCueItems.length }}</li>
+        </ul>
+      }
+    }
+    @case ('imports') {
+      <section class="sheet">
+        <h2>Import questions</h2>
+        <p class="small">JSON or Markdown, up to 2 MB. Preview first: nothing is written until you import a file with no errors. Re-importing the same content changes nothing. PDF and DOCX import is not available yet.</p>
+        <input type="file" accept=".json,.md" (change)="pick($event)" aria-label="Question bank file" />
+        <p class="btns">
+          <button type="button" class="btn secondary" (click)="upload('preview')" [disabled]="!file() || busy()">Preview</button>
+          <button type="button" class="btn" (click)="upload('commit')" [disabled]="!file() || busy() || !report()?.valid">Import</button>
+        </p>
+        @if (report(); as r) {
+          <p><strong>{{ r.valid ? 'Ready to import.' : 'Fix these problems before importing.' }}</strong>
+            {{ r.toCreate }} new, {{ r.toVersion }} new versions, {{ r.unchanged }} unchanged, {{ r.rejected }} rejected; cases {{ r.casesNew }} new, {{ r.casesUnchanged }} unchanged.</p>
+          @for (e of r.fileErrors; track e) { <div class="notice error small">{{ e }}</div> }
+          <div class="table-scroll">
+            <table class="data">
+              <thead><tr><th scope="col">Id</th><th scope="col">Action</th><th scope="col">Findings</th></tr></thead>
+              <tbody>
+                @for (i of r.items; track i.externalId) {
+                  <tr><td>{{ i.externalId }}</td><td><span class="tag" [class.bad]="i.action === 'reject'">{{ i.action }}</span></td>
+                    <td class="small">@for (x of i.issues; track $index) { <div [class.errtxt]="x.severity === 'error'">{{ x.severity }}: {{ x.message }}</div> }</td></tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </section>
+      <h2>Previous imports</h2>
+      <div class="table-scroll">
+        <table class="data">
+          <thead><tr><th scope="col">When</th><th scope="col">File</th><th scope="col">Exam</th><th scope="col">New</th><th scope="col">Versions</th><th scope="col">Unchanged</th><th scope="col">SHA-256</th></tr></thead>
+          <tbody>
+            @for (b of imports(); track b.id) {
+              <tr><td>{{ b.createdAt | date: 'short' }}</td><td>{{ b.fileName }}</td><td>{{ b.certificationCode }}</td><td>{{ b.created }}</td><td>{{ b.newVersions }}</td><td>{{ b.unchanged }}</td><td class="small mono">{{ b.sha256.slice(0, 12) }}</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+    @case ('sources') {
+      <div class="table-scroll">
+        <table class="data">
+          <thead><tr><th scope="col">Id</th><th scope="col">Source</th><th scope="col">Kind</th><th scope="col">Confidence</th><th scope="col">Status</th><th scope="col">Checked</th><th scope="col">Notes and conflicts</th></tr></thead>
+          <tbody>
+            @for (s of sources(); track s.id) {
+              <tr>
+                <td>{{ s.id }}</td>
+                <td><a [href]="s.url" target="_blank" rel="noopener noreferrer">{{ s.title }}</a><br /><span class="small muted">{{ s.publisher }}</span></td>
+                <td>{{ s.kind }}</td><td>{{ s.confidence }}</td>
+                <td><span class="tag" [class.ok]="s.status === 'reachable'" [class.bad]="s.status === 'blocked'">{{ s.status }}</span></td>
+                <td>{{ s.checkedAt }}</td>
+                <td class="small">{{ s.conflicts }} {{ s.restrictions }} {{ s.notes }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+    @case ('exam') {
+      @if (certDetail(); as c) {
+        <h2>Verified languages</h2>
+        <p class="small">Only verified languages can be published. Evidence must come from an official exam or provider source for this exam; a website language selector is not evidence.</p>
+        <ul>
+          @for (l of c.languages; track l.locale) {
+            <li><strong>{{ l.locale }}</strong>, source {{ l.sourceId }}: {{ l.evidence }} <button type="button" class="btn quiet small" (click)="removeLanguage(l.locale)">Remove</button></li>
+          } @empty { <li>None verified. Content stays in administrative preview.</li> }
+        </ul>
+        <div class="langform">
+          <label class="field">Locale <input type="text" [value]="lang().locale" (input)="setLang('locale', $any($event.target).value)" placeholder="en" /></label>
+          <label class="field">Source
+            <select [value]="lang().sourceId" (change)="setLang('sourceId', $any($event.target).value)">
+              <option value="">Choose…</option>
+              @for (s of sources(); track s.id) { @if (s.kind === 'official_exam' || s.kind === 'provider') { <option [value]="s.id">{{ s.id }} {{ s.title }}</option> } }
+            </select></label>
+          <label class="field wide">Evidence <input type="text" [value]="lang().evidence" (input)="setLang('evidence', $any($event.target).value)" placeholder="Page, section and quote" /></label>
+          <button type="button" class="btn secondary" (click)="verifyLanguage()">Verify language</button>
+        </div>
+
+        <h2>Profile versions</h2>
+        <div class="table-scroll">
+          <table class="data">
+            <thead><tr><th scope="col">Version</th><th scope="col">Current</th><th scope="col">Questions</th><th scope="col">Minutes</th><th scope="col">Pass mark</th><th scope="col">Status</th><th scope="col">Weights</th></tr></thead>
+            <tbody>
+              @for (p of c.profiles; track p.id) {
+                <tr><td>{{ p.version }}</td><td>{{ p.isCurrent ? 'yes' : '' }}</td><td>{{ p.questionCount }}</td><td>{{ p.examDurationMinutes }}</td><td>{{ p.simulatorPassPercent }}%</td>
+                  <td class="small">{{ p.verificationStatus }}</td>
+                  <td class="small">@for (w of p.domainWeights; track w.code) { {{ w.code }} {{ w.weightPercent }}% }</td></tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        @if (!profileDraft()) {
+          <p><button type="button" class="btn secondary" (click)="draftFromCurrent()">Create a new profile version…</button></p>
+        } @else {
+          <label class="field">New version (JSON)
+            <textarea rows="16" class="mono" [value]="profileDraft()" (input)="profileDraft.set($any($event.target).value)"></textarea>
+          </label>
+          <p class="btns"><button type="button" class="btn" (click)="saveProfile()">Save as new version</button>
+            <button type="button" class="btn quiet" (click)="profileDraft.set('')">Cancel</button></p>
+        }
+      }
+    }
+    @case ('audit') {
+      <div class="table-scroll">
+        <table class="data">
+          <thead><tr><th scope="col">When</th><th scope="col">Action</th><th scope="col">Entity</th><th scope="col">Data</th></tr></thead>
+          <tbody>
+            @for (a of audit(); track a.id) {
+              <tr><td>{{ a.at | date: 'short' }}</td><td>{{ a.action }}</td><td class="small">{{ a.entityType }} {{ a.entityId }}</td><td class="small mono">{{ a.dataJson }}</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+  </div>
+</div>

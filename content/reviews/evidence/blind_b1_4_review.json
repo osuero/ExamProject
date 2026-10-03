@@ -1,0 +1,864 @@
+[
+ {
+  "id": "CCDV-F-B1-D1-005",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Tool hook matchers match the tool name (e.g. Write|Edit), not file paths or arguments",
+    "url": "https://code.claude.com/docs/en/agent-sdk/hooks",
+    "supported": true
+   },
+   {
+    "claim": "PostToolUse fires on tool execution result; failures go to the separate PostToolUseFailure event",
+    "url": "https://code.claude.com/docs/en/agent-sdk/hooks",
+    "supported": true
+   },
+   {
+    "claim": "Hook callbacks receive tool_use_id correlating Pre/PostToolUse and tool_input (file_path)",
+    "url": "https://code.claude.com/docs/en/agent-sdk/hooks",
+    "supported": true
+   },
+   {
+    "claim": "Docs list 'Log all file changes to audit trail' as the PostToolUse use case",
+    "url": "https://code.claude.com/docs/en/agent-sdk/hooks",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-SEED-008",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "MCP resources are application-driven; host decides how to incorporate context",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/server/resources",
+    "supported": true
+   },
+   {
+    "claim": "Resources identified by URI, discovered via resources/list and fetched via resources/read",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/server/resources",
+    "supported": true
+   },
+   {
+    "claim": "Tools are model-controlled",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/server/tools",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B1-A1-002",
+  "chosen": [
+   "C",
+   "E"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "All tool_result blocks for parallel calls go together in a single next user message, matched by tool_use_id",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/parallel-tool-use",
+    "supported": true
+   },
+   {
+    "claim": "tool_result blocks must come first in the content array; text after them",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls",
+    "supported": true
+   },
+   {
+    "claim": "Tool execution errors are returned with is_error: true and an explanation in content; a result must be returned for every tool_use",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/parallel-tool-use",
+    "supported": true
+   },
+   {
+    "claim": "Separate user messages per result is documented as wrong",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/parallel-tool-use",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B1-D5-006",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "medium",
+  "verdict": "revise",
+  "verifiedFacts": [
+   {
+    "claim": "Multi-model strategy: orchestrator delegates bulk work to lower-cost workers so most tokens bill at the lower rate",
+    "url": "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model",
+    "supported": true
+   },
+   {
+    "claim": "Haiku-class models recommended for high-volume processing and sub-agent tasks",
+    "url": "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model",
+    "supported": true
+   },
+   {
+    "claim": "Batch API cuts cost 50% but is asynchronous (most batches < 1h, up to 24h)",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Option C (batch the per-page summaries) is also a real cost reduction with no quality loss; it is only clearly inferior because of latency inside an agent loop and a smaller discount, neither of which the stem states."
+  ],
+  "suggestedFix": "Add a constraint to the stem such as 'each task must finish within minutes, while the user waits' so C is clearly ruled out on latency; or reword C so it is plainly wrong."
+ },
+ {
+  "id": "CCAR-F-B1-A5-007",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [
+   "Option B is eliminable by common sense (weak distractor), but A/C/D carry the item."
+  ],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B1-A3-007",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Plan mode can be entered with Shift+Tab or by prefixing a prompt with /plan; defaultMode: plan can be set in .claude/settings.json",
+    "url": "https://code.claude.com/docs/en/permission-modes",
+    "supported": true
+   },
+   {
+    "claim": "Plan mode keeps its blocks in non-interactive -p runs (so option B premise is false)",
+    "url": "https://code.claude.com/docs/en/permission-modes",
+    "supported": true
+   },
+   {
+    "claim": "Best practices: skip plan mode for small, clear fixes; use it when uncertain about approach or multi-file changes",
+    "url": "https://code.claude.com/docs/en/best-practices",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-SEED-005",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Lead agent should give subagents an objective, output format, tool/source guidance and clear task boundaries; vague instructions cause misinterpretation",
+    "url": "https://www.anthropic.com/engineering/multi-agent-research-system",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B1-A2-004",
+  "chosen": [
+   "A",
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Tool execution errors (API failures) are reported in results with isError: true; structured content allowed",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/server/tools",
+    "supported": true
+   },
+   {
+    "claim": "Protocol (JSON-RPC) errors are for unknown tools, invalid arguments, server errors, not for a successful zero-match query",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/server/tools",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Concept overlaps heavily with CCAR-F-B1-A5-004 (same case, empty-list-on-outage pattern) and CCAR-F-B1-A2-003; avoid placing them on the same form."
+  ],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B1-A1-017",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "fork_session creates a new session with a copy of history; original stays unchanged",
+    "url": "https://code.claude.com/docs/en/agent-sdk/sessions",
+    "supported": true
+   },
+   {
+    "claim": "continue_conversation resumes the most recent session in the directory and adds to it",
+    "url": "https://code.claude.com/docs/en/agent-sdk/sessions",
+    "supported": true
+   },
+   {
+    "claim": "Resuming without forking appends to the same session",
+    "url": "https://code.claude.com/docs/en/agent-sdk/sessions",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B1-D5-008",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "input_tokens counts only tokens after the last cache breakpoint; total = cache_read + cache_creation + input_tokens",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+    "supported": true
+   },
+   {
+    "claim": "Cache writes are billed at 1.25x (5m) / 2x (1h) and reads at a reduced rate, each distinct from base input",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B1-A2-003",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Business logic errors, invalid input data and API failures are tool execution errors (isError: true), not protocol errors",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/server/tools",
+    "supported": true
+   },
+   {
+    "claim": "Tool results may include structuredContent",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/server/tools",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B1-D2-001",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Vertex/Agent Platform offers global, multi-region (us, eu) and regional endpoints",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/claude-on-vertex-ai",
+    "supported": true
+   },
+   {
+    "claim": "Regional endpoints are required for single-region data residency; multi-region routes across regions within a geography",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/claude-on-vertex-ai",
+    "supported": true
+   },
+   {
+    "claim": "Regional and multi-region endpoints carry a 10% premium over global",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/claude-on-vertex-ai",
+    "supported": true
+   },
+   {
+    "claim": "Docs note specific regional endpoints support only some (older) models; newer models use global or multi-region",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/claude-on-vertex-ai",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Version-sensitive: regional-endpoint model availability is limited (docs: Sonnet 4.6 and earlier). Option D's 'checking model availability there' covers this; keep that clause."
+  ],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-SEED-005",
+  "chosen": [
+   "A",
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Error events such as overloaded_error can arrive inside an SSE stream",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/streaming",
+    "supported": true
+   },
+   {
+    "claim": "input_json_delta partial_json strings are accumulated and parsed at content_block_stop",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/streaming",
+    "supported": true
+   },
+   {
+    "claim": "message_start carries stop_reason null; final stop_reason arrives in message_delta",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/streaming",
+    "supported": true
+   },
+   {
+    "claim": "Streams may include any number of ping events",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/streaming",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B1-A1-016",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "medium",
+  "verdict": "revise",
+  "verifiedFacts": [
+   {
+    "claim": "Resume restores conversation history including prior tool calls/results",
+    "url": "https://code.claude.com/docs/en/sessions",
+    "supported": true
+   },
+   {
+    "claim": "Fork copies history into a new session ID; it does not refresh file contents",
+    "url": "https://code.claude.com/docs/en/sessions",
+    "supported": true
+   },
+   {
+    "claim": "Claude Code adds a system reminder when a file Claude read earlier has changed on disk",
+    "url": "https://code.claude.com/docs/en/glossary",
+    "supported": true
+   },
+   {
+    "claim": "Whether changed-file detection runs on resumed sessions is not documented either way",
+    "url": "https://code.claude.com/docs/en/sessions",
+    "supported": "unclear"
+   }
+  ],
+  "issues": [
+   "Option A's claim ('a resumed session detects changed files') is not cleanly false: Claude Code documents system reminders noting that a previously read file changed on disk, and docs do not say this is disabled after resume. A strong candidate could pick A.",
+   "Key rests on undocumented behavior; B remains the most reliable/efficient choice but the distractor is risky."
+  ],
+  "suggestedFix": "Rewrite A so its false part is unambiguous, e.g. 'Run claude --resume billing-proration and continue; the earlier tool results already reflect the merged changes.' Or reframe the stem so the developer cannot rely on automatic notices (e.g. resumed via the Agent SDK in a different host after copying the transcript)."
+ },
+ {
+  "id": "CCAR-F-B1-A1-006",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Effective delegation requires clear objectives and task boundaries; gaps arise from ambiguous instructions",
+    "url": "https://www.anthropic.com/engineering/multi-agent-research-system",
+    "supported": "unclear"
+   }
+  ],
+  "issues": [
+   "No single doc states the iterative gap-filling loop; item is judgment-based but unambiguous."
+  ],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B1-A4-011",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "A fresh context improves review since Claude won't be biased toward code it just wrote (Writer/Reviewer pattern)",
+    "url": "https://code.claude.com/docs/en/best-practices",
+    "supported": true
+   },
+   {
+    "claim": "A reviewer subagent sees only the diff and given criteria",
+    "url": "https://code.claude.com/docs/en/best-practices",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B1-A5-009",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "CitationAgent ties claims to specific source locations in Anthropic's research system",
+    "url": "https://www.anthropic.com/engineering/multi-agent-research-system",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B1-A5-003",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [
+   "Option C (read out other accounts' orders) is a privacy violation; fine as a distractor."
+  ],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B1-D5-003",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Python SDK retries connection errors, 408, 409, 429 and >=500 twice by default with backoff; configurable via max_retries",
+    "url": "https://platform.claude.com/docs/en/cli-sdks-libraries/sdks/python",
+    "supported": true
+   },
+   {
+    "claim": "Official SDKs retry transient failures twice by default",
+    "url": "https://platform.claude.com/docs/en/api/errors",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B1-D3-003",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "disable-model-invocation: true prevents Claude from invoking the skill; user can still invoke via /name and it stays in the / menu",
+    "url": "https://code.claude.com/docs/en/skills",
+    "supported": true
+   },
+   {
+    "claim": "user-invocable: false hides the skill from the / menu and blocks manual invocation",
+    "url": "https://code.claude.com/docs/en/skills",
+    "supported": true
+   },
+   {
+    "claim": "allowed-tools pre-approves tools; it does not restrict",
+    "url": "https://code.claude.com/docs/en/skills",
+    "supported": true
+   },
+   {
+    "claim": "context: fork runs the skill in an isolated subagent",
+    "url": "https://code.claude.com/docs/en/skills",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B1-D2-007",
+  "chosen": [
+   "B",
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Batch results can be returned in any order; always match with custom_id",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+    "supported": true
+   },
+   {
+    "claim": "Result types are succeeded, errored, canceled, expired; errored/expired not billed",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+    "supported": true
+   },
+   {
+    "claim": "Results are available once processing_status is ended (or after 24h)",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+    "supported": true
+   },
+   {
+    "claim": "custom_id must be 1-64 chars of [a-zA-Z0-9_-]",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-SEED-009",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "count_tokens accepts system, tools, messages and returns total input tokens",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/token-counting",
+    "supported": true
+   },
+   {
+    "claim": "count_tokens errors on server tools and url/file document sources (stem correctly excludes these)",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/token-counting",
+    "supported": true
+   },
+   {
+    "claim": "Newer models use a different tokenizer; recount rather than reuse earlier-model counts",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/token-counting",
+    "supported": true
+   },
+   {
+    "claim": "Token count is an estimate that may differ slightly",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/token-counting",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B1-A5-004",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Access/API failures should be distinguished from valid empty results (isError vs normal result)",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/server/tools",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Near-duplicate of CCAR-F-B1-A2-004 concept (same case); treat as item enemies."
+  ],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B1-D1-002",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Multi-agent systems use about 15x more tokens than chats",
+    "url": "https://www.anthropic.com/engineering/multi-agent-research-system",
+    "supported": true
+   },
+   {
+    "claim": "Domains requiring shared context or many inter-agent dependencies are a poor fit; most coding tasks are less parallelizable",
+    "url": "https://www.anthropic.com/engineering/multi-agent-research-system",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B1-D3-002",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "--output-format json includes session_id; docs show capturing it and passing to --resume for multiple conversations",
+    "url": "https://code.claude.com/docs/en/headless",
+    "supported": true
+   },
+   {
+    "claim": "--continue loads the most recent conversation in the current directory",
+    "url": "https://code.claude.com/docs/en/cli-reference",
+    "supported": true
+   },
+   {
+    "claim": "--fork-session is used with --resume or --continue",
+    "url": "https://code.claude.com/docs/en/cli-reference",
+    "supported": true
+   },
+   {
+    "claim": "--session-id sets a specific UUID for the conversation",
+    "url": "https://code.claude.com/docs/en/cli-reference",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B1-A5-005",
+  "chosen": [
+   "B",
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-SEED-001",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Matchers match tool names only; argument filtering must be done inside the callback via tool_input",
+    "url": "https://code.claude.com/docs/en/agent-sdk/hooks",
+    "supported": true
+   },
+   {
+    "claim": "PreToolUse permissionDecision supports allow/deny/ask/defer",
+    "url": "https://code.claude.com/docs/en/agent-sdk/hooks",
+    "supported": true
+   },
+   {
+    "claim": "Tools auto-approved by allowedTools never reach canUseTool",
+    "url": "https://code.claude.com/docs/en/agent-sdk/permissions",
+    "supported": true
+   },
+   {
+    "claim": "PostToolUse runs after the tool executed (too late to gate)",
+    "url": "https://code.claude.com/docs/en/agent-sdk/hooks",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B1-D5-007",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Placing cache_control on changing content (e.g. timestamps) causes a write every request and no hits; place it on the last static block",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+    "supported": true
+   },
+   {
+    "claim": "Automatic caching places the breakpoint on the last cacheable block (would still include the changing block)",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+    "supported": true
+   },
+   {
+    "claim": "Lookback walks back up to 20 blocks only to find prior writes",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+    "supported": true
+   },
+   {
+    "claim": "1h TTL costs 2x on writes",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-SEED-004",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Project skills live in .claude/skills/<name>/SKILL.md, committed to git, with supporting scripts in the skill directory",
+    "url": "https://code.claude.com/docs/en/skills",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B1-D1-004",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Self-hosted sandboxes keep orchestration on Anthropic's side and move tool execution to your infrastructure; fit for internal services not publicly routable",
+    "url": "https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes",
+    "supported": true
+   },
+   {
+    "claim": "Managed Agents is beta (managed-agents-2026-04-01) and provides the harness/agent loop",
+    "url": "https://platform.claude.com/docs/en/managed-agents/overview",
+    "supported": true
+   },
+   {
+    "claim": "Tool inputs and outputs still flow to Anthropic's control plane",
+    "url": "https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Minor: stem says files must 'stay inside the company network'; docs say files/processes stay local but tool inputs/outputs flow to Anthropic's control plane. Acceptable, but a precise candidate may hesitate.",
+   "Version-sensitive (beta); the stem's 'beta as of 2026' qualifier is appropriate."
+  ],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B1-A4-012",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Anthropic's research system uses a separate CitationAgent to attach citations to claims",
+    "url": "https://www.anthropic.com/engineering/multi-agent-research-system",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B1-D1-006",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Frameworks add abstraction that can obscure underlying prompts and responses; ensure you understand the underlying code",
+    "url": "https://www.anthropic.com/engineering/building-effective-agents",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-SEED-010",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Structured outputs guarantee schema compliance via constrained decoding",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+    "supported": true
+   },
+   {
+    "claim": "Numerical constraints (minimum/maximum) are not supported in constrained decoding",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+    "supported": true
+   },
+   {
+    "claim": "strict: true guarantees schema-valid tool inputs, not factual correctness",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B1-A1-011",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "PreToolUse hook can deny with permissionDecisionReason, which tells the model why",
+    "url": "https://code.claude.com/docs/en/agent-sdk/hooks",
+    "supported": true
+   },
+   {
+    "claim": "PostToolUse runs after execution",
+    "url": "https://code.claude.com/docs/en/agent-sdk/hooks",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B1-A2-002",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Tools may declare an outputSchema; clients should validate structured results against it",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/server/tools",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ }
+]

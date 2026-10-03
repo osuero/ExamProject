@@ -1,0 +1,700 @@
+[
+  {
+    "id": "CCAR-F-B1-A1-009",
+    "chosen": [
+      "C"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [
+      {
+        "claim": "Subagent delegation should give an objective, output format, guidance on tools/sources, and clear task boundaries",
+        "url": "https://www.anthropic.com/engineering/multi-agent-research-system",
+        "supported": true
+      }
+    ],
+    "issues": [
+      "Minor word-overlap cue: only C repeats 'criteria' from the stem; acceptable because the distractors are plausible."
+    ],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCAR-F-B1-A1-013",
+    "chosen": [
+      "A"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [
+      {
+        "claim": "Matching hooks run in parallel; for permission decisions the most restrictive applies, a single deny blocks regardless of other hooks; order is non-deterministic",
+        "url": "https://code.claude.com/docs/en/agent-sdk/hooks",
+        "supported": true
+      },
+      {
+        "claim": "Multiple PreToolUse decisions: precedence deny > defer > ask > allow",
+        "url": "https://code.claude.com/docs/en/hooks",
+        "supported": true
+      }
+    ],
+    "issues": [
+      "Version-sensitive: 'defer' was added to the precedence chain; the item still holds."
+    ],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCDV-F-B1-D7-003",
+    "chosen": [
+      "B"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [
+      {
+        "claim": "Harmlessness screens: use a lightweight model such as Haiku 4.5 to pre-screen user input, with structured outputs to constrain the classification",
+        "url": "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks",
+        "supported": true
+      }
+    ],
+    "issues": [],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCAR-F-B1-A1-004",
+    "chosen": [
+      "A"
+    ],
+    "confidence": "medium",
+    "verdict": "pass",
+    "verifiedFacts": [
+      {
+        "claim": "Orchestrator decides subtasks per input and delegates (dynamic delegation rather than fixed fan-out)",
+        "url": "https://www.anthropic.com/engineering/building-effective-agents",
+        "supported": true
+      }
+    ],
+    "issues": [
+      "This is a design-judgment item with no single doc statement behind it; the key depends on the case requirement that reports state the applied criteria (C breaks it, D keeps the cost)."
+    ],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCDV-F-SEED-002",
+    "chosen": [
+      "A"
+    ],
+    "confidence": "high",
+    "verdict": "revise",
+    "verifiedFacts": [
+      {
+        "claim": "Agent SDK supplies Claude Code's agent loop, built-in tools (read/edit files, run commands) and permissions; with the Client SDK you write the tool loop yourself or use the beta tool runner",
+        "url": "https://code.claude.com/docs/en/agent-sdk/overview",
+        "supported": true
+      }
+    ],
+    "issues": [
+      "Strong word-overlap cue: option A restates the stem's requirements almost verbatim ('agent loop, built-in tools, and permission controls'), so the item can be answered without knowing the product.",
+      "Managed Agents is now another built-in harness; it isn't an option, so the key is unaffected, but the stem's 'local repository' wording is what excludes it, and that should stay."
+    ],
+    "suggestedFix": "Shorten A to 'The Claude Agent SDK, configured with its built-in tools and a permission mode' or give every option a matching 'which provides ...' clause, so no option simply echoes the stem's requirements."
+  },
+  {
+    "id": "CCDV-F-B1-D8-002",
+    "chosen": [
+      "C"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [
+      {
+        "claim": "On a client tool execution error, return the message in content with is_error: true",
+        "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls",
+        "supported": true
+      },
+      {
+        "claim": "tool_result blocks must come first in the user message; text must come after all tool results",
+        "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls",
+        "supported": true
+      }
+    ],
+    "issues": [],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCAR-F-B1-A4-005",
+    "chosen": [
+      "B"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [
+      {
+        "claim": "Nullable/optional fields are supported in schemas (type arrays like ['string','null'])",
+        "url": "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+        "supported": true
+      }
+    ],
+    "issues": [
+      "The 'nullable fields to avoid fabrication' principle is exam-guide style reasoning, not a single doc quote; the key is still defensible."
+    ],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCDV-F-B1-D5-002",
+    "chosen": [
+      "C"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [
+      {
+        "claim": "Claude Opus 5.5: thinking 'enabled' with budget_tokens -> 400; 'disabled' -> 400; only adaptive accepted",
+        "url": "https://platform.claude.com/docs/en/build-with-claude/thinking",
+        "supported": true
+      },
+      {
+        "claim": "Effort set at output_config.effort; lower effort reduces tokens, cost and latency; step down once evals show quality holds; Opus 5.5 default is medium",
+        "url": "https://platform.claude.com/docs/en/build-with-claude/effort",
+        "supported": true
+      }
+    ],
+    "issues": [
+      "Version-sensitive: relies on Opus 5.5 rejecting the disabled and enabled thinking types; re-check this when models change."
+    ],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCDV-F-SEED-004",
+    "chosen": [
+      "B"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [
+      {
+        "claim": "stop_reason max_tokens: raise max_tokens or continue the response",
+        "url": "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons",
+        "supported": true
+      }
+    ],
+    "issues": [],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCAR-F-B1-A2-009",
+    "chosen": [
+      "D"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [
+      {
+        "claim": "Grep searches file contents; Read reads files; Glob matches filenames (Claude Code built-in tools)",
+        "url": "https://code.claude.com/docs/en/tools-reference",
+        "supported": true
+      }
+    ],
+    "issues": [
+      "D is somewhat longer and more procedural than the distractors, a mild length cue."
+    ],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCDV-F-B1-D6-003",
+    "chosen": [
+      "A",
+      "D"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [
+      {
+        "claim": "Put longform data at the top, above query/instructions; queries at the end can improve quality up to 30%",
+        "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+        "supported": true
+      },
+      {
+        "claim": "Wrap each document in <document> tags with <document_content> and <source> subtags",
+        "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+        "supported": true
+      }
+    ],
+    "issues": [],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCDV-F-B1-D8-001",
+    "chosen": [
+      "B",
+      "C"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [
+      {
+        "claim": "Extremely detailed descriptions (what, when to use and when not) are by far the most important factor",
+        "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools",
+        "supported": true
+      },
+      {
+        "claim": "Consolidate related operations into fewer tools with an action parameter; use meaningful namespacing",
+        "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools",
+        "supported": true
+      },
+      {
+        "claim": "input_examples is a real optional field, secondary to descriptions",
+        "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools",
+        "supported": true
+      }
+    ],
+    "issues": [
+      "'One namespaced orders tool' reads a little oddly, since namespacing is about prefixes across several tools; consider 'one orders tool with an action parameter'."
+    ],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCAR-F-SEED-006",
+    "chosen": [
+      "D"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [
+      {
+        "claim": "Subagents store work externally and pass lightweight references back; lead agent saves its plan to memory for long contexts",
+        "url": "https://www.anthropic.com/engineering/multi-agent-research-system",
+        "supported": true
+      }
+    ],
+    "issues": [],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCDV-F-B1-D7-001",
+    "chosen": [
+      "A",
+      "E"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [
+      {
+        "claim": "Put untrusted content only in tool_result blocks, never in system or user text blocks",
+        "url": "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks",
+        "supported": true
+      },
+      {
+        "claim": "JSON-encode untrusted content and make its source explicit",
+        "url": "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks",
+        "supported": true
+      },
+      {
+        "claim": "Don't put your own instructions in tool results; limit access to sensitive data and actions (least privilege)",
+        "url": "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks",
+        "supported": true
+      }
+    ],
+    "issues": [],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCDV-F-B1-D5-005",
+    "chosen": [
+      "D"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [
+      {
+        "claim": "Sonnet 5.5 rejects a prefilled last assistant turn with 400 'This model does not support assistant message prefill'; Sonnet 4.5 accepts it",
+        "url": "https://platform.claude.com/docs/en/models/sonnet-5-5/migration-guide",
+        "supported": true
+      },
+      {
+        "claim": "Replace output-format prefills with structured outputs; use output_config.format",
+        "url": "https://platform.claude.com/docs/en/models/sonnet-5-5/migration-guide",
+        "supported": true
+      },
+      {
+        "claim": "Non-default temperature returns 400 on Sonnet 5.5 (so option C also fails)",
+        "url": "https://platform.claude.com/docs/en/models/sonnet-5-5/migration-guide",
+        "supported": true
+      }
+    ],
+    "issues": [
+      "Version-sensitive (Sonnet 4.5 is deprecated, retiring 2026-11-30); the stem's premise matches the current docs."
+    ],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCAR-F-B1-A1-003",
+    "chosen": [
+      "D"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [
+      {
+        "claim": "If a max_tokens-truncated response contains an incomplete tool_use block, retry the request with a higher max_tokens to get the full tool use",
+        "url": "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons",
+        "supported": true
+      }
+    ],
+    "issues": [],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCDV-F-B1-D4-003",
+    "chosen": [
+      "B"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [
+      {
+        "claim": "display 'omitted' is the default on Opus 5.5: thinking block has an empty thinking field plus signature; full thinking tokens still billed",
+        "url": "https://platform.claude.com/docs/en/build-with-claude/thinking",
+        "supported": true
+      }
+    ],
+    "issues": [
+      "Version-sensitive default (omitted vs summarized); C is a good, plausible distractor."
+    ],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCDV-F-SEED-011",
+    "chosen": [
+      "C"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [
+      {
+        "claim": "Bare-name disallowedTools entries remove the tool definition; deny rules apply even in bypassPermissions",
+        "url": "https://code.claude.com/docs/en/agent-sdk/permissions",
+        "supported": true
+      },
+      {
+        "claim": "allowedTools only pre-approves; unlisted tools remain available and fall through to the permission mode",
+        "url": "https://code.claude.com/docs/en/agent-sdk/permissions",
+        "supported": true
+      },
+      {
+        "claim": "Plan mode sends edits to canUseTool rather than making them impossible",
+        "url": "https://code.claude.com/docs/en/agent-sdk/permissions",
+        "supported": true
+      }
+    ],
+    "issues": [
+      "Edge case: on Windows a PowerShell tool may exist, and other built-ins also run commands; 'in any permission mode' holds only for the tools listed. Acceptable at Foundations level."
+    ],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCAR-F-B1-A5-008",
+    "chosen": [
+      "A",
+      "E"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [],
+    "issues": [
+      "No single doc source; the item rests on standard calibration and stratified-sampling practice. D (uniform random sample) is a plausible distractor but wastes the limited review capacity."
+    ],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCDV-F-B1-D6-007",
+    "chosen": [
+      "C"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [
+      {
+        "claim": "For long docs (>20k tokens) extract word-for-word quotes first; verify each claim with a supporting quote and retract it if none is found",
+        "url": "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
+        "supported": true
+      }
+    ],
+    "issues": [],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCDV-F-B1-D7-004",
+    "chosen": [
+      "A"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [
+      {
+        "claim": "PreToolUse: exit 2 blocks and stderr is fed back; exit 1 is a non-blocking error and the tool proceeds",
+        "url": "https://code.claude.com/docs/en/hooks",
+        "supported": true
+      },
+      {
+        "claim": "PermissionRequest does not honor exit 2; deny through the decision object (so C fails)",
+        "url": "https://code.claude.com/docs/en/hooks",
+        "supported": true
+      }
+    ],
+    "issues": [],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCAR-F-B1-A3-011",
+    "chosen": [
+      "D"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [
+      {
+        "claim": "--bare skips auto-discovery of hooks, skills, subagents, plugins, MCP, auto memory and CLAUDE.md; context is passed with flags such as --append-system-prompt-file",
+        "url": "https://code.claude.com/docs/en/headless",
+        "supported": true
+      },
+      {
+        "claim": "--append-system-prompt-file appends file contents to the default prompt",
+        "url": "https://code.claude.com/docs/en/cli-reference",
+        "supported": true
+      }
+    ],
+    "issues": [
+      "D is the longest option (adds 'for example ...'), a mild length cue; B and C are good, false 'still reads' distractors."
+    ],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCDV-F-B1-D5-004",
+    "chosen": [
+      "B"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [
+      {
+        "claim": "SDKs validate that non-streaming requests are not expected to exceed a 10-minute timeout; use streaming or Batches for long requests",
+        "url": "https://platform.claude.com/docs/en/api/errors",
+        "supported": true
+      },
+      {
+        "claim": "get_final_message()/finalMessage() accumulates the stream into the complete Message object, useful for large max_tokens",
+        "url": "https://platform.claude.com/docs/en/build-with-claude/streaming",
+        "supported": true
+      }
+    ],
+    "issues": [],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCAR-F-B1-A3-003",
+    "chosen": [
+      "C"
+    ],
+    "confidence": "medium",
+    "verdict": "revise",
+    "verifiedFacts": [
+      {
+        "claim": "Built-in Explore and Plan agents skip CLAUDE.md, so a forked skill with agent: Explore sees only the SKILL.md content and the agent's system prompt",
+        "url": "https://code.claude.com/docs/en/skills",
+        "supported": true
+      },
+      {
+        "claim": "A fork of the current conversation inherits the same system prompt, tools and history, while its tool calls stay out of the main context",
+        "url": "https://code.claude.com/docs/en/sub-agents",
+        "supported": true
+      }
+    ],
+    "issues": [
+      "Distractor D is partly defensible: a conversation fork inherits the main session's context, which includes the loaded CLAUDE.md, and it still keeps intermediate tool output out of the main context. So it would also fix the missing criteria while keeping output isolated. Its stated rationale ('criteria discussed earlier') is wrong, but the action itself works.",
+      "An unlisted and arguably more direct fix exists: switch agent: Explore to a general-purpose or custom agent, which loads CLAUDE.md. That doesn't create a second key, but C is not the only documented remedy."
+    ],
+    "suggestedFix": "Replace D with a clearly wrong option such as 'Change agent: Explore to agent: Plan so the forked agent reads CLAUDE.md before auditing' (Plan also skips CLAUDE.md). Alternatively, narrow the stem to 'while keeping the audit's input independent of the conversation history'."
+  },
+  {
+    "id": "CCAR-F-B1-A4-008",
+    "chosen": [
+      "C",
+      "E"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [],
+    "issues": [
+      "Minor: D's clause 'from a pipeline without strict schemas' invites 'enforce a strict schema' as an alternative remedy. It is still a retry-fixable format error, but consider dropping the clause."
+    ],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCDV-F-B1-D8-005",
+    "chosen": [
+      "A"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [
+      {
+        "claim": "Create a skill when a CLAUDE.md section has grown into a procedure; a skill's body loads only when used",
+        "url": "https://code.claude.com/docs/en/skills",
+        "supported": true
+      }
+    ],
+    "issues": [],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCAR-F-B1-A4-007",
+    "chosen": [
+      "D"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [],
+    "issues": [
+      "No single doc source; retrying with specific error feedback is standard practice. B correctly fails because a schema can't enforce arithmetic consistency."
+    ],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCDV-F-SEED-007",
+    "chosen": [
+      "B"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [
+      {
+        "claim": "401 authentication_error means an API key problem (malformed, revoked, expired); 429 rate_limit_error means a rate limit; the SDK retries rate limits with backoff honoring retry-after",
+        "url": "https://platform.claude.com/docs/en/api/errors",
+        "supported": true
+      }
+    ],
+    "issues": [],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCAR-F-B1-A4-002",
+    "chosen": [
+      "D"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [
+      {
+        "claim": "Be clear and specific with explicit instructions and criteria",
+        "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+        "supported": true
+      }
+    ],
+    "issues": [
+      "D is the most specific option, a mild cue that is typical for prompt-precision items."
+    ],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCDV-F-B1-D2-009",
+    "chosen": [
+      "A"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [],
+    "issues": [
+      "The SDK's AsyncAnthropic client is standard; not separately re-fetched. D (Batches) fails because batch latency is incompatible with a synchronous web request."
+    ],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCDV-F-SEED-008",
+    "chosen": [
+      "C"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [
+      {
+        "claim": "Evaluate on your specific use cases before deploying",
+        "url": "https://platform.claude.com/docs/en/build-with-claude/effort",
+        "supported": true
+      }
+    ],
+    "issues": [
+      "Fairly easy: common sense about held-out, representative data answers it. Acceptable for Foundations."
+    ],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCDV-F-B1-D2-011",
+    "chosen": [
+      "D"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [
+      {
+        "claim": "Fan out: have Claude list files, loop claude -p per file with --allowedTools, refine the prompt on the first 2-3 files, then run the full set",
+        "url": "https://code.claude.com/docs/en/best-practices",
+        "supported": true
+      }
+    ],
+    "issues": [
+      "Version note: /batch is now also documented for large migrations but isn't an option, so the key is unaffected."
+    ],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCDV-F-B1-D2-003",
+    "chosen": [
+      "C"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [
+      {
+        "claim": "Dates apply to Anthropic-operated platforms; Amazon Bedrock and Google Cloud set their own retirement schedules, which can differ",
+        "url": "https://platform.claude.com/docs/en/about-claude/model-deprecations",
+        "supported": true
+      }
+    ],
+    "issues": [],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCDV-F-B1-D1-003",
+    "chosen": [
+      "D"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [
+      {
+        "claim": "Return one tool_result per tool_use, all in the next user message; if you choose not to run a call (e.g. sequential batch where an earlier call failed), still return a tool_result with is_error: true",
+        "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/parallel-tool-use",
+        "supported": true
+      }
+    ],
+    "issues": [],
+    "suggestedFix": null
+  },
+  {
+    "id": "CCDV-F-B1-D1-001",
+    "chosen": [
+      "B"
+    ],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [
+      {
+        "claim": "Orchestrator-workers: central LLM dynamically breaks down tasks; ideal for multi-file code changes where subtasks can't be predicted",
+        "url": "https://www.anthropic.com/engineering/building-effective-agents",
+        "supported": true
+      }
+    ],
+    "issues": [],
+    "suggestedFix": null
+  }
+]

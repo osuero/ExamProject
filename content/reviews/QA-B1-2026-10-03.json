@@ -1,0 +1,1001 @@
+{
+ "reviewId": "QA-B1-2026-10-03",
+ "method": "Independent reviewer agents solved each item without the key, verified premises against official documentation, and gave a verdict. Items marked revise were corrected and re-reviewed blind (cycle 2). Applied only to the exact reviewed content hash.",
+ "targetStatus": "published",
+ "items": [
+  {
+   "externalId": "CCAR-F-B1-A1-001",
+   "contentHash": "5785f21f440ab1270d6cbebbc7c6d9f5e70e9e0c74c4ff2eb2553498b4afb87b",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A1-002",
+   "contentHash": "7c1adf398bc6b7811434467367d6bd0e50b53aa71c65b6e0656edfd859bc04b1",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A1-003",
+   "contentHash": "777d1f263b192bc7172b9ca5fa5e541005d3f0cdcdfd3c77e9e8a2de56457e5b",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A1-004",
+   "contentHash": "24b340dde280a0bf92ccb748a7007d2a56e165de78f60d7d971d2ff156b3c6e5",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A1-005",
+   "contentHash": "11b25518cddd75be0417acd72aa18711db5aa543b0a51015a9d1deee5639ebf5",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A1-006",
+   "contentHash": "455acebc8a4dea78653b37b63421972fb044ee3eb7dc71872ba5afa99cdd47f3",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A1-007",
+   "contentHash": "31398c0cc0c5905201355a13296356e3aaeb30f76bac3fb0c376af28df473ee6",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A1-008",
+   "contentHash": "39fc2d07c1cb368e297ff03aac5d301c463b12e6731aacc9e841b0ea0274f67b",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A1-009",
+   "contentHash": "6d09719fbf19048b2330923b133ee6c22d99f67cac4d2999cc4f6d6a5b9abe09",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A1-010",
+   "contentHash": "5beaaba092ea89cb38644a48b5df49dfa3a122304f44311bf7512cb4e46f0af2",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A1-011",
+   "contentHash": "ae2b1d77737b99b901eb1c3c18114559a0167d5ade2b8578172c13757fd1d276",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A1-012",
+   "contentHash": "dbed5d912743fdd4f47d9fd7b4efec620a744e2fd1c18315c0bc1a2f15ae7d30",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A1-013",
+   "contentHash": "bf05a4979fc697420b548f1f2a6b925be344717ba0ef18fdd1e1574f25d8a997",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A1-014",
+   "contentHash": "6ca87cf3ecef9cf35b18d3ce60ad087d2b8b15428b556eb473e5c888025c646e",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A1-015",
+   "contentHash": "3d93b506f564ff00d185cf821bb3a4fa332f329f4b09c1f6bec8d40f4121d96f",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A1-016",
+   "contentHash": "a7c2f3f81f1b312ff6577f10976216fe1b5ebe9e193870a11e004e80720b375a",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_r2_review.json (cycle 2 after revision)"
+  },
+  {
+   "externalId": "CCAR-F-B1-A1-017",
+   "contentHash": "48c62a7c2e52bd189eae6c8904d3686eb884894bb4a9071f75e0ee1a7beff2c7",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A2-001",
+   "contentHash": "650539d8b7394e74299d3cbfdbd3d9f7003729be05e53228461c7621a2052c80",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A2-002",
+   "contentHash": "7b043fbff12ead62a8fda0e3c911caf49885669c6933642ad9418df66359251d",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A2-003",
+   "contentHash": "5c350a7e825026cda24cb3aa1ffdbdb5c328485f0925273c76d48151a4347fff",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A2-004",
+   "contentHash": "2a2d161ca1dda35825662db9a0d9678df22927ec2cbedffa3bbf76a992319209",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A2-005",
+   "contentHash": "cc447cadd6bdc64051ec778195d83a455fa31cda6e0da010730d9632a407bdca",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A2-006",
+   "contentHash": "cf9f4a132f96bc02fcbe2927449ec8a211dfa066efaff577ffbd42e6494f5e86",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A2-007",
+   "contentHash": "2be89e49bcdb201d09315a9d918642835945af02b883a906b468dda3f22b5db6",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A2-008",
+   "contentHash": "6d346259d4eac1cd2cc8df499db6425da47e3334da2a893839952ebafdc9d019",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_r2_review.json (cycle 2 after revision)"
+  },
+  {
+   "externalId": "CCAR-F-B1-A2-009",
+   "contentHash": "8a200bbb6240e90dd456d7a9ad7e73766650e29584acc08cac87c08115f9e9f3",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A2-010",
+   "contentHash": "7300cd4b7804f640db2f19e4b953d32660bd548970713475bfb2098aca131f8a",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A3-001",
+   "contentHash": "d4babe9ef71a72e70206ee76c06e94af4e68de7df1f182a1493b56f23903f3da",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A3-002",
+   "contentHash": "e768c207e25c35f3e9feb79105e54684591ef10cddc0ebb5300273d7e170c90e",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A3-003",
+   "contentHash": "b1898fbf4fddda13ef765bf58128543b5b5dd2f1c3c0b11ec5646acc446f3ebf",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_r2_review.json (cycle 2 after revision)"
+  },
+  {
+   "externalId": "CCAR-F-B1-A3-004",
+   "contentHash": "2cd3827b3324458439ab4d94ad451bb0a54f855b0e5b5b3f8f1ad2403380454e",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A3-005",
+   "contentHash": "25d26825a7ae233cdf9e6885bbb136259c38ed6da78856f518d08cd6275bef16",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A3-006",
+   "contentHash": "1fc095a302aa406c3d58f2b3e963105666fa489b5709b30cd504798ddbe802bc",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A3-007",
+   "contentHash": "81c172cc297919124910d3206b8eb256418702fe768c039bb5c4e7df26cdaaeb",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A3-008",
+   "contentHash": "5d879fae057a02ff2b4c9549fe03230ab2e9cb4ed8ad7767fa3b97dc5ac13b14",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A3-009",
+   "contentHash": "97c58df490211b8691d0cb71f60702d3144ed4ec5dfd180a759608c43c8138dc",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A3-010",
+   "contentHash": "69692c67c877ac57792f181d03ff199b73b4503f381983c60884b42ec268ca6c",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A3-011",
+   "contentHash": "b3d27506472ab3ce35c329558269fcfeebb0558d5b35277335c11e16179ccb45",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A4-001",
+   "contentHash": "b5449ece0f5c40daeff883cbcac5eace511a214438414d0817d29e999aee3f44",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A4-002",
+   "contentHash": "ba3671ef4111c02c0d79de9e0dcee26aa16d63f1228038149d3063f765549fc0",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A4-003",
+   "contentHash": "f07e6c4c6bbfc7a278c709c2c717195791d1e851b7cd63d09334891eaa5a4cc1",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A4-004",
+   "contentHash": "271d682eaeb5896a8a07e074d130fef288ec03431f90947d2d6a979766500fd7",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A4-005",
+   "contentHash": "98d3ad2db9d48a530ebc3b43f56be5b3a794bd97d88e14d1834ce7d59be29855",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A4-006",
+   "contentHash": "073afa87520ffbdd55d2e608831ef88aed49860a4695a74de0b0ca6a3b7001a3",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A4-007",
+   "contentHash": "e4682ea380f2c712bcef0915efdda1fbdef5d527694d27500c27ba67a81a8773",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A4-008",
+   "contentHash": "df6e1cd6c4da19e41072d2f32abac302c5a512f5d0dabecd2b7dff8f3da6e3bf",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A4-009",
+   "contentHash": "77ae7784bde49a14ec85b523a6645b47c0abd48de3fb7dad11f1b2e4944814fe",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A4-010",
+   "contentHash": "01115fcf59432ae4f510f50309ada6421905427e91c5c7fda8bc31bb6479f9d2",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_r2_review.json (cycle 2 after revision)"
+  },
+  {
+   "externalId": "CCAR-F-B1-A4-011",
+   "contentHash": "1d0d567ce7e04ac4d23e59dc99577cad82585f06f1ac49cdb9df0e0093b5b3f3",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A4-012",
+   "contentHash": "f70baf3d99ae96a60a5fb5e46e4f4308c084d5f0fd4d1ea3dedd709c0f9a48a3",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A5-001",
+   "contentHash": "af9381188cb4dfeddbe455e901ba342ea4b7f6630f5af88d034f2cb587f5b7e7",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A5-002",
+   "contentHash": "1fca3b666641eaa459da1b50e604eb77ea6810d3abbd7ee9b2149a144055896f",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A5-003",
+   "contentHash": "0b27da5f3db61369cfe8c86432b2c0c54752430116b8f7c8eb49466c002c32f7",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A5-004",
+   "contentHash": "0f034edad49a9ca5175676c8d8839c478ebef7c0b29557f38bba6e6b6558a789",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A5-005",
+   "contentHash": "9ff1d8c6aa8ec810310132d2b920b4be8d33367415b2d331f153ba7a47ac9f44",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A5-006",
+   "contentHash": "fa7d838913ec5bec8670bf75f8c46e0f289b84f3bed5282afaec4f5c81bafc65",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A5-007",
+   "contentHash": "0f65c972ba22cebb0e1d2c5f3a64a3f6479b3b062b6fd82fbf0b7ffd88a6e159",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A5-008",
+   "contentHash": "50e100478880c443b92f2e2a607330d0ecb5bf90839866add5b648cb262a7152",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCAR-F-B1-A5-009",
+   "contentHash": "1819c81b06efdf5b3df71df1147134a9f41f868f8d52dff32cb21dbc38759e9d",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCAR-F-SEED-001",
+   "contentHash": "45b0dbb36017694c51d6bdd745d7cd28bd421199f3ea98ecd71b04b01a36ada6",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCAR-F-SEED-002",
+   "contentHash": "583a90d22674c3b04c13a6240a2e56855f25c844c881f148b725861ba8a5d700",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCAR-F-SEED-003",
+   "contentHash": "2e9336e749cc8fe50c2340984fd0ae2316362cf4db3c9c5f87dd6c76d1258365",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCAR-F-SEED-004",
+   "contentHash": "ad49e9ebd03b7dd11a64c7a4d2972617cf580f27175607b70ff86da2997449be",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCAR-F-SEED-005",
+   "contentHash": "e4c9f27c02082a7e4c062de77e48728027aa26b93646516ec6b2e89df0662736",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCAR-F-SEED-006",
+   "contentHash": "6fdf705c2ab866399f3bac6b266dbcc06682db18ae2f4d9d89553327d35b88b1",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCAR-F-SEED-007",
+   "contentHash": "569054d9d1b24c35db61f461becd53a162341e0f63b9fca327b3b896efccfc57",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCAR-F-SEED-008",
+   "contentHash": "0fa956b0c6331f0291938a9ee23046d4ff479b870bcc0c9b382a11d3edbdc780",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCAR-F-SEED-009",
+   "contentHash": "ba2c66bde833912af4f5caad2af9c5cb1a34600baedba9a375f7912917d06c29",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCAR-F-SEED-010",
+   "contentHash": "ea0a86e022e211cce87c94bcb4b6a11e7435d176783cea33e6a2851516bae87d",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCAR-F-SEED-011",
+   "contentHash": "b39ac467bcc6df6cb5b2010bd7c9d051be43edd1e08a1410a48a5bdb3d3f36dd",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCAR-F-SEED-012",
+   "contentHash": "19fce5780ed669c7b20a5998c5d3d5750095a16e7c7bbe4d520157d11e28571c",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D1-001",
+   "contentHash": "36e394a71d5481f76e436747365e07d0e34d41647e8c3651ffbaa66839ed6221",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D1-002",
+   "contentHash": "089bab79812441938dde14a66686f231dd1fd83dbdd43342b125ba71d58feb9a",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D1-003",
+   "contentHash": "a12d89ae4f9d6a0e587c45908443dcf15908aeea3c67b61fd4e6fb6d14ecd83d",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D1-004",
+   "contentHash": "297625267a96ac2f72ab50640b12c74146553fdbcee2b229a486abf81cd70c26",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D1-005",
+   "contentHash": "309f44622b85cf9ca5237041d2e6f199c7c4066e7c0d32800717ec0d98d5c1f3",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D1-006",
+   "contentHash": "3c76a91004bf16335e7938b7197dd3b54fea27ab5f88a169f7f58b0d53936cd3",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D1-007",
+   "contentHash": "11e1cc2d15962067894c6a1e558ce7aaee3fa4acc3a1baa05be785e25eed07db",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D1-008",
+   "contentHash": "022974ad2185c9fbfdbb070ec5d32b8adfbc8422f9e68b319542e56d5c4ea8d5",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D2-001",
+   "contentHash": "a2a75814c5aa48f3c2907f8a20714a0a5a66f7474fb839bcee15652d572762a6",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D2-002",
+   "contentHash": "eba52dcdac0056c4b0898c2feee5a0db743aea4c5ac3d105998b79016490ccb2",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D2-003",
+   "contentHash": "22aea5d670da918a26856587342885b35d9d21daf8d32250137deccdd5cbb33b",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D2-004",
+   "contentHash": "16da49cf7c55730c93fd52f2c3c2f39ebf771b5d9b01c9f1cdd2a3841c6f5e66",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D2-005",
+   "contentHash": "039b515bbe764281b13b28955e55073d84ee3dbcbcf8b08a9e33b2da0ea5e3f1",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D2-006",
+   "contentHash": "12e90f32b622c8ba691cb6ee70bd8a44db409b528a1618b45707c3f618a56087",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_r2_review.json (cycle 2 after revision)"
+  },
+  {
+   "externalId": "CCDV-F-B1-D2-007",
+   "contentHash": "114b6a5057ffffbbc9d60490bc5fa4bb74a6e597ea9165be3718cb503caa534a",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D2-008",
+   "contentHash": "64389fa6287138424f8415b8691b4238a0cf9a251e6490e7fa374552035a00d9",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D2-009",
+   "contentHash": "00374f69b48bf373d4c00c5c17b2bec619b0b972e5b8f2fc9b987d4b55abf196",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D2-010",
+   "contentHash": "064f32a08c3b7db5cb46fa1f5da660b375d63fcbad33ba4ea962c729234edaef",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_r2_review.json (cycle 2 after revision)"
+  },
+  {
+   "externalId": "CCDV-F-B1-D2-011",
+   "contentHash": "ecb75391159bc7c5b3adad874e86ce1643b09222ab215b1da2db5a899e514335",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D2-012",
+   "contentHash": "ec1aa06e824ce6986ce7200679caa2b317a7ffdf40dd50b8a6127313788fe203",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D2-013",
+   "contentHash": "2849c18cc03b04fad18be5c80ecc8537a53b0a6060c33c6ac028ecaaa553b77d",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D2-014",
+   "contentHash": "731c3d81aafd50ef4b130f70a8f16fd1d49a19e5ef41a90d1f3937180e029e08",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D2-015",
+   "contentHash": "2be4739b18896f1687babcdcbac9c1a48c990d1c17bff109d9c8ddc7f97a6b34",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D2-016",
+   "contentHash": "55e2cf10a198ab3f5d000676d2b782a0b3fb576f613ed43a01d74846932df3ee",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D2-017",
+   "contentHash": "19a2046163a5e5202424d0bbb73ca6a451ab7285f7b1058034a13ecc1a9e17ea",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D2-018",
+   "contentHash": "68e676365865a3e88ae613e8f65b0bc6efc5923a8f9179a50a8da790635a441d",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D3-001",
+   "contentHash": "4d8df5ac5f75c7260e8a9d25ce1e823ec7261350b04525e0cf461c2d003b8b7f",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D3-002",
+   "contentHash": "66f985e386e1c7b8820ad558b951e1a2c07ad4c6ad0181a00e682df28895536a",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D3-003",
+   "contentHash": "da03f8a53efb490a62a0b9d502d912f1e394711ab215fc5acbad1d09cd53e516",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D4-001",
+   "contentHash": "63ef5ebadd85f55e7afeb3ac9fe59a1ae2915e272249e4985ef9ea40a32344fc",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D4-002",
+   "contentHash": "6f1d2ec31cd08dbb49aa9269a3f984ab4e7fecefcc8c6ace9e57749f222f789a",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D4-003",
+   "contentHash": "e59a5807bbfb45c4bac958e662adf12955fda3f056a52b2e484c80612a81ed1d",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D5-001",
+   "contentHash": "6a5ad8cb2755e155966b94cb5e8f94fda10ff5a60b2a6de0865a1f713f7e631f",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D5-002",
+   "contentHash": "66008d2a3e7ca6528c172fd30144211e6f96a02d88eed87a55f083c7e183e1c4",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D5-003",
+   "contentHash": "14211a4335e4da2e453b6bda8acde7ac10651e11a7b07245fe9483086a853408",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D5-004",
+   "contentHash": "76582cf572b687b6dcf84eccd330b31e04f5a4a0ca5a3db001393795a4883dfd",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D5-005",
+   "contentHash": "155e424e3cd267d2b8f2e0b2b63e59a34e9bc53413b305b5140c71f05a588d1c",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D5-006",
+   "contentHash": "4df98e18bb8ea410e15a50e5b1b9d1c4ee940e41c3cea2dfe9c265d1941728b7",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_r2_review.json (cycle 2 after revision)"
+  },
+  {
+   "externalId": "CCDV-F-B1-D5-007",
+   "contentHash": "d3ca51b89214a7117efd80d762edb08f251191bb8061e582a746de8dc91ada22",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D5-008",
+   "contentHash": "93583627dee4b9ca8b4bbe583bad92bba79c1c888e9408116967436b90145988",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D5-009",
+   "contentHash": "c99ed39e94323e06d2e1c7c8c045cd74556421786146f763aacacb7352da3b39",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_r2_review.json (cycle 2 after revision)"
+  },
+  {
+   "externalId": "CCDV-F-B1-D6-001",
+   "contentHash": "55235065eb15fdf24a85bcd89b210065c6d78a966983322c22a535f31200dd77",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D6-002",
+   "contentHash": "ed8a800ef63ef9e27603fff53da34c2d5ef27810b78b1e138a645080af85a712",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D6-003",
+   "contentHash": "8fd6e5623e3cf60c5223b71125d136df48cfb4df7a67b82c669c153178b6ab6d",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D6-004",
+   "contentHash": "be4857b0a2e9ee4f747dc82447b7d8b9b9d21faeee5ec032475b8e99c55fca1e",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D6-005",
+   "contentHash": "0a67270e61676cfa23f64416fab2d01c2c0febabf88b6a3e62a3848e8793b321",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D6-006",
+   "contentHash": "fcb3119c9dc2a210ea6ac9d6034eb12e580ad4145117971fe3825d50d07a4910",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D6-007",
+   "contentHash": "8c5c726d2bee0f2ccf624cf426487bd4a0d40fcce2ea667af4d5336947c9cd5d",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D7-001",
+   "contentHash": "f6afd7827a471accdf40e17bf2970e84da59af7b6a64ba6930e523d6ee69bd0d",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D7-002",
+   "contentHash": "a4b2213b035cae12f5197a17f2076701707ced91d3dcd38487d9953dd7130cbf",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D7-003",
+   "contentHash": "c298f84b0bb711671933d677a7df9c11d2d3a9f049a9f2065b87776b4c25fdce",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D7-004",
+   "contentHash": "c1f5d2a4f4ab01803cd39cfde0e6d24e02e78226570479c570fd2b9bdeb600d3",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D7-005",
+   "contentHash": "0402ef4d0bfbae573de05454b3632845c2aa2ac91d3e0182e2cf160d697feb84",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D8-001",
+   "contentHash": "3f682a8c6ae1af44d0574b80de6846f45e5e8f6cec53620e8c46a54de8a1ceae",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D8-002",
+   "contentHash": "122b5936e7e582e9579b349f4b5b4a0a6c59ef5f257af87b3783f7df64ce4bba",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D8-003",
+   "contentHash": "9d6992269a550177823d6765a02c8288752fbbfc159d194cbfbf25da13012324",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D8-004",
+   "contentHash": "e1a74bb92602c397d7039b15af530672906e568f6eb9395e16aef64abd41e816",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D8-005",
+   "contentHash": "7d5660fffda588418841fa40aa137f264c9e9cbd83b4502b65d0db4440ce3692",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCDV-F-B1-D8-006",
+   "contentHash": "0a807014b56e2215f97c0f7c0da883b228ff8565e95e373fcdcf3cac889101bb",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCDV-F-SEED-001",
+   "contentHash": "f046dee44e08d069f638e19b043838d2edd0f6b4a8adf012ace82274062b6028",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCDV-F-SEED-002",
+   "contentHash": "8cc0a59878d88e8a7b35f0e6f9bdf3c918d3e3225c9037fc71b1f5eeca664bbe",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_r2_review.json (cycle 2 after revision)"
+  },
+  {
+   "externalId": "CCDV-F-SEED-003",
+   "contentHash": "4a86680ec039a04d711e85c9b3c8591ada07ced073026f084fbc3803ad866112",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  },
+  {
+   "externalId": "CCDV-F-SEED-004",
+   "contentHash": "1a155763142dcdbb02172cf570ea86bc62abfe94710920ce47cc189fd6c1b35a",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCDV-F-SEED-005",
+   "contentHash": "8d5a31bc179641b496201ebeaa4c94bcfa2353ffaa902585a6d69ba0b13a3b7a",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCDV-F-SEED-006",
+   "contentHash": "755678a2d5848e281f58ef9347d356badf51de39326b8b9be98687f4b8fdf48b",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_1_review.json"
+  },
+  {
+   "externalId": "CCDV-F-SEED-007",
+   "contentHash": "31e754c320e635c65293e9ae7dd1d63c6c90bf9ea75251eae97cebf5f4952d05",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCDV-F-SEED-008",
+   "contentHash": "59a4d5cd9ca14a135f34f0633e3d31076c6669a110d413e3a04243d0452fd262",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCDV-F-SEED-009",
+   "contentHash": "118a3568955dc1a8c8a4daf21039e6558d0b3230d43306253b155e560439ec45",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCDV-F-SEED-010",
+   "contentHash": "455e6635896509e9564248c793b900067adb0e1b7d56dcd13151b9ad2390111b",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_4_review.json"
+  },
+  {
+   "externalId": "CCDV-F-SEED-011",
+   "contentHash": "43cf26b2cc656b49943ab9454a3b9626d29075d5f6d706e54df9faeb4135816e",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_3_review.json"
+  },
+  {
+   "externalId": "CCDV-F-SEED-012",
+   "contentHash": "f25a1c3aa265edeb6cd8cb72990f520f8ea22fcd45a7a92b610fe02ec441b242",
+   "blindAnswerMatchesKey": true,
+   "verdict": "pass",
+   "evidence": "independent blind solve and doc check, evidence/blind_b1_2_review.json"
+  }
+ ]
+}

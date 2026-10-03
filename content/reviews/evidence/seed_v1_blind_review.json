@@ -1,0 +1,428 @@
+[
+ {
+  "id": "CCDV-F-SEED-001",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verifiedFacts": [
+   {
+    "claim": "Workflows = predefined code paths; preferred for well-defined fixed-step tasks",
+    "url": "https://www.anthropic.com/engineering/building-effective-agents",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Option C (agents independently skipping validation) is implausible.",
+   "Keyed option is the longest / most qualified option, a test-wise giveaway."
+  ],
+  "suggestedFix": "Replace C with a plausible alternative, e.g. 'Use a routing workflow that classifies each invoice and sends it to a different specialized pipeline' (plausible but violates same-order requirement)."
+ },
+ {
+  "id": "CCDV-F-SEED-002",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verifiedFacts": [
+   {
+    "claim": "Agent SDK provides Claude Code's agent loop, built-in tools (read/edit/run commands) and permissions",
+    "url": "https://code.claude.com/docs/en/agent-sdk/overview",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Option C ('call a skill file directly through the Messages endpoint as an executor') is technically nonsensical rather than a plausible misconception."
+  ],
+  "suggestedFix": "Replace C with 'Use the Client SDK tool runner and implement file-edit and test tools yourself' (plausible, but not the supported built-in loop+tools)."
+ },
+ {
+  "id": "CCDV-F-SEED-003",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verifiedFacts": [
+   {
+    "claim": "For client tools the application executes the operation and returns a tool_result on the next request",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/how-tool-use-works",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "B and C are implausible (response object 'acquiring' a DB result).",
+   "Distractors are mostly strawmen (absurd/obviously unsafe wording); item is guessable without domain knowledge."
+  ],
+  "suggestedFix": "Add plausible distractor such as 'Return the tool_result as an assistant message' or 'Send the lookup output as plain user text without tool_use_id'."
+ },
+ {
+  "id": "CCDV-F-SEED-004",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verifiedFacts": [
+   {
+    "claim": "stop_reason max_tokens means truncation at the limit; docs recommend raising max_tokens or continuing",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Minor: C is the only option using the word 'incomplete', mirroring the stem."
+  ],
+  "suggestedFix": "Optionally make C concrete: 'Treat as incomplete; raise max_tokens or request a continuation from the partial assistant turn, then re-validate.'"
+ },
+ {
+  "id": "CCDV-F-SEED-005",
+  "chosen": [
+   "B",
+   "E"
+  ],
+  "confidence": "high",
+  "verifiedFacts": [
+   {
+    "claim": "Error events (e.g. overloaded_error) can arrive in the SSE stream after HTTP 200",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/streaming",
+    "supported": true
+   },
+   {
+    "claim": "Tool input streams as input_json_delta partial_json; accumulate and parse at content_block_stop",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/streaming",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "A and D are weak strawmen; C is a reasonable distractor."
+  ],
+  "suggestedFix": "Replace D with 'Parse each input_json_delta as a complete JSON object as it arrives' (plausible misconception)."
+ },
+ {
+  "id": "CCDV-F-SEED-006",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verifiedFacts": [
+   {
+    "claim": "-p/--print runs non-interactively",
+    "url": "https://code.claude.com/docs/en/headless",
+    "supported": true
+   },
+   {
+    "claim": "--output-format values text (default), json, stream-json",
+    "url": "https://code.claude.com/docs/en/headless",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-SEED-007",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verifiedFacts": [
+   {
+    "claim": "401 = authentication_error (key issue); 429 = rate_limit_error, retry honoring retry-after (spend-cap 429 has no retry-after)",
+    "url": "https://platform.claude.com/docs/en/api/errors",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "B, C, D are all clearly bad practice; little discrimination."
+  ],
+  "suggestedFix": "Add plausible distractor: 'Retry both with exponential backoff, honoring retry-after' (sounds right but wastes retries on 401)."
+ },
+ {
+  "id": "CCDV-F-SEED-008",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verifiedFacts": [],
+  "issues": [
+   "Keyed option is the longest / most qualified option, a test-wise giveaway.",
+   "C self-defeats by saying 'ignoring task latency' when the stem is about latency.",
+   "No official-doc premise to verify (general eval practice)."
+  ],
+  "suggestedFix": "Make distractors equally specific, e.g. 'Compare models on the prompt-tuning set by accuracy and p95 latency' (subtle leakage error)."
+ },
+ {
+  "id": "CCDV-F-SEED-009",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verifiedFacts": [
+   {
+    "claim": "Token counting endpoint accepts client tools and messages; count is an estimate",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/token-counting",
+    "supported": true
+   },
+   {
+    "claim": "count_tokens does not support url/file document sources or most server tools",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/token-counting",
+    "supported": "unclear"
+   }
+  ],
+  "issues": [
+   "'allowing for documented estimation limits' is a tell.",
+   "A and D are absurd.",
+   "Caveat: if retrieved documents are PDFs referenced by url/file, or server tools are included, count_tokens returns an error; stem should say text documents/client tools."
+  ],
+  "suggestedFix": "Specify 'retrieved text passages and client tool definitions'; replace A with 'Estimate with a 4-chars-per-token heuristic over all content' (plausible)."
+ },
+ {
+  "id": "CCDV-F-SEED-010",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verifiedFacts": [],
+  "issues": [
+   "Stem asks what to 'conclude'; only C is phrased as a conclusion, others are actions \u2014 giveaway.",
+   "B and D are absurd."
+  ],
+  "suggestedFix": "Rephrase all options as conclusions or all as actions; add plausible distractor 'Tighten the schema with a numeric range so totals are always correct'."
+ },
+ {
+  "id": "CCDV-F-SEED-011",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verifiedFacts": [
+   {
+    "claim": "CLAUDE.md/instructions are context, not enforced; enforcement needs hooks/permissions",
+    "url": "https://code.claude.com/docs/en/memory",
+    "supported": true
+   },
+   {
+    "claim": "Agent SDK provides permissions controlling which tools run",
+    "url": "https://code.claude.com/docs/en/agent-sdk/overview",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Good item; B is a strong distractor. D weak."
+  ],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-SEED-012",
+  "chosen": [
+   "D",
+   "E"
+  ],
+  "confidence": "high",
+  "verifiedFacts": [
+   {
+    "claim": "MCP 2025-06-18 defines two standard transports: stdio and Streamable HTTP; stdio = client launches server subprocess",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/basic/transports",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "A, B, C are absurd (raw SQL, token streaming, shared JSON file); trivially answerable.",
+   "Distractors are mostly strawmen (absurd/obviously unsafe wording); item is guessable without domain knowledge."
+  ],
+  "suggestedFix": "Use plausible distractors: 'HTTP+SSE as the standard remote transport' (deprecated 2024-11-05), 'WebSocket as a standard transport', 'stdio for the hosted remote service'."
+ },
+ {
+  "id": "CCAR-F-SEED-001",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verifiedFacts": [
+   {
+    "claim": "PreToolUse fires before tool execution and can deny via permissionDecision 'deny' or exit code 2; PostToolUse fires after success",
+    "url": "https://code.claude.com/docs/en/hooks",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Context mismatch: a customer-support refund assistant is not typically a 'Claude Code integration'; Agent SDK (which also supports hooks) fits better.",
+   "C and D are weak distractors.",
+   "Since refunds above threshold 'require approval', permissionDecision 'ask' is arguably more exact than deny; A still best."
+  ],
+  "suggestedFix": "Say 'In an Agent SDK integration' and phrase A as 'PreToolUse hook that checks the amount and denies or escalates for approval'. Replace D with 'A system-prompt instruction not to exceed the threshold'."
+ },
+ {
+  "id": "CCAR-F-SEED-002",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verifiedFacts": [],
+  "issues": [
+   "A ('invent'), B ('forever') are strawmen; little discrimination.",
+   "No doc premise to verify."
+  ],
+  "suggestedFix": "Add plausible distractor: 'Apply the closest general refund policy and note it was an approximation'."
+ },
+ {
+  "id": "CCAR-F-SEED-003",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verifiedFacts": [
+   {
+    "claim": ".claude/rules/*.md exist; rules can be path-scoped with a 'paths:' YAML frontmatter key and load only when Claude works with matching files",
+    "url": "https://code.claude.com/docs/en/memory",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "A, C, D are weak.",
+   "If a nested billing/CLAUDE.md option were added it would be a second defensible answer; avoid that."
+  ],
+  "suggestedFix": "Name the key in B ('frontmatter paths: [\"billing/**\"]') and add plausible-but-worse distractor: 'Put billing instructions in the root CLAUDE.md under a Billing heading'."
+ },
+ {
+  "id": "CCAR-F-SEED-004",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verifiedFacts": [
+   {
+    "claim": "Project skills live at .claude/skills/<name>/SKILL.md and should be committed for team sharing; personal at ~/.claude/skills",
+    "url": "https://code.claude.com/docs/en/skills",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Keyed option is the longest / most qualified option, a test-wise giveaway.",
+   "B and D are strawmen."
+  ],
+  "suggestedFix": "Distractors: 'In ~/.claude/skills on each developer machine', 'In CLAUDE.md as a long instruction block', 'In .claude/settings.local.json'."
+ },
+ {
+  "id": "CCAR-F-SEED-005",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verifiedFacts": [],
+  "issues": [
+   "Keyed option is the longest / most qualified option, a test-wise giveaway.",
+   "Distractors are mostly strawmen (absurd/obviously unsafe wording); item is guessable without domain knowledge."
+  ],
+  "suggestedFix": "Add plausible distractor such as 'Forward the coordinator's entire conversation history to the specialist'."
+ },
+ {
+  "id": "CCAR-F-SEED-006",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verifiedFacts": [],
+  "issues": [
+   "Keyed option is the longest / most qualified option, a test-wise giveaway.",
+   "Distractors are mostly strawmen (absurd/obviously unsafe wording); item is guessable without domain knowledge."
+  ],
+  "suggestedFix": "Add plausible distractors: 'Rely on automatic compaction alone', 'Summarize into a single prose paragraph without source references'."
+ },
+ {
+  "id": "CCAR-F-SEED-007",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verifiedFacts": [],
+  "issues": [
+   "Keyed option is the longest / most qualified option, a test-wise giveaway.",
+   "Distractors are mostly strawmen (absurd/obviously unsafe wording); item is guessable without domain knowledge."
+  ],
+  "suggestedFix": "Add plausible distractors: 'Add a system-prompt line saying prefer get_ticket_history', 'Put archive_ticket last in the tools list'."
+ },
+ {
+  "id": "CCAR-F-SEED-008",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verifiedFacts": [
+   {
+    "claim": "MCP resources are URI-identified and application-driven",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/server/resources",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "A, C, D are absurd; item tests vocabulary only."
+  ],
+  "suggestedFix": "Use the other primitives as distractors: 'An MCP tool (model-controlled) that returns the policy text', 'An MCP prompt (user-controlled) template'."
+ },
+ {
+  "id": "CCAR-F-SEED-009",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verifiedFacts": [],
+  "issues": [
+   "Distractors are mostly strawmen (absurd/obviously unsafe wording); item is guessable without domain knowledge."
+  ],
+  "suggestedFix": "Add plausible distractor: 'Instruct the reviewer to be less strict' (vague, untestable)."
+ },
+ {
+  "id": "CCAR-F-SEED-010",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verifiedFacts": [
+   {
+    "claim": "claude -p exits non-zero on failure; in-run failures are printed as the result on stdout, so payload must be checked",
+    "url": "https://code.claude.com/docs/en/headless",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Distractors are mostly strawmen (absurd/obviously unsafe wording); item is guessable without domain knowledge."
+  ],
+  "suggestedFix": "Add plausible distractor: 'Check only that stdout parses as JSON'."
+ },
+ {
+  "id": "CCAR-F-SEED-011",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verifiedFacts": [
+   {
+    "claim": "Batch results may be in any order; match via custom_id; result types succeeded/errored/canceled/expired",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "B and D are absurd; A is a good distractor."
+  ],
+  "suggestedFix": "Replace D with 'Resubmit the whole batch whenever any request errors'."
+ },
+ {
+  "id": "CCAR-F-SEED-012",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verifiedFacts": [
+   {
+    "claim": "Tool execution/business-logic errors are reported in results with isError: true; protocol errors (unknown tool, invalid args) use JSON-RPC errors",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/server/tools",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "D is self-evidently wrong ('even though the tool exists'); A and C are strawmen."
+  ],
+  "suggestedFix": "Replace D with 'Return a JSON-RPC error response (e.g. -32603 internal error)' \u2014 plausible but wrong for a business failure."
+ }
+]

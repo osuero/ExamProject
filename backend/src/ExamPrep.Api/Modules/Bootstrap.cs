@@ -55,7 +55,7 @@ public class CatalogProfile
 }
 
 /// <summary>Idempotent bootstrap of catalog, sources and seed banks from the backend-only content directory.</summary>
-public class Bootstrapper(AppDbContext db, ContentImporter importer, TimeProvider clock, ILogger<Bootstrapper> log)
+public class Bootstrapper(AppDbContext db, ContentImporter importer, ReviewApplier reviews, TimeProvider clock, ILogger<Bootstrapper> log)
 {
     private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web);
 
@@ -123,9 +123,22 @@ public class Bootstrapper(AppDbContext db, ContentImporter importer, TimeProvide
                 var bytes = await File.ReadAllBytesAsync(f, ct);
                 var (report, batch) = await importer.CommitAsync(Path.GetFileName(f), bytes, null, "bootstrap from content/banks", ct);
                 if (!report.Valid)
-                    log.LogWarning("Bank {File} not imported: {Errors} file errors, {Rejected} rejected items", Path.GetFileName(f), report.FileErrors.Count, report.Rejected);
+                    log.LogWarning("Bank {File} not imported: {Errors} file errors, {Rejected} rejected items. {Detail}", Path.GetFileName(f), report.FileErrors.Count, report.Rejected,
+                        string.Join(" | ", report.FileErrors.Concat(report.Items.Where(i => i.Action == "reject")
+                            .Select(i => i.ExternalId + ": " + string.Join("; ", i.Issues.Where(x => x.Severity == "error").Select(x => x.Code + " " + x.Message))))));
                 else if (report.ToCreate + report.ToVersion > 0)
                     log.LogInformation("Bank {File}: {Created} created, {Versions} new versions", Path.GetFileName(f), report.ToCreate, report.ToVersion);
+            }
+        }
+        var reviewsDir = Path.Combine(contentDir, "reviews");
+        if (Directory.Exists(reviewsDir))
+        {
+            foreach (var f in Directory.GetFiles(reviewsDir, "*.json").OrderBy(f => f))
+            {
+                var record = JsonSerializer.Deserialize<ReviewRecord>(await File.ReadAllTextAsync(f, ct), Json)!;
+                var (applied, skipped, problems) = await reviews.ApplyAsync(record, null, ct);
+                if (applied > 0 || problems.Count > 0)
+                    log.LogInformation("Review {Review}: {Applied} advanced, {Skipped} already at target, {Problems} not applied", record.ReviewId, applied, skipped, problems.Count);
             }
         }
     }

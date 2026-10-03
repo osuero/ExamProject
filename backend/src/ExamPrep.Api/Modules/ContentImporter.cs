@@ -174,7 +174,13 @@ public class ContentImporter(AppDbContext db, TimeProvider clock, Audit audit)
             {
                 if (ex.CertificationId != cert.Id) issues.Add(new("error", "exam_mismatch", "This id belongs to another certification."));
                 var latest = ex.Versions.OrderByDescending(x => x.VersionNo).First();
-                if (latest.ContentHash == v.ContentHash) action = "unchanged";
+                var known = ex.Versions.FirstOrDefault(x => x.ContentHash == v.ContentHash);
+                if (known is not null)
+                {
+                    action = "unchanged"; // never resurrect an older version as a new one
+                    if (known.Id != latest.Id)
+                        issues.Add(new("warning", "older_version", $"Content matches stored version {known.VersionNo}; the newer version {latest.VersionNo} is kept."));
+                }
                 else
                 {
                     var sameItem = latest.Stem == v.Stem && latest.Options.Select(o => o.Text).SequenceEqual(v.Options.Select(o => o.Text));
