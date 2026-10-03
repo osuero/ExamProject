@@ -1,0 +1,14 @@
+bin/
+obj/
+node_modules/
+dist/
+.angular/
+*.user
+.env
+coverage/
+TestResults/
+playwright-report/
+test-results/
+backend/src/ExamPrep.Api/wwwroot/
+.vs/
+.idea/

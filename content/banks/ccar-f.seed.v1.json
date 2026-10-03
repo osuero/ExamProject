@@ -1,0 +1,691 @@
+{
+  "schemaVersion": "1.0",
+  "generatedAt": "2026-10-03",
+  "examCode": "CCAR-F",
+  "notice": "Original draft seed questions. Not official exam content. Structural checks passed; independent content QA and per-exam language verification are still required.",
+  "defaultPublishable": false,
+  "questionCount": 12,
+  "cases": [
+    {
+      "id": "ARCH-CASE-01",
+      "title": "Customer support with controlled refunds",
+      "text": "A support assistant reads order history and may initiate refunds. Refunds above a fixed threshold require approval. Missing policy evidence must not be guessed."
+    },
+    {
+      "id": "ARCH-CASE-02",
+      "title": "Shared repository development",
+      "text": "A team uses Claude Code in a monorepo containing a web application and a billing service. Shared workflows are reviewed in version control, and billing instructions should remain narrowly scoped."
+    },
+    {
+      "id": "ARCH-CASE-03",
+      "title": "Multi-agent research",
+      "text": "A coordinator delegates research to specialists. The work spans long sessions and must retain sources, unresolved disagreements, and explicit task boundaries."
+    },
+    {
+      "id": "ARCH-CASE-04",
+      "title": "Developer productivity through MCP",
+      "text": "An internal assistant accesses a ticketing system and a repository of reference policies. The team wants clear tool selection and reference content that applications can retrieve."
+    },
+    {
+      "id": "ARCH-CASE-05",
+      "title": "Automated code review",
+      "text": "A review pipeline uses Claude to inspect pull requests. Reports must be tied to explicit review criteria, while the workflow must distinguish findings from execution failures."
+    },
+    {
+      "id": "ARCH-CASE-06",
+      "title": "Document extraction operations",
+      "text": "A document-processing service extracts records asynchronously. Some requests fail independently, and an MCP lookup tool may also report a recoverable business-level failure."
+    }
+  ],
+  "questions": [
+    {
+      "id": "CCAR-F-SEED-001",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A1",
+      "objective": "Pre-execution controls",
+      "scenarioId": "ARCH-CASE-01",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "A refund restriction must be checked before the agent invokes the refund tool. In a Claude Code integration, which mechanism best fits this timing requirement?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Use a PreToolUse hook that validates the request and denies disallowed calls.",
+          "rationale": "The pre-execution hook can evaluate a call before the tool runs."
+        },
+        {
+          "id": "B",
+          "text": "Use a PostToolUse hook to discover excessive refunds after execution.",
+          "rationale": "A check after the refund cannot prevent the original side effect."
+        },
+        {
+          "id": "C",
+          "text": "Include the policy only in a final-answer formatting instruction.",
+          "rationale": "Formatting the answer does not enforce the pre-execution restriction."
+        },
+        {
+          "id": "D",
+          "text": "Ask the model to lower its confidence score when the refund is large.",
+          "rationale": "A confidence score does not block the prohibited action."
+        }
+      ],
+      "correctOptionIds": [
+        "A"
+      ],
+      "explanation": "The control must sit before the side effect. The refund service should also enforce its authorization rules; a model instruction is not the sole enforcement layer.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T13"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "blueprintMappingStatus": "editorial_pending_official_blueprint_confirmation",
+      "contentStatus": "draft_requires_independent_qa",
+      "publiclyPublishable": false,
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-SEED-001",
+      "tags": [
+        "pre-execution-controls"
+      ],
+      "contentHash": "740f7d2d3682fa3d896402f0917445a89a46c7d14faa22bb9f406817177d0d85"
+    },
+    {
+      "id": "CCAR-F-SEED-002",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A5",
+      "objective": "Grounded uncertainty and escalation",
+      "scenarioId": "ARCH-CASE-01",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "The assistant retrieves an order but finds no policy covering an unusual exception. The answer must be policy-grounded. What should it do?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Invent a likely exception policy and present it as established practice.",
+          "rationale": "A plausible policy is still unsupported by the available evidence."
+        },
+        {
+          "id": "B",
+          "text": "Repeat the same search forever rather than acknowledge an evidence gap.",
+          "rationale": "Unbounded searching does not guarantee that the missing policy exists."
+        },
+        {
+          "id": "C",
+          "text": "Treat the customer description as an authoritative replacement for policy.",
+          "rationale": "A customer account does not establish the company policy."
+        },
+        {
+          "id": "D",
+          "text": "State the evidence gap and use the configured escalation path.",
+          "rationale": "Acknowledging the missing basis avoids presenting a guess as policy."
+        }
+      ],
+      "correctOptionIds": [
+        "D"
+      ],
+      "explanation": "The required evidence is absent. The system should permit an explicit unknown outcome and route the case for resolution rather than manufacture a grounded-looking answer.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T14"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "blueprintMappingStatus": "editorial_pending_official_blueprint_confirmation",
+      "contentStatus": "draft_requires_independent_qa",
+      "publiclyPublishable": false,
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-SEED-002",
+      "tags": [
+        "grounded-uncertainty-and-escalation"
+      ],
+      "contentHash": "7330582472f4c27d32ed9b7c33a82ad31a43bbe2ddf91c9db6a4518728310418"
+    },
+    {
+      "id": "CCAR-F-SEED-003",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A3",
+      "objective": "Path-scoped project instructions",
+      "scenarioId": "ARCH-CASE-02",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "The billing team wants additional instructions to apply only when Claude works on billing files. Which repository configuration best expresses this scope?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Place billing-only instructions in an unrelated personal settings directory.",
+          "rationale": "That does not express shared repository-level file scope."
+        },
+        {
+          "id": "B",
+          "text": "Use a project .claude/rules file with path-scoped frontmatter for billing files.",
+          "rationale": "Path-scoped project rules associate the instructions with the relevant files."
+        },
+        {
+          "id": "C",
+          "text": "Make every repository task load the billing policy as a universal requirement.",
+          "rationale": "Universal scope contradicts the request to limit billing-specific instructions."
+        },
+        {
+          "id": "D",
+          "text": "Store the instructions only in a previous developer conversation.",
+          "rationale": "Private conversation history is not a shared repository rule."
+        }
+      ],
+      "correctOptionIds": [
+        "B"
+      ],
+      "explanation": "Path-scoped rules keep specialized instructions near the code they govern without imposing them on unrelated work. They remain instructions, not an authorization system.",
+      "points": 1,
+      "difficulty": "foundational",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T15"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "blueprintMappingStatus": "editorial_pending_official_blueprint_confirmation",
+      "contentStatus": "draft_requires_independent_qa",
+      "publiclyPublishable": false,
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-SEED-003",
+      "tags": [
+        "path-scoped-project-instructions"
+      ],
+      "contentHash": "93601c2104b9aa04238796fe7416e38079c6376e4d0f24cd79520e6318bcae8f"
+    },
+    {
+      "id": "CCAR-F-SEED-004",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A3",
+      "objective": "Sharing project skills",
+      "scenarioId": "ARCH-CASE-02",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "The team wants a reusable review workflow available to everyone who checks out the repository. Where should its skill definition be maintained?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Only in the original author’s personal skill directory.",
+          "rationale": "A personal installation does not distribute the definition with the repository."
+        },
+        {
+          "id": "B",
+          "text": "Only in the terminal history of the CI administrator.",
+          "rationale": "Terminal history is not a shared, reviewable skill definition."
+        },
+        {
+          "id": "C",
+          "text": "In the project .claude/skills directory, with its SKILL.md under version control.",
+          "rationale": "A project skill can travel with the repository and be reviewed as code."
+        },
+        {
+          "id": "D",
+          "text": "In an ignored temporary file that is regenerated without review.",
+          "rationale": "An ignored temporary definition does not meet the shared-review requirement."
+        }
+      ],
+      "correctOptionIds": [
+        "C"
+      ],
+      "explanation": "The requested scope is the project rather than one user. Store the reusable skill in the repository and keep operational permissions separately constrained.",
+      "points": 1,
+      "difficulty": "foundational",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T16"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "blueprintMappingStatus": "editorial_pending_official_blueprint_confirmation",
+      "contentStatus": "draft_requires_independent_qa",
+      "publiclyPublishable": false,
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-SEED-004",
+      "tags": [
+        "sharing-project-skills"
+      ],
+      "contentHash": "450415bcd70f97d36294b508f63f98971ebe9216c421ab061efd4d318e01a203"
+    },
+    {
+      "id": "CCAR-F-SEED-005",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A1",
+      "objective": "Self-contained delegation",
+      "scenarioId": "ARCH-CASE-03",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "A specialist receives only “research the alternative” and produces a plausible answer to the wrong question. What should the coordinator change first?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Assume the specialist already knows every detail of the coordinator’s context.",
+          "rationale": "That assumption leaves the task dependent on unavailable or ambiguous context."
+        },
+        {
+          "id": "B",
+          "text": "Give every specialist unlimited tools to compensate for unclear instructions.",
+          "rationale": "More tool access does not resolve the ambiguous research objective."
+        },
+        {
+          "id": "C",
+          "text": "Ask the specialist to guess which alternative the coordinator had in mind.",
+          "rationale": "Guessing preserves the original failure rather than establishing the target."
+        },
+        {
+          "id": "D",
+          "text": "Send a self-contained task with the alternative, constraints, sources, and output contract.",
+          "rationale": "Explicit task inputs and completion criteria remove the missing-context ambiguity."
+        }
+      ],
+      "correctOptionIds": [
+        "D"
+      ],
+      "explanation": "A delegation should carry the context required to solve that task. The coordinator must not rely on unstated shared understanding to define the specialist’s objective.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T17"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "blueprintMappingStatus": "editorial_pending_official_blueprint_confirmation",
+      "contentStatus": "draft_requires_independent_qa",
+      "publiclyPublishable": false,
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-SEED-005",
+      "tags": [
+        "self-contained-delegation"
+      ],
+      "contentHash": "b0fddab49ed6b51b61db3162adaa89d5c32725af699e5569e0d20c2d1d644fe1"
+    },
+    {
+      "id": "CCAR-F-SEED-006",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A5",
+      "objective": "Long-horizon context management",
+      "scenarioId": "ARCH-CASE-03",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "After many research rounds, raw tool output overwhelms the coordinator’s context. Which change best preserves useful continuity?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Keep structured notes with source references, decisions, and unresolved issues; reload detail as needed.",
+          "rationale": "Compact persistent state preserves key information without retaining every raw output."
+        },
+        {
+          "id": "B",
+          "text": "Append every complete document again before each new research request.",
+          "rationale": "Repeated raw content increases context pressure without ensuring better focus."
+        },
+        {
+          "id": "C",
+          "text": "Delete all source references and keep only a confident final conclusion.",
+          "rationale": "Removing provenance prevents later verification of the conclusion."
+        },
+        {
+          "id": "D",
+          "text": "Restart every task from scratch without recording previous decisions.",
+          "rationale": "Discarding state loses continuity and repeats work unnecessarily."
+        }
+      ],
+      "correctOptionIds": [
+        "A"
+      ],
+      "explanation": "Preserve high-value state and references outside the active context, then retrieve details when needed. Compression must retain uncertainty and decisions, not merely shorten the text.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T18"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "blueprintMappingStatus": "editorial_pending_official_blueprint_confirmation",
+      "contentStatus": "draft_requires_independent_qa",
+      "publiclyPublishable": false,
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-SEED-006",
+      "tags": [
+        "long-horizon-context-management"
+      ],
+      "contentHash": "a49fc84d4a2f25492e2be4feb8d9ca7cd5ef9f5b5a83eb62a277343ef2483266"
+    },
+    {
+      "id": "CCAR-F-SEED-007",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A2",
+      "objective": "Distinct tool contracts",
+      "scenarioId": "ARCH-CASE-04",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "The assistant repeatedly chooses archive_ticket when it should retrieve ticket history. Which tool-design change most directly addresses this selection problem?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Give both tools the same generic description to reduce prompt length.",
+          "rationale": "Indistinguishable descriptions make the selection boundary less clear."
+        },
+        {
+          "id": "B",
+          "text": "Remove argument schemas and accept any free-form input string.",
+          "rationale": "Removing structure does not explain the distinct tool purposes."
+        },
+        {
+          "id": "C",
+          "text": "Clarify each tool’s purpose, side effects, required inputs, and selection boundaries.",
+          "rationale": "Explicit semantics help distinguish a read operation from an archival action."
+        },
+        {
+          "id": "D",
+          "text": "Rename both tools to run_action and let the model infer their meaning.",
+          "rationale": "An ambiguous shared name further obscures the operations."
+        }
+      ],
+      "correctOptionIds": [
+        "C"
+      ],
+      "explanation": "The model needs a clear contract for each operation. Describe when to use the tool and what it does, rather than rely on hidden implementation details.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T19"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "blueprintMappingStatus": "editorial_pending_official_blueprint_confirmation",
+      "contentStatus": "draft_requires_independent_qa",
+      "publiclyPublishable": false,
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-SEED-007",
+      "tags": [
+        "distinct-tool-contracts"
+      ],
+      "contentHash": "759fd4af2ef344850f8e48ce82fcefffdf92250ba7c15d6089f89c74c9f57513"
+    },
+    {
+      "id": "CCAR-F-SEED-008",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A2",
+      "objective": "MCP resources for reference content",
+      "scenarioId": "ARCH-CASE-04",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "The MCP server exposes a read-only policy document identified by a URI. The client application decides when to load that reference into context. Which primitive most directly models this interface?",
+      "options": [
+        {
+          "id": "A",
+          "text": "A mandatory write tool that modifies the policy on every read.",
+          "rationale": "A required write side effect conflicts with the reference-content requirement."
+        },
+        {
+          "id": "B",
+          "text": "An MCP resource representing the URI-addressable policy content.",
+          "rationale": "Resources model contextual content that an application can retrieve."
+        },
+        {
+          "id": "C",
+          "text": "A model sampling request whose only purpose is to create a new policy.",
+          "rationale": "Generating a new policy is different from retrieving the existing reference."
+        },
+        {
+          "id": "D",
+          "text": "A transport error returned whenever the policy is requested.",
+          "rationale": "An error does not expose the successful reference-content interface."
+        }
+      ],
+      "correctOptionIds": [
+        "B"
+      ],
+      "explanation": "A resource is a direct fit for this URI-addressable reference. Tools may also perform reads; the distinction is not that every tool must mutate data.",
+      "points": 1,
+      "difficulty": "foundational",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T20"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "blueprintMappingStatus": "editorial_pending_official_blueprint_confirmation",
+      "contentStatus": "draft_requires_independent_qa",
+      "publiclyPublishable": false,
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-SEED-008",
+      "tags": [
+        "mcp-resources-for-reference-content"
+      ],
+      "contentHash": "1af7ce18595b0ab6d9717cd7ef2ce489658ff66f40061a08a3065afa5e6bcb3c"
+    },
+    {
+      "id": "CCAR-F-SEED-009",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A4",
+      "objective": "Review criteria and representative examples",
+      "scenarioId": "ARCH-CASE-05",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "The code reviewer flags many harmless naming differences as serious defects. Which prompt revision should be tested first?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Define actionable defect criteria and provide representative positive and negative examples.",
+          "rationale": "Explicit boundaries and examples target the observed false-positive pattern."
+        },
+        {
+          "id": "B",
+          "text": "Tell the reviewer to produce more findings regardless of their relevance.",
+          "rationale": "Increasing volume does not improve the quality of defect identification."
+        },
+        {
+          "id": "C",
+          "text": "Remove all review criteria and ask for a general reaction to the code.",
+          "rationale": "Less guidance makes the desired distinction harder to establish."
+        },
+        {
+          "id": "D",
+          "text": "Require a critical severity label on every comment it produces.",
+          "rationale": "Mandatory severity inflates harmless observations rather than filtering them."
+        }
+      ],
+      "correctOptionIds": [
+        "A"
+      ],
+      "explanation": "The prompt should demonstrate the decision boundary, including non-issues. Test the revision on held-out pull requests rather than assuming examples eliminate every false positive.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T21"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "blueprintMappingStatus": "editorial_pending_official_blueprint_confirmation",
+      "contentStatus": "draft_requires_independent_qa",
+      "publiclyPublishable": false,
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-SEED-009",
+      "tags": [
+        "review-criteria-and-representative-examples"
+      ],
+      "contentHash": "d82c144b5167415ba78dee1ba13febe9f9a257addc98d0a358e7ae81d60a7e2e"
+    },
+    {
+      "id": "CCAR-F-SEED-010",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A3",
+      "objective": "Reliable CI review outcomes",
+      "scenarioId": "ARCH-CASE-05",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "The CI review command returns JSON output, but some runs fail before producing a review. How should the workflow distinguish those runs from successful reviews containing no findings?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Interpret any missing findings field as proof that no defects were found.",
+          "rationale": "An absent review can reflect execution failure rather than a clean result."
+        },
+        {
+          "id": "B",
+          "text": "Ignore command status and publish a success badge whenever the job starts.",
+          "rationale": "Job startup does not establish successful review execution."
+        },
+        {
+          "id": "C",
+          "text": "Replace every failed run with an invented empty findings array.",
+          "rationale": "That disguises a failed review as an actual successful evaluation."
+        },
+        {
+          "id": "D",
+          "text": "Check execution success and validate the review payload before publishing its result.",
+          "rationale": "The workflow must establish both a completed run and usable review data."
+        }
+      ],
+      "correctOptionIds": [
+        "D"
+      ],
+      "explanation": "Treat execution state and review findings as separate concerns. A failed agent run must not be converted into an apparently clean code review.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T06",
+        "T24"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "blueprintMappingStatus": "editorial_pending_official_blueprint_confirmation",
+      "contentStatus": "draft_requires_independent_qa",
+      "publiclyPublishable": false,
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-SEED-010",
+      "tags": [
+        "reliable-ci-review-outcomes"
+      ],
+      "contentHash": "394936a39e03396b3327ced186debfe51ec39163e3579ba9f047c87c54a438f4"
+    },
+    {
+      "id": "CCAR-F-SEED-011",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A4",
+      "objective": "Batch correlation and partial failure",
+      "scenarioId": "ARCH-CASE-06",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "Batch extraction results arrive in a different order from the input documents, and a few requests fail. What is the best reconciliation strategy?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Associate results with documents solely by their position in the output file.",
+          "rationale": "Position is not a reliable request-to-result association for batch results."
+        },
+        {
+          "id": "B",
+          "text": "Discard every successful result whenever one request in the batch fails.",
+          "rationale": "Independent request failures do not require discarding unrelated successes."
+        },
+        {
+          "id": "C",
+          "text": "Correlate by custom_id, inspect each result, and retry only eligible failures.",
+          "rationale": "Stable identifiers and per-request outcomes support accurate partial recovery."
+        },
+        {
+          "id": "D",
+          "text": "Assign the first successful extraction to every document missing a result.",
+          "rationale": "Reusing unrelated output corrupts the document-to-result relationship."
+        }
+      ],
+      "correctOptionIds": [
+        "C"
+      ],
+      "explanation": "Use the request identifier rather than output order. Persist each item’s result and apply a bounded retry policy appropriate to that item’s failure.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T22"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "blueprintMappingStatus": "editorial_pending_official_blueprint_confirmation",
+      "contentStatus": "draft_requires_independent_qa",
+      "publiclyPublishable": false,
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-SEED-011",
+      "tags": [
+        "batch-correlation-and-partial-failure"
+      ],
+      "contentHash": "70f5138d3aff615e962e66d33ce806855ee034792f5ddbc0414cbf3f5f64e97e"
+    },
+    {
+      "id": "CCAR-F-SEED-012",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A2",
+      "objective": "MCP tool errors versus protocol errors",
+      "scenarioId": "ARCH-CASE-06",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "An MCP lookup tool receives valid arguments, runs successfully at the protocol level, but cannot complete the business operation. How should it expose that execution failure to the model?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Pretend the operation succeeded and return invented business data.",
+          "rationale": "Fabricated success prevents correct recovery and misrepresents the operation."
+        },
+        {
+          "id": "B",
+          "text": "Return a tool result marked isError with useful, safe failure information.",
+          "rationale": "Tool execution failures can be represented as error-marked tool results."
+        },
+        {
+          "id": "C",
+          "text": "Always terminate the MCP connection before returning any result.",
+          "rationale": "A recoverable operation failure does not inherently require disconnecting the client."
+        },
+        {
+          "id": "D",
+          "text": "Return an unknown-method protocol error even though the tool exists.",
+          "rationale": "That describes a different failure from an unsuccessful business operation."
+        }
+      ],
+      "correctOptionIds": [
+        "B"
+      ],
+      "explanation": "Distinguish a tool’s execution failure from a protocol failure such as an unknown method. Return enough information for recovery without exposing sensitive internals.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T23"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "blueprintMappingStatus": "editorial_pending_official_blueprint_confirmation",
+      "contentStatus": "draft_requires_independent_qa",
+      "publiclyPublishable": false,
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-SEED-012",
+      "tags": [
+        "mcp-tool-errors-versus-protocol-errors"
+      ],
+      "contentHash": "4859cb4851bc65f98633f6aee07bb4837845ab2fe11dc9a1c1f90c8d6d516ee0"
+    }
+  ]
+}

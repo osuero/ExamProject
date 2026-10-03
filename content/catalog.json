@@ -1,0 +1,237 @@
+{
+ "certifications": [
+  {
+   "code": "CCDV-F",
+   "title": "Claude Certified Developer – Foundations",
+   "level": "Foundations",
+   "sortOrder": 1,
+   "shortDescription": "Build applications and agents on the Claude API: integration, tools and MCP, model selection, prompting, security and debugging.",
+   "description": "Practice for the Developer – Foundations exam. Questions are original, scenario-based and mapped to the eight domains of the official exam guide v1.0 (effective July 2026).",
+   "disclaimer": "Independent practice simulator. Not affiliated with, endorsed by or a substitute for Anthropic or Pearson VUE. Passing here does not grant a certification and does not predict the official result.",
+   "domains": [
+    {
+     "code": "D1",
+     "name": "Agents and Workflows",
+     "weightPercent": 14.7,
+     "bankTarget": 44,
+     "objectives": [
+      "Agent Architecture (4.5%)",
+      "Agent Construction with Claude (5.3%)",
+      "Agent Patterns and Frameworks (4.9%)"
+     ]
+    },
+    {
+     "code": "D2",
+     "name": "Applications and Integration",
+     "weightPercent": 33.1,
+     "bankTarget": 99,
+     "objectives": [
+      "Understanding Requirements (3.4%)",
+      "Systems Life Cycle (2.8%)",
+      "Claude API Mechanics (6.8%)",
+      "Software Engineering Foundations (7.4%)",
+      "Claude Application Design (8.6%)",
+      "Configuration Management (4.1%)"
+     ]
+    },
+    {
+     "code": "D3",
+     "name": "Claude Code",
+     "weightPercent": 3.1,
+     "bankTarget": 9,
+     "objectives": [
+      "Claude Code Operation (3.1%)"
+     ]
+    },
+    {
+     "code": "D4",
+     "name": "Eval, Testing, and Debugging",
+     "weightPercent": 2.6,
+     "bankTarget": 8,
+     "objectives": [
+      "Debugging and Error Handling (2.6%)"
+     ]
+    },
+    {
+     "code": "D5",
+     "name": "Model Selection and Optimization",
+     "weightPercent": 16.8,
+     "bankTarget": 51,
+     "objectives": [
+      "LLM Fundamentals (5.2%)",
+      "Technical Fundamentals (6.1%)",
+      "Model Selection and Tradeoffs (2.7%)",
+      "Cost and Token Management (2.8%)"
+     ]
+    },
+    {
+     "code": "D6",
+     "name": "Prompt and Context Engineering",
+     "weightPercent": 11.0,
+     "bankTarget": 33,
+     "objectives": [
+      "Context Engineering (3.8%)",
+      "Prompt Engineering (4.6%)",
+      "Output Handling (2.6%)"
+     ]
+    },
+    {
+     "code": "D7",
+     "name": "Security and Safety",
+     "weightPercent": 8.1,
+     "bankTarget": 24,
+     "objectives": [
+      "AI Application Security (3.2%)",
+      "Guardrails and Safe Deployment (2.3%)",
+      "Claude Hooks (1.0%)",
+      "Identity, Secrets, and Key Management (1.6%)"
+     ]
+    },
+    {
+     "code": "D8",
+     "name": "Tools and MCPs",
+     "weightPercent": 10.6,
+     "bankTarget": 32,
+     "objectives": [
+      "Tool Implementation (4.4%)",
+      "MCP Server Development (2.1%)",
+      "Agentic Customization (4.1%)"
+     ]
+    }
+   ],
+   "profile": {
+    "questionCount": 53,
+    "examDurationMinutes": 120,
+    "appointmentDurationMinutes": 135,
+    "allowedQuestionTypes": [
+     "single_choice",
+     "multiple_response"
+    ],
+    "simulatorPassPercent": 80,
+    "officialScoreReference": "Official result: scaled score 100–1,000, pass at 720 (exam guide P04, FAQ P06). Not convertible to a percentage of correct answers.",
+    "verificationStatus": "confirmed_official_exam_guide",
+    "sourceIds": [
+     "P04",
+     "P06",
+     "P02"
+    ],
+    "blueprintVersion": "Exam guide v1.0, effective July 2026",
+    "notes": "Exam time 120 min; seat time about 135 min including check-in and survey (FAQ). Accommodations are approved individually by Pearson VUE and are not modelled as exam time. The official guide does not publish the split between question types or the number of options."
+   }
+  },
+  {
+   "code": "CCAR-F",
+   "title": "Claude Certified Architect – Foundations",
+   "level": "Foundations",
+   "sortOrder": 2,
+   "shortDescription": "Design agentic systems with Claude: orchestration, tools and MCP, Claude Code configuration, structured output and reliability.",
+   "description": "Practice for the Architect – Foundations exam. Scenario-based questions mapped to the five domains and task statements of the official exam guide v1.0 (effective July 2026).",
+   "disclaimer": "Independent practice simulator. Not affiliated with, endorsed by or a substitute for Anthropic or Pearson VUE. Passing here does not grant a certification and does not predict the official result.",
+   "domains": [
+    {
+     "code": "A1",
+     "name": "Agentic Architecture & Orchestration",
+     "weightPercent": 27,
+     "bankTarget": 81,
+     "objectives": [
+      "1.1 Design and implement agentic loops for autonomous task execution",
+      "1.2 Orchestrate multi-agent systems with coordinator-subagent patterns",
+      "1.3 Configure subagent invocation, context passing, and spawning",
+      "1.4 Implement multi-step workflows with enforcement and handoff patterns",
+      "1.5 Apply Agent SDK hooks for tool call interception and data normalization",
+      "1.6 Design task decomposition strategies for complex workflows",
+      "1.7 Manage session state, resumption, and forking"
+     ]
+    },
+    {
+     "code": "A2",
+     "name": "Tool Design & MCP Integration",
+     "weightPercent": 18,
+     "bankTarget": 54,
+     "objectives": [
+      "2.1 Design effective tool interfaces with clear descriptions and boundaries",
+      "2.2 Implement structured error responses for MCP tools",
+      "2.3 Distribute tools appropriately across agents and configure tool choice",
+      "2.4 Integrate MCP servers into Claude Code and agent workflows",
+      "2.5 Select and apply built-in tools (Read, Write, Edit, Bash, Grep, Glob) effectively"
+     ]
+    },
+    {
+     "code": "A3",
+     "name": "Claude Code Configuration & Workflows",
+     "weightPercent": 20,
+     "bankTarget": 60,
+     "objectives": [
+      "3.1 Configure CLAUDE.md files with appropriate hierarchy, scoping, and modular organization",
+      "3.2 Create and configure custom slash commands and skills",
+      "3.3 Apply path-specific rules for conditional convention loading",
+      "3.4 Determine when to use plan mode vs direct execution",
+      "3.5 Apply iterative refinement techniques for progressive improvement",
+      "3.6 Integrate Claude Code into CI/CD pipelines"
+     ]
+    },
+    {
+     "code": "A4",
+     "name": "Prompt Engineering & Structured Output",
+     "weightPercent": 20,
+     "bankTarget": 60,
+     "objectives": [
+      "4.1 Design prompts with explicit criteria to improve precision and reduce false positives",
+      "4.2 Apply few-shot prompting to improve output consistency and quality",
+      "4.3 Enforce structured output using tool use and JSON schemas",
+      "4.4 Implement validation, retry, and feedback loops for extraction quality",
+      "4.5 Design efficient batch processing strategies",
+      "4.6 Design multi-instance and multi-pass review architectures"
+     ]
+    },
+    {
+     "code": "A5",
+     "name": "Context Management & Reliability",
+     "weightPercent": 15,
+     "bankTarget": 45,
+     "objectives": [
+      "5.1 Manage conversation context to preserve critical information across long interactions",
+      "5.2 Design effective escalation and ambiguity resolution patterns",
+      "5.3 Implement error propagation strategies across multi-agent systems",
+      "5.4 Manage context effectively in large codebase exploration",
+      "5.5 Design human review workflows and confidence calibration",
+      "5.6 Preserve information provenance and handle uncertainty in multi- source synthesis"
+     ]
+    }
+   ],
+   "profile": {
+    "questionCount": 60,
+    "examDurationMinutes": 120,
+    "appointmentDurationMinutes": 135,
+    "allowedQuestionTypes": [
+     "single_choice",
+     "multiple_response"
+    ],
+    "simulatorPassPercent": 80,
+    "officialScoreReference": "Official result: scaled score 100–1,000, pass at 720 (exam guide P05, FAQ P06). Not convertible to a percentage of correct answers.",
+    "verificationStatus": "confirmed_official_exam_guide",
+    "sourceIds": [
+     "P05",
+     "P06",
+     "P03"
+    ],
+    "blueprintVersion": "Exam guide v1.0, effective July 2026",
+    "notes": "The official exam presents 4 scenarios drawn at random from 6 (guide P05). One testimony (C06) reports 2.5 hours, likely seat time; official sources state 120 minutes. Option count per item is not officially published."
+   }
+  }
+ ],
+ "languages": [
+  {
+   "certificationCode": "CCDV-F",
+   "locale": "en",
+   "sourceId": "P06",
+   "evidence": "Anthropic Partner Academy certification FAQ: 'The exam and prep content are available in English only.' (checked 2026-10-03; program-wide statement)"
+  },
+  {
+   "certificationCode": "CCAR-F",
+   "locale": "en",
+   "sourceId": "P06",
+   "evidence": "Anthropic Partner Academy certification FAQ: 'The exam and prep content are available in English only.' (checked 2026-10-03; program-wide statement)"
+  }
+ ]
+}

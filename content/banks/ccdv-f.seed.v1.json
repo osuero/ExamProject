@@ -1,0 +1,671 @@
+{
+  "schemaVersion": "1.0",
+  "generatedAt": "2026-10-03",
+  "examCode": "CCDV-F",
+  "notice": "Original draft seed questions. Not official exam content. Structural checks passed; independent content QA and per-exam language verification are still required.",
+  "defaultPublishable": false,
+  "questionCount": 12,
+  "cases": [],
+  "questions": [
+    {
+      "id": "CCDV-F-SEED-001",
+      "version": 1,
+      "examCode": "CCDV-F",
+      "locale": "en",
+      "domainId": "D1",
+      "objective": "Workflow versus autonomous agent",
+      "scenarioId": null,
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "A team processes invoices through extraction, schema validation, and an accounting lookup. Every invoice must follow these stages in the same order. Which design best fits this requirement?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Use an autonomous planner that chooses a new sequence for each invoice.",
+          "rationale": "Dynamic planning adds discretion where the required sequence is fixed."
+        },
+        {
+          "id": "B",
+          "text": "Use a predefined workflow with model calls only where interpretation is needed.",
+          "rationale": "The workflow enforces the prescribed stages while retaining model-based extraction."
+        },
+        {
+          "id": "C",
+          "text": "Use three agents that independently decide whether to skip validation.",
+          "rationale": "Independent decisions can violate the mandatory validation step."
+        },
+        {
+          "id": "D",
+          "text": "Use one unrestricted agent and describe the preferred sequence in its prompt.",
+          "rationale": "A preference in a prompt does not enforce the required order."
+        }
+      ],
+      "correctOptionIds": [
+        "B"
+      ],
+      "explanation": "The task has known stages, so orchestration should encode them directly. Autonomous planning is not needed merely because one stage uses a language model.",
+      "points": 1,
+      "difficulty": "foundational",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T01"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "blueprintMappingStatus": "editorial_pending_official_blueprint_confirmation",
+      "contentStatus": "draft_requires_independent_qa",
+      "publiclyPublishable": false,
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCDV-F-SEED-001",
+      "tags": [
+        "workflow-versus-autonomous-agent"
+      ],
+      "contentHash": "670d49c6694638faedc0d7ebb83b4d46d4c5cfd48ffcb790152832e2ed7c3e2b"
+    },
+    {
+      "id": "CCDV-F-SEED-002",
+      "version": 1,
+      "examCode": "CCDV-F",
+      "locale": "en",
+      "domainId": "D1",
+      "objective": "Choosing an agent implementation",
+      "scenarioId": null,
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "A developer is building an assistant that inspects a repository, edits files, and runs tests. The team wants a supported agent loop and tools rather than implementing those capabilities around raw API calls. Which starting point best matches this goal?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Implement a repository executor around raw Messages API calls and manage its state yourself.",
+          "rationale": "This is possible, but requires the orchestration work the team wants to avoid."
+        },
+        {
+          "id": "B",
+          "text": "Publish an MCP server and rely on the transport to coordinate the full coding task.",
+          "rationale": "MCP connectivity alone does not supply the complete coding-agent loop."
+        },
+        {
+          "id": "C",
+          "text": "Create a skill file and call it directly through the Messages endpoint as an executor.",
+          "rationale": "A skill definition is not itself a Messages API repository-execution service."
+        },
+        {
+          "id": "D",
+          "text": "Use the Claude Agent SDK with explicitly scoped tool permissions.",
+          "rationale": "The SDK supplies agent capabilities while permissions constrain available actions."
+        }
+      ],
+      "correctOptionIds": [
+        "D"
+      ],
+      "explanation": "The Agent SDK is suited to programmatic agent behavior with tools and an execution loop. Raw model requests alone do not provide a repository executor.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T02"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "blueprintMappingStatus": "editorial_pending_official_blueprint_confirmation",
+      "contentStatus": "draft_requires_independent_qa",
+      "publiclyPublishable": false,
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCDV-F-SEED-002",
+      "tags": [
+        "choosing-an-agent-implementation"
+      ],
+      "contentHash": "83a092c888cca21ea1b9436f6e767abc050b05f75cd92e2245cfa95a51e951d4"
+    },
+    {
+      "id": "CCDV-F-SEED-003",
+      "version": 1,
+      "examCode": "CCDV-F",
+      "locale": "en",
+      "domainId": "D2",
+      "objective": "Client tool lifecycle",
+      "scenarioId": null,
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "An application defines a client-side get_order tool. Claude returns a tool_use block with an order identifier, but no lookup has occurred. What should the application do next?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Validate the requested call, execute the lookup, and return its tool_result.",
+          "rationale": "The application executes client-side tools and supplies their results."
+        },
+        {
+          "id": "B",
+          "text": "Read the final answer because the lookup already ran inside the model.",
+          "rationale": "A client-side tool request does not itself execute the application function."
+        },
+        {
+          "id": "C",
+          "text": "Wait for the same response object to acquire a database result.",
+          "rationale": "The completed response does not asynchronously execute this client-side lookup."
+        },
+        {
+          "id": "D",
+          "text": "Run another request without the tool result and treat it as a successful lookup.",
+          "rationale": "That omits the actual evidence the model needs to answer."
+        }
+      ],
+      "correctOptionIds": [
+        "A"
+      ],
+      "explanation": "A client tool call is a request to the application, not proof of execution. The result must be associated with the corresponding tool-use identifier.",
+      "points": 1,
+      "difficulty": "foundational",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T03"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "blueprintMappingStatus": "editorial_pending_official_blueprint_confirmation",
+      "contentStatus": "draft_requires_independent_qa",
+      "publiclyPublishable": false,
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCDV-F-SEED-003",
+      "tags": [
+        "client-tool-lifecycle"
+      ],
+      "contentHash": "34e3417c641be1301aebab188c260c07283aabd8e1aab11a1a107ca3788f13e3"
+    },
+    {
+      "id": "CCDV-F-SEED-004",
+      "version": 1,
+      "examCode": "CCDV-F",
+      "locale": "en",
+      "domainId": "D2",
+      "objective": "Handling incomplete model output",
+      "scenarioId": null,
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "A report-generation response has stop_reason=max_tokens and ends halfway through a required section. Which handling is most appropriate?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Accept the report after checking only that the HTTP request succeeded.",
+          "rationale": "Transport success does not establish that the report finished."
+        },
+        {
+          "id": "B",
+          "text": "Resubmit identical inputs with the same restrictive limit until a response arrives.",
+          "rationale": "A response already arrived; unchanged limits do not address the observed truncation."
+        },
+        {
+          "id": "C",
+          "text": "Treat the report as incomplete and use a controlled continuation or retry strategy.",
+          "rationale": "The application must handle the output limit rather than silently accept truncation."
+        },
+        {
+          "id": "D",
+          "text": "Remove the final incomplete section and validate only the remaining section headings.",
+          "rationale": "That can hide the truncation while omitting required report content."
+        }
+      ],
+      "correctOptionIds": [
+        "C"
+      ],
+      "explanation": "The stop reason identifies an output-limit stop. Completion handling should distinguish it from a normal end and validate the recovered report.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T04"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "blueprintMappingStatus": "editorial_pending_official_blueprint_confirmation",
+      "contentStatus": "draft_requires_independent_qa",
+      "publiclyPublishable": false,
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCDV-F-SEED-004",
+      "tags": [
+        "handling-incomplete-model-output"
+      ],
+      "contentHash": "104d83f52eea100fb140cf31ac36e5deb97a2cb507486e717c338cbeaee25410"
+    },
+    {
+      "id": "CCDV-F-SEED-005",
+      "version": 1,
+      "examCode": "CCDV-F",
+      "locale": "en",
+      "domainId": "D2",
+      "objective": "Streaming lifecycle and tool arguments",
+      "scenarioId": null,
+      "questionType": "multiple_response",
+      "selectCount": 2,
+      "stem": "A web application streams Claude responses. It sometimes receives a successful HTTP status followed by a stream error, and tool arguments arrive in fragments. Which TWO measures should it implement?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Treat the initial HTTP success as proof that generation completed.",
+          "rationale": "A later stream failure can occur after the initial response status."
+        },
+        {
+          "id": "B",
+          "text": "Handle stream error events and record whether a response completed.",
+          "rationale": "The stream lifecycle must be checked beyond the initial HTTP status."
+        },
+        {
+          "id": "C",
+          "text": "Execute a tool whenever any argument fragment resembles valid JSON.",
+          "rationale": "Fragments are not necessarily the complete validated tool invocation."
+        },
+        {
+          "id": "D",
+          "text": "Discard event types and concatenate every payload into display text.",
+          "rationale": "Control and tool events cannot all be treated as user-visible text."
+        },
+        {
+          "id": "E",
+          "text": "Assemble tool arguments across their events and validate before execution.",
+          "rationale": "Argument fragments must be reconstructed before a tool call is accepted."
+        }
+      ],
+      "correctOptionIds": [
+        "B",
+        "E"
+      ],
+      "explanation": "Streaming requires event-aware processing. Track completion and failures separately from HTTP status, and reconstruct tool inputs before validating or executing them.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T05"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "blueprintMappingStatus": "editorial_pending_official_blueprint_confirmation",
+      "contentStatus": "draft_requires_independent_qa",
+      "publiclyPublishable": false,
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCDV-F-SEED-005",
+      "tags": [
+        "streaming-lifecycle-and-tool-arguments"
+      ],
+      "contentHash": "c1fc75d75bd3c0ac6154c0b0d60767f95f74acc03836d603cb06da703398ddde"
+    },
+    {
+      "id": "CCDV-F-SEED-006",
+      "version": 1,
+      "examCode": "CCDV-F",
+      "locale": "en",
+      "domainId": "D3",
+      "objective": "Noninteractive Claude Code execution",
+      "scenarioId": null,
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "A CI job must send a prompt to Claude Code, receive JSON output, and exit without opening an interactive conversation. Which command pattern matches this requirement?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Run claude with the prompt in an interactive terminal and capture terminal text.",
+          "rationale": "This relies on an interactive session rather than the requested print-mode execution."
+        },
+        {
+          "id": "B",
+          "text": "Run claude -p \"Review this diff\" --output-format text.",
+          "rationale": "The job requires JSON, while this explicitly selects text output."
+        },
+        {
+          "id": "C",
+          "text": "Run claude -p \"Review this diff\" --output-format json.",
+          "rationale": "Print mode supports a prompt-driven run with structured output."
+        },
+        {
+          "id": "D",
+          "text": "Run claude -p \"Review this diff\" and assume its default output is JSON.",
+          "rationale": "The default print output is text; the job should request JSON explicitly."
+        }
+      ],
+      "correctOptionIds": [
+        "C"
+      ],
+      "explanation": "The non-interactive print mode and JSON output setting match this task. Authentication, repository trust, and tool permissions still need separate CI configuration.",
+      "points": 1,
+      "difficulty": "foundational",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T06"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "blueprintMappingStatus": "editorial_pending_official_blueprint_confirmation",
+      "contentStatus": "draft_requires_independent_qa",
+      "publiclyPublishable": false,
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCDV-F-SEED-006",
+      "tags": [
+        "noninteractive-claude-code-execution"
+      ],
+      "contentHash": "2acc9181f9b25b05742beed30cf453a2c0dcfd0f439e931c0fdb09a0a2775e16"
+    },
+    {
+      "id": "CCDV-F-SEED-007",
+      "version": 1,
+      "examCode": "CCDV-F",
+      "locale": "en",
+      "domainId": "D4",
+      "objective": "Error classification",
+      "scenarioId": null,
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "An API integration fails intermittently. Logs show some 401 responses and some 429 responses. What is the best first improvement to its recovery logic?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Classify the errors so authentication failures and rate limits take different paths.",
+          "rationale": "These failures have different causes and should not share blind recovery."
+        },
+        {
+          "id": "B",
+          "text": "Retry both categories immediately through one unbounded retry policy.",
+          "rationale": "Unbounded retries can amplify rate pressure and conceal invalid credentials."
+        },
+        {
+          "id": "C",
+          "text": "Suppress response categories so all callers receive the same successful fallback.",
+          "rationale": "That masks different operational failures instead of handling their causes."
+        },
+        {
+          "id": "D",
+          "text": "Switch the requested model for both categories without checking the credentials.",
+          "rationale": "Model substitution does not fix invalid authentication or diagnose rate pressure."
+        }
+      ],
+      "correctOptionIds": [
+        "A"
+      ],
+      "explanation": "Preserve and classify API error information. Fix authentication failures rather than repeatedly sending invalid credentials, and handle rate pressure with a bounded policy.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T07"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "blueprintMappingStatus": "editorial_pending_official_blueprint_confirmation",
+      "contentStatus": "draft_requires_independent_qa",
+      "publiclyPublishable": false,
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCDV-F-SEED-007",
+      "tags": [
+        "error-classification"
+      ],
+      "contentHash": "36e95666104545dbfd91f3c1b29b4c84ae36179f5302b040f47909ca23c8018f"
+    },
+    {
+      "id": "CCDV-F-SEED-008",
+      "version": 1,
+      "examCode": "CCDV-F",
+      "locale": "en",
+      "domainId": "D5",
+      "objective": "Model selection through evaluation",
+      "scenarioId": null,
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "A support classifier meets the accuracy target but exceeds its latency budget. A smaller model may be faster. What evidence should drive the change?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Choose the candidate that performs best on the examples used to tune its prompt.",
+          "rationale": "Reusing tuning examples as the evaluation can overstate generalization."
+        },
+        {
+          "id": "B",
+          "text": "Choose the lowest-latency candidate after checking one typical customer message.",
+          "rationale": "One typical example does not establish quality across relevant failure categories."
+        },
+        {
+          "id": "C",
+          "text": "Choose the candidate with the highest general benchmark score, ignoring task latency.",
+          "rationale": "A general score does not establish the application-specific quality and latency trade-off."
+        },
+        {
+          "id": "D",
+          "text": "Evaluate candidate models on representative held-out cases and compare quality and latency.",
+          "rationale": "Representative evaluations expose the trade-off relevant to the stated constraints."
+        }
+      ],
+      "correctOptionIds": [
+        "D"
+      ],
+      "explanation": "Model selection should be based on the application evaluation, including important failure categories. A promising cost or speed claim is not a substitute for measured task quality.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T08"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "blueprintMappingStatus": "editorial_pending_official_blueprint_confirmation",
+      "contentStatus": "draft_requires_independent_qa",
+      "publiclyPublishable": false,
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCDV-F-SEED-008",
+      "tags": [
+        "model-selection-through-evaluation"
+      ],
+      "contentHash": "66bdfde079bb3d4486f67bba2c128066980c88f727d8cd46d50c699b52ac49ad"
+    },
+    {
+      "id": "CCDV-F-SEED-009",
+      "version": 1,
+      "examCode": "CCDV-F",
+      "locale": "en",
+      "domainId": "D5",
+      "objective": "Input token budgeting",
+      "scenarioId": null,
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "A service adds retrieved documents and tool definitions to each request. Before generation, it needs an estimate of input token usage to enforce a context budget. Which approach is most appropriate?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Use the output token limit as the exact size of the input.",
+          "rationale": "The output limit and the input size represent different quantities."
+        },
+        {
+          "id": "B",
+          "text": "Use token counting on the planned input, allowing for documented estimation limits.",
+          "rationale": "Counting the planned input is suited to preflight context-budget decisions."
+        },
+        {
+          "id": "C",
+          "text": "Count characters in the user message and ignore tools and retrieved documents.",
+          "rationale": "The rest of the model input also contributes to token usage."
+        },
+        {
+          "id": "D",
+          "text": "Run the full generation first and call that a preflight check.",
+          "rationale": "A check after generation cannot prevent that generation request."
+        }
+      ],
+      "correctOptionIds": [
+        "B"
+      ],
+      "explanation": "Budget the actual planned input rather than only the visible user sentence. Token-counting estimates support preflight decisions but should not be advertised as a billing guarantee.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T09"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "blueprintMappingStatus": "editorial_pending_official_blueprint_confirmation",
+      "contentStatus": "draft_requires_independent_qa",
+      "publiclyPublishable": false,
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCDV-F-SEED-009",
+      "tags": [
+        "input-token-budgeting"
+      ],
+      "contentHash": "78b144497c959904f27f72d8216254b0ff7d381aa60d4b5f83fd3e6e4ab24ebc"
+    },
+    {
+      "id": "CCDV-F-SEED-010",
+      "version": 1,
+      "examCode": "CCDV-F",
+      "locale": "en",
+      "domainId": "D6",
+      "objective": "Structural versus semantic validation",
+      "scenarioId": null,
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "An extraction response matches its required JSON schema, but its invoice total disagrees with the line items in the source document. What should the application conclude?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Accept the result because schema validation is the final correctness check.",
+          "rationale": "Structural validity does not prove that values match the source."
+        },
+        {
+          "id": "B",
+          "text": "Remove schema validation and accept whichever free-text total sounds most plausible.",
+          "rationale": "Discarding structural checks and relying on plausibility does not ground the value."
+        },
+        {
+          "id": "C",
+          "text": "The structure passed, but source-grounded business validation must still run.",
+          "rationale": "Schema adherence and correctness of extracted business values are different checks."
+        },
+        {
+          "id": "D",
+          "text": "Retry the same schema-only check until the model returns the same total twice.",
+          "rationale": "Repeated agreement without source validation can preserve the same factual error."
+        }
+      ],
+      "correctOptionIds": [
+        "C"
+      ],
+      "explanation": "Structured output constrains representation, not the truth of every value. Validate financial relationships and source evidence before accepting the extracted record.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T10"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "blueprintMappingStatus": "editorial_pending_official_blueprint_confirmation",
+      "contentStatus": "draft_requires_independent_qa",
+      "publiclyPublishable": false,
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCDV-F-SEED-010",
+      "tags": [
+        "structural-versus-semantic-validation"
+      ],
+      "contentHash": "64912ef5e59fc55dfc9d35e0235658eea3c8cff7ab62537d6d202e9a98c97ab0"
+    },
+    {
+      "id": "CCDV-F-SEED-011",
+      "version": 1,
+      "examCode": "CCDV-F",
+      "locale": "en",
+      "domainId": "D7",
+      "objective": "Least-privilege agent permissions",
+      "scenarioId": null,
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "A repository-review agent only needs to inspect files. The operator wants to prevent file edits and shell execution. Which configuration best reflects that boundary?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Grant only the necessary read tools and restrict other actions through permissions.",
+          "rationale": "Tool permissions enforce a capability boundary beyond a descriptive instruction."
+        },
+        {
+          "id": "B",
+          "text": "Grant every tool and put a no-edit rule in the repository instructions.",
+          "rationale": "An instruction is not equivalent to removing tool access."
+        },
+        {
+          "id": "C",
+          "text": "Permit edits and shell commands but audit their effects after the review.",
+          "rationale": "Auditing after execution does not enforce the requested read-only boundary."
+        },
+        {
+          "id": "D",
+          "text": "Allow shell access because the final response is configured as a read-only report.",
+          "rationale": "The final response format does not constrain the capabilities of a shell tool."
+        }
+      ],
+      "correctOptionIds": [
+        "A"
+      ],
+      "explanation": "Express the boundary in the execution permissions, not only in natural-language instructions. Keep access limited to the repository information required for the review.",
+      "points": 1,
+      "difficulty": "foundational",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T11"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "blueprintMappingStatus": "editorial_pending_official_blueprint_confirmation",
+      "contentStatus": "draft_requires_independent_qa",
+      "publiclyPublishable": false,
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCDV-F-SEED-011",
+      "tags": [
+        "least-privilege-agent-permissions"
+      ],
+      "contentHash": "3d203db76db483dd6c1e9dfe3dbf3b41ecd74eedb35ad31bf6db3d8f77627805"
+    },
+    {
+      "id": "CCDV-F-SEED-012",
+      "version": 1,
+      "examCode": "CCDV-F",
+      "locale": "en",
+      "domainId": "D8",
+      "objective": "MCP transport selection",
+      "scenarioId": null,
+      "questionType": "multiple_response",
+      "selectCount": 2,
+      "stem": "Under the MCP 2025-06-18 transport specification, a desktop client launches a local server process, while a separate hosted server serves remote clients. Which TWO pairings are appropriate?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Use raw SQL as the standard transport for both servers.",
+          "rationale": "SQL is not one of the standard transports described by this specification."
+        },
+        {
+          "id": "B",
+          "text": "Use model token streaming as the transport for the local process.",
+          "rationale": "Model output streaming is not the local MCP process transport."
+        },
+        {
+          "id": "C",
+          "text": "Use a shared JSON file as the standard remote server transport.",
+          "rationale": "A shared file is not the described remote HTTP transport."
+        },
+        {
+          "id": "D",
+          "text": "Use stdio for communication with the launched local process.",
+          "rationale": "The client-launched process model matches the stdio transport."
+        },
+        {
+          "id": "E",
+          "text": "Use Streamable HTTP for the hosted remote MCP service.",
+          "rationale": "The hosted service model matches the HTTP transport in this specification."
+        }
+      ],
+      "correctOptionIds": [
+        "D",
+        "E"
+      ],
+      "explanation": "The process topology informs transport choice. This question is pinned to the cited specification and does not claim that every HTTP deployment is automatically authenticated.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T12"
+      ],
+      "sourceCheckedAt": "2026-10-03",
+      "blueprintMappingStatus": "editorial_pending_official_blueprint_confirmation",
+      "contentStatus": "draft_requires_independent_qa",
+      "publiclyPublishable": false,
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCDV-F-SEED-012",
+      "tags": [
+        "mcp-transport-selection"
+      ],
+      "contentHash": "ddbb4e8de39c1a6c7944ad7f357d36859d2b5d0ae87970e716cb0d1048c1b519"
+    }
+  ]
+}
