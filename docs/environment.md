@@ -14,7 +14,8 @@ branch-protection changes. These remain the owner's decision.
 | Item | Check | Result |
 |---|---|---|
 | Repository exists | `git ls-remote https://github.com/osuero/ExamProject.git` | reachable, empty, public |
-| Push access from this session | add repository with push access | **refused: "link your GitHub account to let Claude access repositories"** |
+| Push access from this session | add repository with push access | **refused: "link your GitHub account to let Claude access repositories"** (still on 2026-10-05) |
+| Push by the owner | `git push -u origin main` from the local clone, personal account `osuero` | done 2026-10-05; CI run 37323260956 passed |
 | .NET | `dotnet --version` | 10.0.401 (installed in the cloud workspace with the official install script) |
 | Node | `node -v` | v24.21.0 (official tarball, SHA-256 verified) |
 | PostgreSQL | local cluster | 16.15 |
@@ -22,7 +23,7 @@ branch-protection changes. These remain the owner's decision.
 | Docker | CLI present, no daemon | images and compose not run here; `docker compose config` validated |
 
 ## Pending owner actions
-1. Link GitHub (claude.ai → Settings → Connectors) with the `osuero` account so commits can be pushed and a PR opened.
+1. Link GitHub (claude.ai → Settings → Connectors) with the `osuero` account so the session can push and open PRs itself; until then the owner pushes from the local clone (remote set to `https://osuero@github.com/osuero/ExamProject.git` so the personal account is used).
    The repository is **public**: the question banks with answer keys are in `content/`. Make it private if that is not intended.
 2. Decide hosting and database for a deployment (none chosen; no cost incurred).
 3. Production email: choose a transactional SMTP provider, verify the sender domain, and set `Email__SmtpHost`,

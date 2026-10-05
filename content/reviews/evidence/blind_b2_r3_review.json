@@ -1,0 +1,19 @@
+[
+  {
+    "id": "CCDV-F-B2-D8-001",
+    "chosen": ["D"],
+    "confidence": "high",
+    "verdict": "pass",
+    "verifiedFacts": [
+      {"claim": "With tool_choice any or tool, the API prefills the assistant message to force tool use, so the model will not emit natural language before tool_use blocks even if asked.", "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use", "supported": true},
+      {"claim": "tool_choice auto lets Claude decide whether to call tools (no guarantee of a call); docs suggest auto plus explicit instructions when text context is wanted.", "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use", "supported": true},
+      {"claim": "tool_choice tool forces a specific tool; any requires some tool but not a particular one.", "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use", "supported": true}
+    ],
+    "issues": [
+      "Minor: B mirrors the docs' own recommendation for getting explanations, which is a good trap; it is correctly excluded only by the 'guaranteed' requirement, which the stem states clearly.",
+      "Minor: C's premise ('any allows a text block') is false per docs; also it would not guarantee file_ticket specifically. Two independent reasons to reject; acceptable.",
+      "Minor wording cue: D is the only option that keeps the forced tool_choice, which already satisfies requirement 1; acceptable since the stem's constraint is legitimate."
+    ],
+    "suggestedFix": "None required. Optionally tighten the stem to 'guaranteed to call file_ticket specifically' to make C's second failure explicit."
+  }
+]

@@ -85,6 +85,8 @@ public class ExamProfile
     /// <summary>Time allowed to answer, in minutes. Not the appointment duration and not an accommodation.</summary>
     public int ExamDurationMinutes { get; set; }
     public int? AppointmentDurationMinutes { get; set; }
+    /// <summary>When set (CCAR-F: 4), a simulation draws all items from this many randomly chosen scenarios.</summary>
+    public int? ScenariosPerForm { get; set; }
     public List<string> AllowedQuestionTypes { get; set; } = new();
     public List<DomainWeight> DomainWeights { get; set; } = new();
     public decimal SimulatorPassPercent { get; set; } = 80m;

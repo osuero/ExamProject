@@ -1,0 +1,1724 @@
+{
+ "schemaVersion": "1.0",
+ "examCode": "CCAR-F",
+ "cases": [],
+ "questions": [
+  {
+   "id": "CCAR-F-B2-A3-001",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A3",
+   "objective": "3.1 Configure CLAUDE.md files with appropriate hierarchy, scoping, and modular organization",
+   "scenarioId": "ARCH-CASE-02",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "The billing team keeps its ledger standards in docs/standards/ledger.md at the monorepo root and wants them loaded only through services/billing/CLAUDE.md, which contains the line @docs/standards/ledger.md. When Claude works on billing files, /context lists services/billing/CLAUDE.md under Memory files but not the ledger standards. The repository has no services/billing/docs/ directory. What should the team change?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Move the import line into the root CLAUDE.md, because @ imports are expanded only from the project-level memory file.",
+     "rationale": "Imports work from any CLAUDE.md file. Moving the line to the root would also load the billing standards in every session, breaking the narrow billing scope."
+    },
+    {
+     "id": "B",
+     "text": "Wrap the path in quotes, as in @\"docs/standards/ledger.md\", so that the import is read as a path from the repository root.",
+     "rationale": "A quoted path is not imported at all; quoting does not change how the path resolves."
+    },
+    {
+     "id": "C",
+     "text": "Change the line to @../../docs/standards/ledger.md, because an import path resolves from the importing file's own directory.",
+     "rationale": "Correct. Relative @ imports resolve relative to the file that contains the import, so the current line points at services/billing/docs/standards/ledger.md, which does not exist."
+    },
+    {
+     "id": "D",
+     "text": "Start Claude Code from the repository root, because import paths resolve against the directory where the session starts.",
+     "rationale": "Relative import paths resolve from the importing file, not from the working directory, so the launch directory does not fix the broken reference."
+    }
+   ],
+   "correctOptionIds": [
+    "C"
+   ],
+   "explanation": "CLAUDE.md @path imports resolve relative to the file containing the import, not the working directory, and imported files load together with the CLAUDE.md that references them. Keeping the import in the nested billing CLAUDE.md preserves the narrow scope once the path is correct.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T15"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A3-001",
+   "tags": [
+    "claude-md",
+    "imports",
+    "monorepo"
+   ]
+  },
+  {
+   "id": "CCAR-F-B2-A3-002",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A3",
+   "objective": "3.1 Configure CLAUDE.md files with appropriate hierarchy, scoping, and modular organization",
+   "scenarioId": "ARCH-CASE-02",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A billing engineer keeps ~/.claude/rules/prototyping.md, with no paths field, which says to use floating-point numbers for currency to keep prototypes simple. The committed rule .claude/rules/billing-money.md, scoped to services/billing/**, requires integer minor units. In her sessions Claude sometimes uses floats in billing code; her teammates' sessions never do. What explains this, and what should she do?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Project rules override user rules on any conflict, so her paths glob must be failing to match; she should widen it.",
+     "rationale": "There is no override between user and project rules, and her teammates' sessions show the billing glob matches correctly."
+    },
+    {
+     "id": "B",
+     "text": "Both rules load and neither one takes precedence, so Claude may follow either; she should scope or reword her own rule.",
+     "rationale": "Correct. User-level rules load before project rules, but neither overrides the other; conflicting instructions can be followed arbitrarily, so the personal rule must stop contradicting the team rule."
+    },
+    {
+     "id": "C",
+     "text": "User rules load after project rules and win ties, so she should rename her file so that it sorts ahead of the team rule.",
+     "rationale": "User rules load before project rules, and file names do not create precedence; renaming leaves the conflict in place."
+    },
+    {
+     "id": "D",
+     "text": "Unscoped rules are dropped when a path-scoped rule matches, so she should add paths: [\"**/*\"] to her personal rule.",
+     "rationale": "Unscoped rules are not dropped. Giving her rule a catch-all paths field would keep it applying to billing files and keep the conflict."
+    }
+   ],
+   "correctOptionIds": [
+    "B"
+   ],
+   "explanation": "Claude Code concatenates user and project instructions; user rules appear earlier in context, but neither set overrides the other. When two instructions conflict, Claude may pick either, so conflicts must be removed rather than resolved by load order.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T15"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A3-002",
+   "tags": [
+    "rules",
+    "user-scope",
+    "conflicts"
+   ]
+  },
+  {
+   "id": "CCAR-F-B2-A3-003",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A3",
+   "objective": "3.1 Configure CLAUDE.md files with appropriate hierarchy, scoping, and modular organization",
+   "scenarioId": "ARCH-CASE-06",
+   "questionType": "multiple_response",
+   "selectCount": 2,
+   "stem": "The security team requires a technical block, not just guidance, that stops Claude Code from opening files under any customer-samples/ directory on developer machines, in every repository, including the document-extraction service. It also wants every session to carry the same reminder on handling personal data found in extraction fixtures. Developers must not be able to opt out. Which TWO measures should the platform team deploy?",
+   "options": [
+    {
+     "id": "A",
+     "text": "A managed-settings Read deny rule for customer-samples paths, enforced on file tools and recognized file commands.",
+     "rationale": "Correct. Managed settings permissions.deny rules are technical enforcement that users cannot override; they cover Claude Code's file tools and recognized file commands in Bash. Scripts that open files indirectly are not covered, so add the sandbox if OS-level enforcement is required."
+    },
+    {
+     "id": "B",
+     "text": "A .claudeignore file listing customer-samples/, committed to every repository that the platform team maintains.",
+     "rationale": ".claudeignore has no effect in Claude Code; file access is blocked with Read deny rules. Repository files are also not under central control."
+    },
+    {
+     "id": "C",
+     "text": "A managed CLAUDE.md at the policy location with the personal-data reminder, which individual users cannot exclude.",
+     "rationale": "Correct. A managed CLAUDE.md applies to every session on the machine and cannot be excluded by individual settings, which suits behavioral guidance."
+    },
+    {
+     "id": "D",
+     "text": "An instruction in each repository's CLAUDE.md telling Claude never to open any file under customer-samples/.",
+     "rationale": "CLAUDE.md is context, not enforcement, and per-repository files miss repositories the team does not control."
+    },
+    {
+     "id": "E",
+     "text": "A ~/.claude/CLAUDE.md distributed during onboarding that contains both the read ban and the data-handling reminder.",
+     "rationale": "User-level files are editable by each developer and are guidance only, so they meet neither the enforcement nor the no-opt-out requirement."
+    }
+   ],
+   "correctOptionIds": [
+    "A",
+    "C"
+   ],
+   "explanation": "Use managed settings for anything that must be enforced (such as permissions.deny) and a managed CLAUDE.md for organization-wide behavioral guidance. CLAUDE.md content at any level shapes behavior but is not a hard control. Caveat: Read deny rules do not cover subprocesses that read files indirectly; the sandbox provides OS-level enforcement.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T15",
+    "T11"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A3-003",
+   "tags": [
+    "managed-policy",
+    "claude-md",
+    "permissions"
+   ]
+  },
+  {
+   "id": "CCAR-F-B2-A3-004",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A3",
+   "objective": "3.2 Create and configure custom slash commands and skills",
+   "scenarioId": "ARCH-CASE-02",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "The team's project skill in .claude/skills/review-billing/ runs the shared billing checklist. One engineer wants a personal version that adds extra checks for her refactoring work, without changing what teammates get and while keeping the team version available to her. Where should she define her variant?",
+   "options": [
+    {
+     "id": "A",
+     "text": "In ~/.claude/skills/review-billing/SKILL.md, since a personal skill that reuses the team skill's name affects only her machine.",
+     "rationale": "A personal skill with the same name takes precedence over the project skill, so /review-billing would run her copy and she would lose the team version."
+    },
+    {
+     "id": "B",
+     "text": "In ~/.claude/skills/review-billing-extended/SKILL.md, a personal skill with a distinct name that she invokes on its own.",
+     "rationale": "Correct. A personal skill under a different name leaves the project skill untouched for everyone, including her, and keeps her additions private."
+    },
+    {
+     "id": "C",
+     "text": "In .claude/commands/review-billing.md in her working copy, left uncommitted, so it overrides the team skill locally.",
+     "rationale": "When a skill and a command file share a name, the skill runs, so this file would never take effect; it could also be committed by accident."
+    },
+    {
+     "id": "D",
+     "text": "In a CLAUDE.local.md section named review-billing, so the extra checks are appended whenever the team skill runs.",
+     "rationale": "CLAUDE.local.md loads in every session regardless of which skill runs; it does not attach content to a specific skill invocation."
+    }
+   ],
+   "correctOptionIds": [
+    "B"
+   ],
+   "explanation": "Skills with the same name resolve by location (enterprise over personal over project), so a same-named personal copy shadows the team skill for that user. A personal variant with its own name avoids shadowing and does not affect teammates.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T16"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A3-004",
+   "tags": [
+    "skills",
+    "personal-skills",
+    "naming"
+   ]
+  },
+  {
+   "id": "CCAR-F-B2-A3-005",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A3",
+   "objective": "3.2 Create and configure custom slash commands and skills",
+   "scenarioId": "ARCH-CASE-05",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A project skill, /pr-risk, contains the line !`./scripts/check-migrations.sh` so the script's report is injected before Claude reads the instructions. The script exits with status 1 whenever it finds a risky migration, which is exactly when the report matters. On those pull requests the invocation fails with \"Shell command failed for pattern\" and Claude never sees the skill. What is the most appropriate fix?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Add allowed-tools: Bash(./scripts/check-migrations.sh *) so the script is pre-approved and cannot fail its permission check.",
+     "rationale": "The error is caused by the exit status, not by a permission check, so pre-approving the command does not stop the abort."
+    },
+    {
+     "id": "B",
+     "text": "Set context: fork so the injected command runs inside a subagent, where a non-zero exit status is only reported.",
+     "rationale": "Injected commands run when the skill is rendered, and a failed command aborts the invocation for forked skills as well."
+    },
+    {
+     "id": "C",
+     "text": "Add disable-model-invocation: true so that the command runs only in manual invocations, which tolerate failures.",
+     "rationale": "This only stops Claude from invoking the skill on its own; manual invocations abort on a failed command in the same way."
+    },
+    {
+     "id": "D",
+     "text": "Append || true to the injected command so that a non-zero exit status still injects the report into the skill content.",
+     "rationale": "Correct. Any non-zero exit from an injected command aborts the whole skill invocation; || true keeps the output while ignoring the status."
+    }
+   ],
+   "correctOptionIds": [
+    "D"
+   ],
+   "explanation": "Dynamic context injection runs each !`command` before Claude sees the skill; with the default bash shell, any non-zero exit (outside a small carve-out for search and comparison commands) aborts the invocation. Commands that signal findings through exit codes need || true.",
+   "points": 1,
+   "difficulty": "advanced",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T16"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A3-005",
+   "tags": [
+    "skills",
+    "dynamic-context",
+    "shell-injection"
+   ]
+  },
+  {
+   "id": "CCAR-F-B2-A3-006",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A3",
+   "objective": "3.2 Create and configure custom slash commands and skills",
+   "scenarioId": "ARCH-CASE-03",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "The team maintaining the multi-agent research system with Claude Code wrote a skill named citation-style that contains only guidelines: how to format source IDs, how to mark unresolved disagreements, and which fields every citation needs. To save context, they set context: fork. When developers invoke it while writing report-formatting code, it returns almost nothing and the code ignores the guidelines. What should they change?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Remove context: fork so that the guidelines load inline as reference content for the current work.",
+     "rationale": "Correct. A forked skill hands its content to a subagent as a task; guideline-only content gives the subagent nothing to do, while inline reference content is applied to the ongoing work."
+    },
+    {
+     "id": "B",
+     "text": "Keep context: fork and add agent: Explore so that the forked agent can search the code that it needs to format.",
+     "rationale": "Explore still receives only the guidelines as its prompt, with no actionable task and no view of the conversation."
+    },
+    {
+     "id": "C",
+     "text": "Keep context: fork and set background: false so that the forked result arrives in the same turn as the request.",
+     "rationale": "Waiting for the result changes timing only; the forked agent still has no task and returns nothing useful."
+    },
+    {
+     "id": "D",
+     "text": "Keep context: fork and add allowed-tools: Read Edit so that the forked agent may apply the guidelines to files.",
+     "rationale": "Pre-approving tools does not give the forked agent a task or the conversation's context about which code to change."
+    }
+   ],
+   "correctOptionIds": [
+    "A"
+   ],
+   "explanation": "context: fork only makes sense for skills with explicit task instructions; the subagent receives the skill content as its prompt and does not see the conversation. Reference content such as conventions should run inline.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T16"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A3-006",
+   "tags": [
+    "skills",
+    "context-fork",
+    "reference-content"
+   ]
+  },
+  {
+   "id": "CCAR-F-B2-A3-007",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A3",
+   "objective": "3.2 Create and configure custom slash commands and skills",
+   "scenarioId": "ARCH-CASE-05",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "Reviewers use a project skill, /recheck, whose content uses $0 for the pull request number and $1 for the review criterion to re-run, as in /recheck 418 security. Reviewers often type /recheck alone and get unfocused output. The team wants the command menu to show what to type while a reviewer is entering the command. Which frontmatter field addresses this?",
+   "options": [
+    {
+     "id": "A",
+     "text": "arguments, set to [pr, criterion], so that the command menu lists the declared argument names.",
+     "rationale": "arguments declares names for $name substitution in the skill content; it is not the autocomplete hint."
+    },
+    {
+     "id": "B",
+     "text": "argument-hint, set to a value such as [pr-number] [criterion], which is shown during autocomplete.",
+     "rationale": "Correct. argument-hint is the hint shown during autocomplete to indicate the expected arguments."
+    },
+    {
+     "id": "C",
+     "text": "when_to_use, listing example invocations so that the menu shows them while the reviewer types.",
+     "rationale": "when_to_use adds trigger context to the description Claude sees for automatic invocation, not an input hint."
+    },
+    {
+     "id": "D",
+     "text": "disable-model-invocation, set to true, so that only reviewers can start it and must pass both values.",
+     "rationale": "This restricts who can invoke the skill; it neither requires arguments nor shows a hint."
+    }
+   ],
+   "correctOptionIds": [
+    "B"
+   ],
+   "explanation": "argument-hint documents expected arguments in the autocomplete menu; $ARGUMENTS, $N and named arguments control substitution. The hint guides users but does not validate input, so the skill text should still say what to do when arguments are missing.",
+   "points": 1,
+   "difficulty": "foundational",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T16"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A3-007",
+   "tags": [
+    "skills",
+    "argument-hint",
+    "arguments"
+   ]
+  },
+  {
+   "id": "CCAR-F-B2-A3-008",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A3",
+   "objective": "3.3 Apply path-specific rules for conditional convention loading",
+   "scenarioId": "ARCH-CASE-02",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "The rule .claude/rules/billing-handlers.md has paths: [\"services/billing/*.ts\"]. It loads when Claude edits services/billing/index.ts but not when Claude edits services/billing/ledger/proration.ts or services/billing/api/v2/refunds.ts. The conventions must apply to every TypeScript file in the billing service and nowhere else. Which change is correct?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Change the pattern to **/*.ts so that the rule matches the nested billing files wherever they are located.",
+     "rationale": "This also matches every TypeScript file in the web application, violating the billing-only scope."
+    },
+    {
+     "id": "B",
+     "text": "Add a second pattern, services/billing/*/*.ts, so that the files in nested directories are covered as well.",
+     "rationale": "This adds only one more level; services/billing/api/v2/refunds.ts is two levels down and still would not match."
+    },
+    {
+     "id": "C",
+     "text": "Change the pattern to services/billing/**/*.ts so it matches TypeScript files at any depth under billing.",
+     "rationale": "Correct. ** matches any number of directories, while a single * does not cross directory boundaries."
+    },
+    {
+     "id": "D",
+     "text": "Keep the pattern and add alwaysApply: true so that the rule loads whenever any billing file is opened.",
+     "rationale": "paths is the only frontmatter field Claude Code reads from a rule; other fields are ignored without an error."
+    }
+   ],
+   "correctOptionIds": [
+    "C"
+   ],
+   "explanation": "Rule paths use glob patterns: * matches within one path segment and ** matches across directories. paths is the only rule frontmatter field Claude Code reads.",
+   "points": 1,
+   "difficulty": "foundational",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T15"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A3-008",
+   "tags": [
+    "rules",
+    "paths",
+    "glob"
+   ]
+  },
+  {
+   "id": "CCAR-F-B2-A3-009",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A3",
+   "objective": "3.3 Apply path-specific rules for conditional convention loading",
+   "scenarioId": "ARCH-CASE-04",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "The team maintaining the internal assistant with Claude Code has two kinds of guidance for the policies/ directory: five short conventions that must apply on every edit to a policy file (required header fields, version line, owner tag), and a 40-step review-and-publish procedure used only when a policy is ready for release. Both currently sit in the root CLAUDE.md. Which organization fits best?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Put both in one rule, .claude/rules/policies.md, scoped with paths: [\"policies/**/*.md\"] so they load only for policy files.",
+     "rationale": "The conventions would load correctly, but the 40-step procedure would also enter context on every policy edit, not just at release."
+    },
+    {
+     "id": "B",
+     "text": "Put both in a project skill with disable-model-invocation: true, which developers run as /policies when editing.",
+     "rationale": "The conventions would then depend on developers remembering to invoke the skill, so they would not apply on every policy edit."
+    },
+    {
+     "id": "C",
+     "text": "Put the conventions in policies/CLAUDE.md, and the release procedure in a rule whose paths field matches policies/**.",
+     "rationale": "The nested CLAUDE.md works for the conventions, but a path-scoped rule would load the long procedure on every policy edit."
+    },
+    {
+     "id": "D",
+     "text": "Put the conventions in a rule scoped to policies/**/*.md, and the release procedure in a skill invoked at release time.",
+     "rationale": "Correct. Path-scoped rules load whenever a matching file is read or edited, and a skill's body loads only when it is used."
+    }
+   ],
+   "correctOptionIds": [
+    "D"
+   ],
+   "explanation": "Path-scoped rules suit conventions that must apply whenever matching files are touched; skills suit task procedures that should load only on demand. Long procedures in rules or CLAUDE.md cost context on every matching edit.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T15",
+    "T16"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A3-009",
+   "tags": [
+    "rules",
+    "skills",
+    "paths"
+   ]
+  },
+  {
+   "id": "CCAR-F-B2-A3-010",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A3",
+   "objective": "3.4 Determine when to use plan mode vs direct execution",
+   "scenarioId": "ARCH-CASE-01",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "The team building the support assistant must add an approval path for refunds above the threshold. Two designs are viable: a synchronous call to the finance approvals API, or a queue-based workflow that pauses the refund until an approver responds. They need different infrastructure and touch the refund tool, the policy checks, and the audit log. How should the engineer use Claude Code for this task?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Use direct execution with an instruction to pick whichever design needs fewer file changes, then review the final diff.",
+     "rationale": "File count is not the deciding factor between the designs, and reviewing after implementation risks costly rework."
+    },
+    {
+     "id": "B",
+     "text": "Ask the Explore subagent to implement the simpler design, since it isolates exploration from the main conversation.",
+     "rationale": "Explore is a read-only agent for search and analysis; it cannot implement changes, and the design choice still needs a decision."
+    },
+    {
+     "id": "C",
+     "text": "Use direct execution for the synchronous design first, and switch to plan mode only if the tests start failing.",
+     "rationale": "This commits to one architecture before comparing it, so a later switch means discarding work."
+    },
+    {
+     "id": "D",
+     "text": "Start in plan mode, have Claude explore the refund flow and compare both designs, then approve a plan.",
+     "rationale": "Correct. Multiple valid approaches with different infrastructure and multi-file impact are what plan mode is for: explore and decide before editing."
+    }
+   ],
+   "correctOptionIds": [
+    "D"
+   ],
+   "explanation": "Plan mode fits tasks with architectural decisions, several valid approaches, or multi-file changes; Claude researches and proposes without editing until the plan is approved. Small, clear changes are better done directly.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T201",
+    "T204"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A3-010",
+   "tags": [
+    "plan-mode",
+    "architecture"
+   ]
+  },
+  {
+   "id": "CCAR-F-B2-A3-011",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A3",
+   "objective": "3.4 Determine when to use plan mode vs direct execution",
+   "scenarioId": "ARCH-CASE-03",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "The research system's specialists use an HTTP client library that is being retired. Replacing it touches about 50 files, and retry and timeout semantics differ between the old and new libraries. The engineer wants Claude to work out the mapping and an order of changes, review that before anything is edited, and then have the edits applied without approving each one. Which workflow fits?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Start with --permission-mode acceptEdits and ask for a plan in the first message, so edits can begin once it is written.",
+     "rationale": "acceptEdits allows edits immediately, so nothing stops Claude from editing before the engineer has reviewed the mapping."
+    },
+    {
+     "id": "B",
+     "text": "Stay in plan mode for the whole task, and tell Claude in chat that the plan is approved so it applies the edits there.",
+     "rationale": "Plan mode blocks source edits; approval happens through the plan approval prompt, which exits plan mode."
+    },
+    {
+     "id": "C",
+     "text": "Plan in plan mode, edit the plan if needed (Ctrl+G opens it in an editor), then approve with an option that ends per-edit prompts.",
+     "rationale": "Correct. Plan mode keeps the investigation read-only, the plan can be edited before approval, and approving can switch the session to a mode without per-edit prompts."
+    },
+    {
+     "id": "D",
+     "text": "Run each file's migration with claude -p in a loop, then ask an interactive session to plan fixes for failures.",
+     "rationale": "This edits all files before the retry and timeout mapping is designed, which is the rework the engineer wants to avoid."
+    }
+   ],
+   "correctOptionIds": [
+    "C"
+   ],
+   "explanation": "Combine plan mode for investigation with execution after approval: plan, review or edit the plan, approve, then implement. The approval prompt can move the session into a mode that applies edits without per-edit confirmation.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T201",
+    "T204"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A3-011",
+   "tags": [
+    "plan-mode",
+    "migration",
+    "approval"
+   ]
+  },
+  {
+   "id": "CCAR-F-B2-A3-012",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A3",
+   "objective": "3.4 Determine when to use plan mode vs direct execution",
+   "scenarioId": "ARCH-CASE-05",
+   "questionType": "multiple_response",
+   "selectCount": 2,
+   "stem": "The review pipeline team has five pending Claude Code tasks. Which TWO should start in plan mode rather than direct execution?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Fix a null dereference in the comment poster; the stack trace names the exact line and a test reproduces it.",
+     "rationale": "A single-file fix with a clear stack trace is well scoped; direct execution is appropriate."
+    },
+    {
+     "id": "B",
+     "text": "Split the single reviewer into per-criterion passes, changing the runner, findings schema, and poster.",
+     "rationale": "Correct. This is a multi-file restructuring with design choices, which benefits from exploration and an approved plan."
+    },
+    {
+     "id": "C",
+     "text": "Rename the findings field severty to severity in the JSON schema file and in the one module that reads it.",
+     "rationale": "The diff can be described in one sentence, so planning adds overhead without reducing risk."
+    },
+    {
+     "id": "D",
+     "text": "Add a log line that records how long each review run takes, next to the existing timing code in the runner.",
+     "rationale": "A one-line, well-understood change; direct execution is faster and plan mode would only add overhead."
+    },
+    {
+     "id": "E",
+     "text": "Choose between inline review comments and check-run annotations, which need different permissions and setup.",
+     "rationale": "Correct. Choosing between integration approaches with different infrastructure requirements is a planning decision."
+    }
+   ],
+   "correctOptionIds": [
+    "B",
+    "E"
+   ],
+   "explanation": "Plan mode pays off for multi-file changes, architectural choices, and unfamiliar code; if the diff can be described in one sentence, skip the plan. Planning adds overhead, so it should be chosen per task.",
+   "points": 1,
+   "difficulty": "foundational",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T204",
+    "T201"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A3-012",
+   "tags": [
+    "plan-mode",
+    "direct-execution"
+   ]
+  },
+  {
+   "id": "CCAR-F-B2-A3-013",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A3",
+   "objective": "3.5 Apply iterative refinement techniques for progressive improvement",
+   "scenarioId": "ARCH-CASE-04",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "The assistant shows each ticket as a short slug built from its title. The engineer described the rule in prose (lowercase, drop filler words, keep product codes, at most five words), but each Claude Code iteration handles product codes and punctuation differently. What should the engineer do next?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Restate the prose rule more forcefully, with capitalized MUST statements for product codes and for punctuation handling.",
+     "rationale": "Emphasis does not resolve what the rule means for specific titles, which is the source of the inconsistency."
+    },
+    {
+     "id": "B",
+     "text": "Ask Claude to choose the most reasonable interpretation of the rule and to document its choice in a code comment.",
+     "rationale": "This records one interpretation but does not align it with what the engineer expects."
+    },
+    {
+     "id": "C",
+     "text": "Provide two or three concrete title-to-slug examples covering product codes and punctuation for Claude to match.",
+     "rationale": "Correct. Concrete input/output pairs remove the ambiguity that prose leaves, especially for edge cases such as codes and punctuation."
+    },
+    {
+     "id": "D",
+     "text": "Keep the prose rule and ask Claude to rewrite the slug function from scratch in each iteration until it looks right.",
+     "rationale": "Rewrites from the same ambiguous description keep producing different interpretations."
+    }
+   ],
+   "correctOptionIds": [
+    "C"
+   ],
+   "explanation": "When prose descriptions are interpreted inconsistently, two or three concrete input/output examples are the most direct way to communicate the expected transformation. Turning the examples into tests also gives Claude a check it can run.",
+   "points": 1,
+   "difficulty": "foundational",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T204",
+    "T21"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A3-013",
+   "tags": [
+    "iteration",
+    "examples"
+   ]
+  },
+  {
+   "id": "CCAR-F-B2-A3-014",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A3",
+   "objective": "3.5 Apply iterative refinement techniques for progressive improvement",
+   "scenarioId": "ARCH-CASE-01",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "An engineer asks Claude Code to implement the refund-approval check: refunds above the threshold need approval, amounts exactly at the threshold do not, partial refunds count toward the order's total refunded amount, and a missing policy record must block the refund instead of being guessed. Earlier attempts passed code review but failed in staging on these edge cases. Which approach best drives the next iteration?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Have Claude implement the check first, then write tests derived from its implementation, and fix any test that fails.",
+     "rationale": "Tests derived from the implementation tend to encode its mistakes, so the edge cases that failed in staging can still pass."
+    },
+    {
+     "id": "B",
+     "text": "Ask Claude to be especially careful with edge cases and to explain in its summary how each one is handled.",
+     "rationale": "An explanation is not verification; the earlier attempts already looked correct in review."
+    },
+    {
+     "id": "C",
+     "text": "Review the implementation diff by hand after each iteration and describe any problems with edge cases in prose.",
+     "rationale": "Manual review is what missed these cases before, and prose feedback is less precise than failing tests."
+    },
+    {
+     "id": "D",
+     "text": "Write tests for the boundary, cumulative partial refunds, and missing policies first, then iterate on failures.",
+     "rationale": "Correct. Tests written from the requirements give Claude a pass/fail check, and sharing failures guides each iteration toward the specified behavior."
+    }
+   ],
+   "correctOptionIds": [
+    "D"
+   ],
+   "explanation": "Test-driven iteration writes tests for expected behavior and edge cases before implementation, then feeds test failures back to Claude. A runnable check closes the loop without relying on review alone.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T204"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A3-014",
+   "tags": [
+    "iteration",
+    "test-driven"
+   ]
+  },
+  {
+   "id": "CCAR-F-B2-A3-015",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A3",
+   "objective": "3.5 Apply iterative refinement techniques for progressive improvement",
+   "scenarioId": "ARCH-CASE-02",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "An engineer who is new to caching must add a cache for exchange-rate lookups in the billing service. Rates change during the day, invoices must use the rate that was valid at invoice time, and the service runs several replicas. She is unsure which questions matter before implementation starts. What should she do first in Claude Code?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Ask Claude to implement an in-memory cache with a one-hour expiry, then review the result against the invoice tests.",
+     "rationale": "This fixes a design before the invoice-time and replica constraints have been worked through."
+    },
+    {
+     "id": "B",
+     "text": "Ask Claude to research caching libraries with web search and adopt the most widely used one for the service.",
+     "rationale": "Library popularity does not answer the invalidation and consistency questions this domain raises."
+    },
+    {
+     "id": "C",
+     "text": "Ask Claude to implement the cache directly and to handle every edge case it can think of along the way.",
+     "rationale": "Without first agreeing on requirements, Claude guesses at trade-offs such as staleness versus correctness."
+    },
+    {
+     "id": "D",
+     "text": "Have Claude interview her with AskUserQuestion on invalidation, failures, and replicas, then write a spec.",
+     "rationale": "Correct. The interview pattern surfaces design questions she may not have anticipated, and the resulting spec can drive implementation in a fresh session."
+    }
+   ],
+   "correctOptionIds": [
+    "D"
+   ],
+   "explanation": "In unfamiliar domains, having Claude interview you first surfaces considerations such as cache invalidation and failure modes. Writing the answers into a spec and implementing in a fresh session keeps the implementation context clean.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T204"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A3-015",
+   "tags": [
+    "iteration",
+    "interview-pattern"
+   ]
+  },
+  {
+   "id": "CCAR-F-B2-A3-016",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A3",
+   "objective": "3.6 Integrate Claude Code into CI/CD pipelines",
+   "scenarioId": "ARCH-CASE-02",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A nightly CI job in the monorepo runs claude \"Update CHANGELOG.md from the merged pull requests\" --allowedTools \"Read,Edit\". The job never finishes and is killed at the workflow timeout. What change makes the run complete unattended?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Add --permission-mode acceptEdits so that edits proceed without waiting for a person to confirm them.",
+     "rationale": "claude \"query\" still starts an interactive session, which waits for input after responding regardless of the permission mode."
+    },
+    {
+     "id": "B",
+     "text": "Add --output-format json so that the CLI returns a machine-readable result instead of a chat session.",
+     "rationale": "--output-format applies to print mode; it does not by itself switch the session to non-interactive mode."
+    },
+    {
+     "id": "C",
+     "text": "Add -p so that Claude Code runs the prompt non-interactively and exits after printing its result.",
+     "rationale": "Correct. Without -p (--print), the command opens an interactive session that waits for further input."
+    },
+    {
+     "id": "D",
+     "text": "Add --max-turns 10 so that the session is forced to end after a fixed number of agentic turns.",
+     "rationale": "--max-turns is a print-mode option; it does not turn an interactive session into a non-interactive run."
+    }
+   ],
+   "correctOptionIds": [
+    "C"
+   ],
+   "explanation": "claude \"query\" starts an interactive session with an initial prompt, while claude -p runs non-interactively and exits. Flags such as --output-format, --json-schema, and --max-turns are designed for print mode.",
+   "points": 1,
+   "difficulty": "foundational",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T06",
+    "T202"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A3-016",
+   "tags": [
+    "ci",
+    "print-mode"
+   ]
+  },
+  {
+   "id": "CCAR-F-B2-A3-017",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A3",
+   "objective": "3.6 Integrate Claude Code into CI/CD pipelines",
+   "scenarioId": "ARCH-CASE-05",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "The review job runs claude -p on a fresh CI runner. The repository's committed .claude/settings.json allows Bash(npm test *) so that Claude can run the test suite while reviewing, but in CI Claude reports that it cannot run the tests, and stderr shows \"Ignoring 1 permissions.allow entries ... this workspace has not been trusted\". The team wants to grant only that command. What should it do?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Move the allow rule into .claude/settings.local.json and commit that file next to the project settings.",
+     "rationale": "A tracked settings.local.json is treated as repository-supplied, so its allow rules are held until the workspace is trusted."
+    },
+    {
+     "id": "B",
+     "text": "Add an instruction to the project CLAUDE.md that Claude is permitted to run npm test while reviewing.",
+     "rationale": "CLAUDE.md is context for Claude, not a permission rule, so the command still needs approval that no one can give."
+    },
+    {
+     "id": "C",
+     "text": "Pass --allowedTools \"Bash(npm test *)\" on the claude -p command line in the reviewed workflow file.",
+     "rationale": "Correct. Allow rules from project settings need workspace trust, which a -p run never prompts for; rules passed on the command line come from the caller and apply."
+    },
+    {
+     "id": "D",
+     "text": "Run the job with --dangerously-skip-permissions so no permission rule has to be trusted first.",
+     "rationale": "This removes every permission check instead of granting the one command, contradicting the least-privilege requirement."
+    }
+   ],
+   "correctOptionIds": [
+    "C"
+   ],
+   "explanation": "permissions.allow rules from a project's .claude/settings.json apply only after workspace trust is accepted, and -p runs never show the trust dialog. In CI, pass the needed rules explicitly (for example --allowedTools) or record trust for that path in ~/.claude.json.",
+   "points": 1,
+   "difficulty": "advanced",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T11",
+    "T350",
+    "T06"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A3-017",
+   "tags": [
+    "ci",
+    "permissions",
+    "workspace-trust"
+   ]
+  },
+  {
+   "id": "CCAR-F-B2-A3-018",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A3",
+   "objective": "3.6 Integrate Claude Code into CI/CD pipelines",
+   "scenarioId": "ARCH-CASE-05",
+   "questionType": "multiple_response",
+   "selectCount": 2,
+   "stem": "The review job runs claude -p on the checked-out pull request branch, and some pull requests come from contributors outside the team. Such a pull request could add hooks to .claude/settings.json or new servers to .mcp.json. Which TWO changes keep that repository-supplied configuration from running in the review job?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Rely on the workspace trust dialog, which holds project hooks and servers until someone approves the folder.",
+     "rationale": "A -p run never shows the trust dialog; it runs settings hooks and connects .mcp.json servers without asking."
+    },
+    {
+     "id": "B",
+     "text": "Set disableAllHooks to true in the runner's ~/.claude/settings.json before the review job starts.",
+     "rationale": "Project settings take precedence over user settings and can set disableAllHooks back to false; it would need to come from --settings."
+    },
+    {
+     "id": "C",
+     "text": "Start the run with --bare, which skips discovery of hooks, skills, plugins, MCP servers, and CLAUDE.md.",
+     "rationale": "Correct. Bare mode never reads project hooks or .mcp.json servers; review criteria must then be passed explicitly, for example with --append-system-prompt-file."
+    },
+    {
+     "id": "D",
+     "text": "Pass --setting-sources user, so that neither the project's settings files nor its .mcp.json are read.",
+     "rationale": "Correct. Excluding the project setting source keeps the branch's settings and .mcp.json out of the run."
+    },
+    {
+     "id": "E",
+     "text": "Commit enableAllProjectMcpServers: false to .claude/settings.json so unapproved servers stay disconnected.",
+     "rationale": "The pull request can change that file, and in -p runs .mcp.json servers connect whether or not they are approved."
+    }
+   ],
+   "correctOptionIds": [
+    "C",
+    "D"
+   ],
+   "explanation": "Before running claude -p on a repository you did not write, decide what it may run: --bare, --setting-sources without project, or targeted controls such as --settings with disableAllHooks and disabledMcpjsonServers. A -p run never shows the workspace trust dialog.",
+   "points": 1,
+   "difficulty": "advanced",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T11",
+    "T06",
+    "T173"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A3-018",
+   "tags": [
+    "ci",
+    "security",
+    "untrusted-input"
+   ]
+  },
+  {
+   "id": "CCAR-F-B2-A3-019",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A3",
+   "objective": "3.6 Integrate Claude Code into CI/CD pipelines",
+   "scenarioId": "ARCH-CASE-05",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "After actions/checkout, the team runs its committed /review-pr skill with the Claude Code GitHub Action in automation mode, passing prompt: \"/review-pr\". The skill's allowed-tools frontmatter lists mcp__github_inline_comment__create_inline_comment, but runs end with findings only in the workflow log and no inline comments on the pull request. What is the most likely fix?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Name the inline comment tool in --allowedTools in claude_args; only then does the action start that server.",
+     "rationale": "Correct. The action starts the server that posts inline comments only when --allowedTools in claude_args names its tool, even if the skill's frontmatter lists it."
+    },
+    {
+     "id": "B",
+     "text": "Remove the prompt input so that the action switches to interactive mode, which always posts its results as comments.",
+     "rationale": "Without a prompt, the action waits for an @claude mention instead of reviewing each pull request automatically."
+    },
+    {
+     "id": "C",
+     "text": "Add the GitHub inline comment server to the repository's .mcp.json so that every run connects to it automatically.",
+     "rationale": "The inline comment server is provided by the action itself; the documented switch is naming its tool in claude_args."
+    },
+    {
+     "id": "D",
+     "text": "Add a CLAUDE.md instruction that findings must be posted inline, because automation mode ignores skill frontmatter.",
+     "rationale": "Automation mode does honor a skill's allowed-tools; the problem is that the posting server was never started."
+    }
+   ],
+   "correctOptionIds": [
+    "A"
+   ],
+   "explanation": "In automation mode, results go to the workflow log unless Claude has a tool that can post. For inline comments, claude_args must name the inline comment tool with --allowedTools so the action starts that server.",
+   "points": 1,
+   "difficulty": "advanced",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T24",
+    "T16"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A3-019",
+   "tags": [
+    "ci",
+    "github-actions",
+    "inline-comments"
+   ]
+  },
+  {
+   "id": "CCAR-F-B2-A3-020",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A3",
+   "objective": "3.6 Integrate Claude Code into CI/CD pipelines",
+   "scenarioId": "ARCH-CASE-06",
+   "questionType": "multiple_response",
+   "selectCount": 2,
+   "stem": "A CI job asks Claude Code to propose unit tests for each change to the extraction service. Reviewers reject most proposals: many duplicate scenarios that existing tests already cover, and others build ad hoc PDF fixtures instead of using the service's shared fixture library. Which TWO changes most directly improve the proposals?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Include the existing tests for the changed modules in the job's context and ask only for uncovered scenarios.",
+     "rationale": "Correct. Seeing the current tests lets Claude avoid proposing scenarios the suite already covers."
+    },
+    {
+     "id": "B",
+     "text": "Raise --max-turns so that Claude has enough turns to write more tests per change and cover more scenarios.",
+     "rationale": "More turns increase volume, not relevance; duplicates and ad hoc fixtures would remain."
+    },
+    {
+     "id": "C",
+     "text": "Ask Claude to generate at least ten tests per change so that coverage of edge cases becomes statistically likely.",
+     "rationale": "A quota encourages low-value and duplicate tests, the opposite of what reviewers want."
+    },
+    {
+     "id": "D",
+     "text": "Add a second -p pass that asks Claude to make each proposed test more distinct from the others it proposed.",
+     "rationale": "Comparing proposals only with each other does not reveal overlap with the existing suite or the fixture conventions."
+    },
+    {
+     "id": "E",
+     "text": "Document the testing standards, what makes a test valuable, and the shared fixtures in the project CLAUDE.md.",
+     "rationale": "Correct. CLAUDE.md is how CI-invoked Claude Code receives project context such as fixture conventions and test criteria."
+    }
+   ],
+   "correctOptionIds": [
+    "A",
+    "E"
+   ],
+   "explanation": "Test generation improves when Claude sees existing tests (to avoid duplicates) and the project's documented testing standards and fixtures (to produce valuable, convention-following tests).",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T24",
+    "T15"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A3-020",
+   "tags": [
+    "ci",
+    "test-generation",
+    "claude-md"
+   ]
+  },
+  {
+   "id": "CCAR-F-B2-A2-001",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A2",
+   "objective": "2.1 Design effective tool interfaces with clear descriptions and boundaries",
+   "scenarioId": "ARCH-CASE-01",
+   "questionType": "multiple_response",
+   "selectCount": 2,
+   "stem": "The support assistant's issue_refund tool takes order_id and amount, where amount is a number described only as \"Refund amount\". The order system expects integer cents. In traces, Claude sends 49.99 for some $49.99 refunds and 4999 for others; the decimal form is rejected with the generic message \"Invalid amount\". Which TWO changes most directly fix how Claude fills this input?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Have the tool round any decimal input it receives to the nearest whole number before calling the order system.",
+     "rationale": "49.99 would become 50 cents; silent coercion hides the mismatch and can issue wrong refunds."
+    },
+    {
+     "id": "B",
+     "text": "Rename the field to amount_cents, make it an integer, and describe the unit with an example: 4999 for $49.99.",
+     "rationale": "Correct. An unambiguous name, type, and example tell Claude the expected input format before it calls the tool."
+    },
+    {
+     "id": "C",
+     "text": "Add a system prompt line telling Claude to double-check refund amounts before calling any refund-related tool.",
+     "rationale": "A vague reminder does not tell Claude which unit the system expects."
+    },
+    {
+     "id": "D",
+     "text": "Return an error result stating that amounts are integer cents, with an example, whenever a decimal arrives.",
+     "rationale": "Correct. An instructive error lets Claude correct the call on retry instead of guessing."
+    },
+    {
+     "id": "E",
+     "text": "Keep the \"Invalid amount\" message but mark the result as retryable so that Claude tries the call again.",
+     "rationale": "Retrying with the same misunderstanding repeats the same invalid input."
+    }
+   ],
+   "correctOptionIds": [
+    "B",
+    "D"
+   ],
+   "explanation": "Tool descriptions and input schemas should state formats, units, and examples; parameter names should be unambiguous. When input is still invalid, an actionable error message lets Claude self-correct.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T154",
+    "T175"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A2-001",
+   "tags": [
+    "tool-design",
+    "input-format",
+    "errors"
+   ]
+  },
+  {
+   "id": "CCAR-F-B2-A2-002",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A2",
+   "objective": "2.4 Integrate MCP servers into Claude Code and agent workflows",
+   "scenarioId": "ARCH-CASE-01",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "The team is extending the support assistant with two integrations: the company's hosted helpdesk product, whose vendor already offers a maintained remote MCP server, and the team's own refund-approval workflow, which enforces the company threshold and approver rules. How should the team source these MCP servers?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Build custom servers for both integrations, so the team owns every tool description and can audit all behavior.",
+     "rationale": "Rebuilding a standard integration duplicates the vendor's maintained work and must track its API changes."
+    },
+    {
+     "id": "B",
+     "text": "Use the vendor's maintained server for the helpdesk, and build a custom server only for the approval workflow.",
+     "rationale": "Correct. Standard integrations are best served by existing maintained servers (after verifying the server is trusted); custom servers are for team-specific workflows."
+    },
+    {
+     "id": "C",
+     "text": "Use the vendor's server for both, and configure the threshold and approver rules in its tool descriptions.",
+     "rationale": "A vendor server cannot implement company-specific approval logic, and descriptions guide selection rather than enforce rules."
+    },
+    {
+     "id": "D",
+     "text": "Skip MCP for the helpdesk and have the agent call its REST API through a generic HTTP request tool.",
+     "rationale": "A generic HTTP tool gives up purpose-built tool descriptions and makes misuse easier than a dedicated integration."
+    }
+   ],
+   "correctOptionIds": [
+    "B"
+   ],
+   "explanation": "Prefer existing, maintained MCP servers for standard integrations and reserve custom servers for workflows specific to the team. Verify that third-party servers are trusted before connecting them.",
+   "points": 1,
+   "difficulty": "foundational",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T173"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A2-002",
+   "tags": [
+    "mcp",
+    "build-vs-reuse"
+   ]
+  },
+  {
+   "id": "CCAR-F-B2-A2-003",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A2",
+   "objective": "2.4 Integrate MCP servers into Claude Code and agent workflows",
+   "scenarioId": "ARCH-CASE-02",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "The monorepo's committed .mcp.json defines an internal package-registry MCP server with the header \"Authorization\": \"Bearer ${NPM_TOKEN}\", because the registry accepts the token that developers already export as NPM_TOKEN. Developers who have NPM_TOKEN set still see the server fail with 401, and the debug log says the variable was never expanded toward a remote server. What should the team change?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Write the reference as ${NPM_TOKEN:-} with an empty default so that the expansion is forced in every case.",
+     "rationale": "For the covered credential names, a :-default fallback is ignored and the value still reads as empty."
+    },
+    {
+     "id": "B",
+     "text": "Move the header into the server's env block, where the restriction on credential variables does not apply.",
+     "rationale": "env passes environment variables to a local server process; it does not set HTTP headers for a remote server."
+    },
+    {
+     "id": "C",
+     "text": "Reference a dedicated variable, such as ${REGISTRY_MCP_TOKEN}, that developers set to the token value.",
+     "rationale": "Correct. Claude Code reads certain credential variables, including NPM_TOKEN, as empty in a remote server's url and headers; a variable with its own name expands normally."
+    },
+    {
+     "id": "D",
+     "text": "Write the reference as Bearer $NPM_TOKEN without braces, which expands as an ordinary shell variable.",
+     "rationale": ".mcp.json supports ${VAR} and ${VAR:-default}; it does not perform shell-style $VAR expansion."
+    }
+   ],
+   "correctOptionIds": [
+    "C"
+   ],
+   "explanation": "Environment variable expansion in .mcp.json supports ${VAR} and ${VAR:-default} in command, args, env, url, and headers. Known credential variables read as empty in remote url and headers so a project file cannot forward them; copy the value into a variable with a different name.",
+   "points": 1,
+   "difficulty": "advanced",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T173"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A2-003",
+   "tags": [
+    "mcp",
+    "env-expansion",
+    "credentials"
+   ]
+  },
+  {
+   "id": "CCAR-F-B2-A2-004",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A2",
+   "objective": "2.5 Select and apply built-in tools (Read, Write, Edit, Bash, Grep, Glob) effectively",
+   "scenarioId": "ARCH-CASE-02",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "Before planning the removal of a deprecated helper, legacyRound, an agent configured with Read, Grep, and Glob must report how many call sites each package in the monorepo has. Its first Grep call used the default output mode and returned 63 file paths, and the agent then began reading each file to count the calls. What should it do instead?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Run Grep with output_mode set to count, which returns match counts per file plus a total for all files.",
+     "rationale": "Correct. count mode answers the question directly without loading file contents into context."
+    },
+    {
+     "id": "B",
+     "text": "Run Glob with the pattern **/*legacyRound* to list the files that use the helper, grouped by package.",
+     "rationale": "Glob matches file names, not file contents, so it cannot find call sites inside files."
+    },
+    {
+     "id": "C",
+     "text": "Read every source file in each package in turn so that no indirect call to the helper can be missed.",
+     "rationale": "Reading all files is the context-heavy approach the agent should avoid; Grep can locate and count matches."
+    },
+    {
+     "id": "D",
+     "text": "Run Grep with output_mode set to content and multiline set to true so each call appears on its own line.",
+     "rationale": "content returns matching lines that would still need counting, and multiline matching is unrelated to the task."
+    }
+   ],
+   "correctOptionIds": [
+    "A"
+   ],
+   "explanation": "Grep supports files_with_matches (the default), content, and count output modes; choosing the mode that answers the question keeps context small. Glob is for file-name patterns, Grep for content.",
+   "points": 1,
+   "difficulty": "foundational",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T177"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A2-004",
+   "tags": [
+    "built-in-tools",
+    "grep"
+   ]
+  },
+  {
+   "id": "CCAR-F-B2-A2-005",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A2",
+   "objective": "2.2 Implement structured error responses for MCP tools",
+   "scenarioId": "ARCH-CASE-03",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "The web-research specialist fetches pages for the coordinator. When a fetch times out, it immediately returns an error to the coordinator, which then restarts the entire research subtask with a new specialist. A single slow site can trigger several restarts and discard pages that were already gathered. How should error handling be redesigned?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Have the specialist retry transient failures itself, then report unresolved ones with partial results and attempts.",
+     "rationale": "Correct. Transient errors are handled locally; only failures it cannot resolve propagate, together with partial results and the attempts made."
+    },
+    {
+     "id": "B",
+     "text": "Have the specialist drop failed pages and return only successful results, so the coordinator is not distracted.",
+     "rationale": "Silently omitting failures hides coverage gaps from the coordinator and the final report."
+    },
+    {
+     "id": "C",
+     "text": "Have the coordinator retry the whole subtask with a longer timeout each time until every page has been fetched.",
+     "rationale": "This repeats completed work and can loop on a site that stays slow or unavailable."
+    },
+    {
+     "id": "D",
+     "text": "Have the specialist return a generic failure flag for the subtask whenever any fetch fails, so the coordinator decides.",
+     "rationale": "A generic flag without category, partial results, or attempts gives the coordinator nothing to base a recovery decision on."
+    }
+   ],
+   "correctOptionIds": [
+    "A"
+   ],
+   "explanation": "Subagents should recover locally from transient failures and escalate only what they cannot resolve, including partial results and what was attempted, so the coordinator can decide without redoing finished work.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T205",
+    "T175"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A2-005",
+   "tags": [
+    "errors",
+    "local-recovery",
+    "partial-results"
+   ]
+  },
+  {
+   "id": "CCAR-F-B2-A2-006",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A2",
+   "objective": "2.3 Distribute tools appropriately across agents and configure tool choice",
+   "scenarioId": "ARCH-CASE-03",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "The synthesis specialist has no search tools, so every claim it wants to double-check goes back through the coordinator, adding a full round trip that accounts for about 40% of total latency. Most checks are simple: confirm that a quoted figure appears in a source the team has already collected. Giving the synthesizer the web search tool was tried earlier and led it to start new research. What is the best change?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Give the synthesizer the web search tool again, with a system prompt telling it to search only for verification.",
+     "rationale": "This was already tried; a broad tool outside the role invites the same cross-specialization misuse."
+    },
+    {
+     "id": "B",
+     "text": "Give the synthesizer a verify_fact tool limited to collected sources; route broader checks to the coordinator.",
+     "rationale": "Correct. A narrow cross-role tool covers the high-frequency need without granting open-ended research capability."
+    },
+    {
+     "id": "C",
+     "text": "Have the coordinator verify every claim against all collected sources before synthesis starts, needed or not.",
+     "rationale": "Verifying everything up front spends effort on claims that never needed checking and still delays synthesis."
+    },
+    {
+     "id": "D",
+     "text": "Merge the synthesizer and the search specialist into one agent, so verification needs no coordinator round trip.",
+     "rationale": "Merging roles gives one agent the full tool set, recreating the misuse and losing specialization."
+    }
+   ],
+   "correctOptionIds": [
+    "B"
+   ],
+   "explanation": "Scope each agent's tools to its role, but provide narrow cross-role tools for frequent, simple needs, and route complex cases through the coordinator.",
+   "points": 1,
+   "difficulty": "advanced",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T205",
+    "T19"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A2-006",
+   "tags": [
+    "tool-distribution",
+    "scoped-tools"
+   ]
+  },
+  {
+   "id": "CCAR-F-B2-A2-007",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A2",
+   "objective": "2.2 Implement structured error responses for MCP tools",
+   "scenarioId": "ARCH-CASE-04",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "The assistant's get_ticket tool calls the ticketing API with the requesting engineer's credentials. For tickets in restricted security projects, the API returns 403, and the tool currently returns a normal result saying \"Ticket not found\". As a result, the assistant has told engineers that restricted tickets do not exist, and they stop pursuing legitimate requests. Security policy allows confirming that a ticket is restricted. How should the tool report this case?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Keep the normal result but add the word restricted to the not-found text so that the model can infer the reason.",
+     "rationale": "A successful result still tells the agent the lookup worked; ambiguous wording invites the same wrong answer."
+    },
+    {
+     "id": "B",
+     "text": "Return isError true with error content giving a transient category and a retryable flag, so the agent retries with backoff.",
+     "rationale": "A permission denial will not succeed on retry, so this category wastes attempts and misleads the agent."
+    },
+    {
+     "id": "C",
+     "text": "Retry the call with a service account that can read every project, then return the ticket to the engineer.",
+     "rationale": "This bypasses the access control the 403 enforces and exposes restricted tickets to unauthorized users."
+    },
+    {
+     "id": "D",
+     "text": "Return isError true with error content giving a permission category, a non-retryable flag and how to request access.",
+     "rationale": "Correct. The agent can tell the engineer the ticket is restricted, which policy allows, avoid useless retries, and explain the next step."
+    }
+   ],
+   "correctOptionIds": [
+    "D"
+   ],
+   "explanation": "Distinguish permission errors from empty results and from transient failures. isError is part of the MCP tool result; category and retryable are fields the application defines in the error content, and they let the agent communicate accurately and avoid wasted retries.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T23",
+    "T175"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A2-007",
+   "tags": [
+    "errors",
+    "permission-errors",
+    "isError"
+   ]
+  },
+  {
+   "id": "CCAR-F-B2-A2-008",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A2",
+   "objective": "2.4 Integrate MCP servers into Claude Code and agent workflows",
+   "scenarioId": "ARCH-CASE-04",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "Months ago a developer added the ticketing MCP server with claude mcp add, using the default scope and the old endpoint. The team has since committed the server, under the same name and with the new endpoint, to the project's .mcp.json. Teammates connect to the new endpoint, but her sessions in this project keep calling the old one. What should she do?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Remove her local-scope entry, for example with claude mcp remove ticketing --scope local, so .mcp.json applies.",
+     "rationale": "Correct. Local scope is the default for claude mcp add and takes precedence over project scope for the same name."
+    },
+    {
+     "id": "B",
+     "text": "Run claude mcp reset-project-choices so that the project definition is approved again and replaces her entry.",
+     "rationale": "Resetting approval choices does not change precedence; her local definition still wins."
+    },
+    {
+     "id": "C",
+     "text": "Add only the new url field to her local entry, since Claude Code merges the other fields from .mcp.json.",
+     "rationale": "Claude Code uses the whole entry from the highest-precedence scope; fields are not merged across scopes."
+    },
+    {
+     "id": "D",
+     "text": "Re-add the server with --scope user, because user scope ranks above both the local and project definitions.",
+     "rationale": "User scope ranks below local and project scope, so the stale local entry would still win."
+    }
+   ],
+   "correctOptionIds": [
+    "A"
+   ],
+   "explanation": "MCP definitions with the same name resolve by scope: local, then project, then user. The highest-precedence entry is used as a whole, so a stale local entry shadows the team's .mcp.json.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T173"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A2-008",
+   "tags": [
+    "mcp",
+    "scopes",
+    "precedence"
+   ]
+  },
+  {
+   "id": "CCAR-F-B2-A2-009",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A2",
+   "objective": "2.1 Design effective tool interfaces with clear descriptions and boundaries",
+   "scenarioId": "ARCH-CASE-05",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "The review pipeline's MCP server exposes post_finding, whose description is about 3,500 characters: a long table of severity examples comes first, and at the end is the rule that it must not be used for issues outside the diff, which belong in the summary instead. In Claude Code, Claude keeps posting inline findings on unchanged lines. Other tools on the server behave as described. What is the most likely cause and fix?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Claude Code truncates long tool descriptions, so put the purpose and the diff boundary first and shorten the rest.",
+     "rationale": "Correct. Tool descriptions are truncated at 2,048 characters by default, so the boundary at the end never reaches Claude."
+    },
+    {
+     "id": "B",
+     "text": "Tool search summarizes long descriptions, so repeat the boundary rule inside every parameter description.",
+     "rationale": "Tool search defers loading tool definitions; it does not summarize them, and repetition does not address the cut-off text."
+    },
+    {
+     "id": "C",
+     "text": "Claude weighs the start and end of a description equally, so the boundary rule needs bold markup to stand out.",
+     "rationale": "The rule at the end is not under-weighted; it is cut off before Claude sees it."
+    },
+    {
+     "id": "D",
+     "text": "Descriptions over 2,000 characters are dropped entirely, so move the whole text into the server instructions.",
+     "rationale": "Long descriptions are truncated, not dropped, and server instructions are truncated at the same default length."
+    }
+   ],
+   "correctOptionIds": [
+    "A"
+   ],
+   "explanation": "Claude Code truncates each MCP tool description and each server's instructions at 2,048 characters by default. Keep descriptions concise and put purpose, boundaries, and when-not-to-use guidance near the start.",
+   "points": 1,
+   "difficulty": "advanced",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T173"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A2-009",
+   "tags": [
+    "tool-descriptions",
+    "mcp",
+    "truncation"
+   ]
+  },
+  {
+   "id": "CCAR-F-B2-A2-010",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A2",
+   "objective": "2.3 Distribute tools appropriately across agents and configure tool choice",
+   "scenarioId": "ARCH-CASE-05",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "The team's review subagent must run the test suite with Bash but must never push. Its definition sets disallowedTools: Bash(git push *). Now the subagent reports that it has no Bash tool and cannot run any tests. How should the team meet both requirements?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Change the entry to Bash(git push), without the wildcard, so that only the exact command is removed.",
+     "rationale": "A disallowedTools entry with any specifier removes the whole tool from the subagent."
+    },
+    {
+     "id": "B",
+     "text": "Remove the disallowedTools entry and add Bash(git push *) to permissions.deny in the project settings.",
+     "rationale": "Correct. A Bash deny rule blocks only matching commands and applies to the main conversation and to subagents."
+    },
+    {
+     "id": "C",
+     "text": "Add Bash to the subagent's tools field too, since an allowlist entry overrides a disallowedTools entry.",
+     "rationale": "disallowedTools is applied first and a tool listed in both fields is removed."
+    },
+    {
+     "id": "D",
+     "text": "Set permissionMode: dontAsk on the subagent, so unlisted commands such as git push are denied automatically.",
+     "rationale": "dontAsk denies anything that would prompt, including the test commands unless they are allowed, and does not target git push specifically."
+    }
+   ],
+   "correctOptionIds": [
+    "B"
+   ],
+   "explanation": "In subagent definitions, disallowedTools removes whole tools even when written with a specifier. To keep a tool but block specific uses, add a permission deny rule in settings.",
+   "points": 1,
+   "difficulty": "advanced",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T17",
+    "T11"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A2-010",
+   "tags": [
+    "subagents",
+    "tool-restrictions",
+    "permissions"
+   ]
+  },
+  {
+   "id": "CCAR-F-B2-A2-011",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A2",
+   "objective": "2.3 Distribute tools appropriately across agents and configure tool choice",
+   "scenarioId": "ARCH-CASE-06",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "Each extraction request must end in a tool call: submit_record when the document yields a valid record, or flag_unextractable when it does not. Some responses come back as plain text explaining the problem, which the pipeline cannot route. The service uses a model and configuration that support forced tool use. Which tool_choice setting fits?",
+   "options": [
+    {
+     "id": "A",
+     "text": "{\"type\": \"tool\", \"name\": \"submit_record\"}, which guarantees that every response produces a record.",
+     "rationale": "Forcing submit_record removes the option to flag unextractable documents, pushing Claude to submit a record anyway."
+    },
+    {
+     "id": "B",
+     "text": "{\"type\": \"any\"}, which requires a call to one of the provided tools while leaving the choice to Claude.",
+     "rationale": "Correct. any guarantees a tool call and still lets Claude pick submit_record or flag_unextractable."
+    },
+    {
+     "id": "C",
+     "text": "{\"type\": \"auto\"}, with a system prompt telling Claude never to reply in plain text under any circumstances.",
+     "rationale": "auto lets Claude decide whether to call a tool, so plain-text replies remain possible."
+    },
+    {
+     "id": "D",
+     "text": "{\"type\": \"none\"}, with the routing decision parsed from the text of Claude's reply instead of a tool call.",
+     "rationale": "none prevents tool use entirely, making routing depend on parsing free text."
+    }
+   ],
+   "correctOptionIds": [
+    "B"
+   ],
+   "explanation": "tool_choice any forces Claude to call some tool, while type tool forces a specific one and auto leaves the decision to Claude. Forced options are unavailable on some models and with manual extended thinking, so check support first.",
+   "points": 1,
+   "difficulty": "foundational",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T203"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A2-011",
+   "tags": [
+    "tool_choice",
+    "structured-output"
+   ]
+  },
+  {
+   "id": "CCAR-F-B2-A2-012",
+   "version": 1,
+   "examCode": "CCAR-F",
+   "locale": "en",
+   "domainId": "A2",
+   "objective": "2.5 Select and apply built-in tools (Read, Write, Edit, Bash, Grep, Glob) effectively",
+   "scenarioId": "ARCH-CASE-06",
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A subagent for the extraction service has the tools Read, Grep, and Glob. Generated parser tables live in build/generated/, which is listed in .gitignore. Glob with **/*.table.json finds those files, but Grep for a field name known to appear in them reports no matches. What explains this, and what should the agent do?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Grep skips gitignored files, so the agent should search those files by passing their paths to Grep.",
+     "rationale": "Correct. Grep respects .gitignore; to search a gitignored file, pass its path directly."
+    },
+    {
+     "id": "B",
+     "text": "Grep only searches files that Glob returned earlier in the session, so the agent should rerun Glob first.",
+     "rationale": "Grep does not depend on earlier Glob results; it searches the given path with its own ignore handling."
+    },
+    {
+     "id": "C",
+     "text": "Grep cannot parse JSON files, so the agent should Read each generated table and inspect it for the field.",
+     "rationale": "Grep searches text content, and JSON is text; the issue is which files Grep considers."
+    },
+    {
+     "id": "D",
+     "text": "Glob and Grep share ignore rules, so the files must be binary; the agent should switch to Bash.",
+     "rationale": "They differ: Glob does not respect .gitignore by default, while Grep skips gitignored files."
+    }
+   ],
+   "correctOptionIds": [
+    "A"
+   ],
+   "explanation": "Glob ignores .gitignore by default and so finds gitignored files, while Grep skips them unless given the path directly. Knowing each tool's defaults avoids treating a filtered search as a true empty result.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T177",
+    "T17"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCAR-F-B2-A2-012",
+   "tags": [
+    "built-in-tools",
+    "grep",
+    "glob",
+    "gitignore"
+   ]
+  }
+ ],
+ "newSources": [
+  {
+   "id": "T350",
+   "url": "https://code.claude.com/docs/en/errors",
+   "title": "Claude Code error reference",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "Workspace has not been trusted warning: project permissions.allow ignored in -p runs"
+  }
+ ]
+}

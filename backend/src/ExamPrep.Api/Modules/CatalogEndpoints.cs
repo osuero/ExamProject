@@ -64,7 +64,7 @@ public static class CatalogEndpoints
                 profile = new
                 {
                     version = p.Version, questionCount = p.QuestionCount, examDurationMinutes = p.ExamDurationMinutes,
-                    appointmentDurationMinutes = p.AppointmentDurationMinutes, allowedQuestionTypes = p.AllowedQuestionTypes,
+                    appointmentDurationMinutes = p.AppointmentDurationMinutes, allowedQuestionTypes = p.AllowedQuestionTypes, scenariosPerForm = p.ScenariosPerForm,
                     simulatorPassPercent = p.SimulatorPassPercent, scoringPolicy = p.ScoringPolicy,
                     officialScoreReference = p.OfficialScoreReference, verificationStatus = p.VerificationStatus,
                     blueprintVersion = p.BlueprintVersion, notes = p.Notes, sources
@@ -77,7 +77,7 @@ public static class CatalogEndpoints
                 modes = new[]
                 {
                     new { id = AttemptModes.Practice, name = "Practice", description = "Untimed by default, optional immediate feedback with explanations for every option." },
-                    new { id = AttemptModes.Simulation, name = "Simulation", description = $"{p.QuestionCount} questions in {p.ExamDurationMinutes} minutes, distributed by domain weights. Feedback hidden until the end." },
+                    new { id = AttemptModes.Simulation, name = "Simulation", description = $"{p.QuestionCount} questions in {p.ExamDurationMinutes} minutes, distributed by domain weights" + (p.ScenariosPerForm is int k ? $" and drawn from {k} randomly chosen scenarios" : "") + ". Feedback hidden until the end." },
                     new { id = AttemptModes.Custom, name = "Custom", description = "Choose domains, number of questions and time. Does not reproduce the real format." },
                 },
                 availability = new

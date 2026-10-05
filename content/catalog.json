@@ -216,7 +216,8 @@
      "P03"
     ],
     "blueprintVersion": "Exam guide v1.0, effective July 2026",
-    "notes": "The official exam presents 4 scenarios drawn at random from 6 (guide P05). One testimony (C06) reports 2.5 hours, likely seat time; official sources state 120 minutes. Option count per item is not officially published."
+    "notes": "The official exam presents 4 scenarios drawn at random from 6 (guide P05); simulations here do the same. One testimony (C06) reports 2.5 hours, likely seat time; official sources state 120 minutes. Option count per item is not officially published.",
+    "scenariosPerForm": 4
    }
   }
  ],

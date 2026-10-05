@@ -2,28 +2,28 @@
 ✔ Building...
 Initial chunk files | Names           |  Raw size | Estimated transfer size
 chunk-C1CwyHqy.js   | -               | 272.71 kB |                74.97 kB
-main-2U4PDZY3.js    | main            |   9.40 kB |                 3.06 kB
+main-QJ3DGSVB.js    | main            |   9.40 kB |                 3.06 kB
 styles-O6UP3AC2.css | styles          |   6.69 kB |                 1.60 kB
 
-                    | Initial total   | 288.80 kB |                79.64 kB
+                    | Initial total   | 288.80 kB |                79.63 kB
 
 Lazy chunk files    | Names           |  Raw size | Estimated transfer size
-chunk-D8-tI28w.js   | runner          |  23.31 kB |                 6.34 kB
-chunk-BLECei9f.js   | admin           |  20.77 kB |                 5.68 kB
-chunk-PWRt0LA1.js   | exam-detail     |  12.10 kB |                 3.86 kB
-chunk-DoPZNhII.js   | question-detail |   9.61 kB |                 3.05 kB
-chunk-CCpQD7GR.js   | result          |   9.07 kB |                 3.08 kB
-chunk-bvpavIuo.js   | home            |   6.06 kB |                 2.21 kB
-chunk-DLg-gM5d.js   | my-exams        |   5.47 kB |                 2.08 kB
+chunk-BJxhtyeh.js   | runner          |  23.31 kB |                 6.32 kB
+chunk-DqRHizWn.js   | admin           |  20.93 kB |                 5.71 kB
+chunk-Co7SmEgc.js   | exam-detail     |  12.10 kB |                 3.87 kB
+chunk-BE9WtZpr.js   | question-detail |   9.61 kB |                 3.05 kB
+chunk-DFjhR8G7.js   | result          |   9.07 kB |                 3.08 kB
+chunk-0h1lE6Vw.js   | home            |   6.06 kB |                 2.21 kB
+chunk-Da3983db.js   | my-exams        |   5.47 kB |                 2.08 kB
 chunk-D33_fPnh.js   | -               |   5.43 kB |                 1.91 kB
-chunk-plqAFqIB.js   | progress        |   4.07 kB |                 1.64 kB
-chunk-C-lypIBe.js   | login           |   2.71 kB |                 1.25 kB
-chunk-DQwEp8p8.js   | catalog         |   1.49 kB |               800 bytes
-chunk-CYbyUiM1.js   | verify          |   1.35 kB |               729 bytes
+chunk-BbPZ0YCG.js   | progress        |   4.07 kB |                 1.63 kB
+chunk-DLrnJ-eB.js   | login           |   2.71 kB |                 1.25 kB
+chunk-B1Ynl-RE.js   | catalog         |   1.49 kB |               800 bytes
+chunk-JToaXIzo.js   | verify          |   1.35 kB |               725 bytes
 chunk-DDAO-ypO.js   | -               |   1.15 kB |               659 bytes
 chunk-zlBV5qaP.js   | not-found       | 507 bytes |               507 bytes
 
-Application bundle generation complete. [3.781 seconds] - 2026-10-03T18:59:36.051Z
+Application bundle generation complete. [4.269 seconds] - 2026-10-05T15:01:07.411Z
 
 Output location: /home/claude/ExamProject/frontend/dist/frontend
 

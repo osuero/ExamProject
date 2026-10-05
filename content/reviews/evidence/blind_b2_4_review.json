@@ -1,0 +1,615 @@
+[
+ {
+  "id": "CCDV-F-B2-D2-033",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Skills in the container accept version 'latest' or a pinned version ID; for production pin a specific version because a version uploaded by anyone in the workspace immediately changes what 'latest' runs",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/skills-guide",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A3-001",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Relative @import paths resolve relative to the file containing the import, not the working directory",
+    "url": "https://code.claude.com/docs/en/memory",
+    "supported": true
+   },
+   {
+    "claim": "A path wrapped in quotes isn't imported at all (distractor B false)",
+    "url": "https://code.claude.com/docs/en/memory",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D7-003",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Sandbox covers shell commands only; built-in Read/Edit/Write follow permission rules; a denyRead entry doesn't stop the Read tool",
+    "url": "https://code.claude.com/docs/en/sandboxing",
+    "supported": true
+   },
+   {
+    "claim": "Read(~/path) home-relative permission rule syntax",
+    "url": "https://code.claude.com/docs/en/permissions",
+    "supported": true
+   },
+   {
+    "claim": "Sandbox auto-allow mode exists (distractor C)",
+    "url": "https://code.claude.com/docs/en/sandboxing",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D3-001",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "revise",
+  "verifiedFacts": [
+   {
+    "claim": "Path-scoped rules in .claude/rules with paths frontmatter load only when Claude reads/writes/edits matching files",
+    "url": "https://code.claude.com/docs/en/memory",
+    "supported": true
+   },
+   {
+    "claim": "@imports load at launch and don't reduce context cost (distractor A)",
+    "url": "https://code.claude.com/docs/en/memory",
+    "supported": true
+   },
+   {
+    "claim": "CLAUDE.local.md loads alongside CLAUDE.md (distractor D)",
+    "url": "https://code.claude.com/docs/en/memory",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Key's glob services/*/db/migrations/** assumes a services/ top-level directory that the stem never states ('db/migrations folders inside roughly 40 services'); a careful candidate could doubt the key.",
+   "Near-duplicate of CCDV-F-B2-D2-031 (same concept: path-scoped rules vs per-folder CLAUDE.md vs CLAUDE.local.md) in the same exam."
+  ],
+  "suggestedFix": "Use paths: **/db/migrations/** in option C, or state in the stem that services live under services/<name>/. Consider differentiating from D2-031 (e.g. make the import distractor the focus: imports still load at launch)."
+ },
+ {
+  "id": "CCAR-F-B2-A1-006",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Multi-agent research: early agents spawned 50 subagents for simple queries; fix was embedding effort-scaling rules in the prompt (simple fact-finding = 1 agent)",
+    "url": "https://www.anthropic.com/engineering/multi-agent-research-system",
+    "supported": true
+   },
+   {
+    "claim": "CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS is a real Claude Code concurrency cap (default 20), not a scope control",
+    "url": "https://code.claude.com/docs/en/env-vars",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Minor: option A names a real Claude Code CLI env var while ARCH-CASE-04 never says the assistant runs on Claude Code; still clearly wrong (caps concurrency, not count/cost)."
+  ],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D2-020",
+  "chosen": [
+   "C",
+   "E"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "claude --worktree <name> starts an isolated worktree on its own branch under .claude/worktrees/",
+    "url": "https://code.claude.com/docs/en/cli-reference",
+    "supported": true
+   },
+   {
+    "claim": ".worktreeinclude (gitignore syntax) copies gitignored files such as .env into new worktrees",
+    "url": "https://code.claude.com/docs/en/worktrees",
+    "supported": true
+   },
+   {
+    "claim": "--fork-session only creates a new session ID when resuming (distractor A)",
+    "url": "https://code.claude.com/docs/en/cli-reference",
+    "supported": true
+   },
+   {
+    "claim": "Subagents get worktrees only with isolation: worktree, not always (distractor D)",
+    "url": "https://code.claude.com/docs/en/worktrees",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D2-031",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Path-scoped rules with paths globs such as **/*.ts load only when Claude works with matching files",
+    "url": "https://code.claude.com/docs/en/memory",
+    "supported": true
+   },
+   {
+    "claim": "Long CLAUDE.md files reduce adherence; move part-specific instructions to path-scoped rules",
+    "url": "https://code.claude.com/docs/en/memory",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Overlaps heavily with CCDV-F-B2-D3-001 (same concept and distractor family); avoid placing both in one form."
+  ],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D6-004",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "'Can you suggest some changes' may yield suggestions only; recommended <default_to_action> prompt: 'By default, implement changes rather than only suggesting them... use tools to discover missing details'",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Key closely paraphrases a docs snippet; acceptable but recall-oriented."
+  ],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D2-014",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Sonnet 4.6 supports thinking {type: adaptive}; display defaults to summarized on Sonnet 4.6",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/thinking",
+    "supported": true
+   },
+   {
+    "claim": "display: omitted gives faster time-to-first-text-token when streaming",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/thinking",
+    "supported": true
+   },
+   {
+    "claim": "Billing is the same regardless of display; billed output tokens don't match visible tokens",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/thinking-steering-and-cost",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D8-001",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "revise",
+  "verifiedFacts": [
+   {
+    "claim": "With tool_choice any or tool, the API prefills the assistant turn so the model will not emit natural-language text before tool_use blocks, even if asked",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Option D's first branch (switch to tool_choice auto) drops the stem's requirement that every request produces a ticket; only the 'or add a reason field' branch satisfies both constraints, so the key is a compound hedge.",
+   "Length/compound cue: D is the only two-pronged option."
+  ],
+  "suggestedFix": "Rewrite D as one remedy that honors both constraints, e.g. 'Keep the forced tool_choice and add a required reason field to file_ticket's input schema for the audit explanation.' Optionally add a distractor for auto without verification."
+ },
+ {
+  "id": "CCDV-F-B2-D1-006",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Bare allowedTools entries auto-approve the tool before canUseTool is consulted; auto-approved tools never reach canUseTool",
+    "url": "https://code.claude.com/docs/en/agent-sdk/permissions",
+    "supported": true
+   },
+   {
+    "claim": "acceptEdits auto-approves file edits; bare disallowedTools removes the tool from context",
+    "url": "https://code.claude.com/docs/en/agent-sdk/permissions",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A4-015",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Batch params validation is asynchronous and errors return only after the whole batch ends; verify request shape with the Messages API first",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A1-023",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "medium",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [
+   "Judgment item (context passing between passes); no single doc states it, but B is the only option that supplies cross-file interface information."
+  ],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A4-013",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Strict schemas don't support numerical constraints such as minimum/maximum (distractor A invalid; balance is dynamic anyway)",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+    "supported": true
+   },
+   {
+    "claim": "Tool results can return is_error: true with an explanatory message",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D2-023",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [
+   "Judgment item (give Claude a verification loop); key is uniquely defensible."
+  ],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A1-016",
+  "chosen": [
+   "B",
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [
+   "Selection criterion (high-stakes/irreversible) is implied only by 'consumed downstream as soon as written'; E is also code-enforceable but low-stakes, so B+D remain best."
+  ],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A3-020",
+  "chosen": [
+   "A",
+   "E"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "CLAUDE.md gives persistent project context (testing standards, conventions) loaded into each session",
+    "url": "https://code.claude.com/docs/en/memory",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D7-001",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [
+   "Security judgment; distractors are classic prompt-only / obfuscation fixes. Unique key."
+  ],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D1-003",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Parallelization/voting example: reviewing code for vulnerabilities with several different prompts that flag the code if they find a problem",
+    "url": "https://www.anthropic.com/engineering/building-effective-agents",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A1-019",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "PreToolUse updatedInput replaces tool input before execution; combine with permissionDecision allow",
+    "url": "https://code.claude.com/docs/en/hooks",
+    "supported": true
+   },
+   {
+    "claim": "PostToolUse updatedToolOutput exists but replaces output after the tool ran (access event already logged)",
+    "url": "https://code.claude.com/docs/en/hooks",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Minor: matcher for an MCP tool is mcp__<server>__search_tickets; 'hook on the search_tickets tool' is acceptable shorthand.",
+   "Same concept as CCDV-F-B2-D1-009 (different exam, acceptable)."
+  ],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A1-011",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Claude uses each subagent's description to decide when to delegate; write descriptions that say when to use it",
+    "url": "https://code.claude.com/docs/en/sub-agents",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A4-004",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Few-shot examples improve consistency; docs recommend 3-5 examples",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Minor: key says 'two to four examples' while docs recommend 3-5; harmless but could be aligned."
+  ],
+  "suggestedFix": "Optionally change 'two to four' to 'three to five' in D."
+ },
+ {
+  "id": "CCAR-F-B2-A5-004",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [
+   "Judgment item; unique key."
+  ],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D6-006",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Self-correction chaining: draft -> review against criteria -> refine, each a separate call so you can log/evaluate each step",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D1-009",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "SDK example rewrites Write file_path to /sandbox via updatedInput with permissionDecision allow; return a new object rather than mutating tool_input",
+    "url": "https://code.claude.com/docs/en/agent-sdk/hooks",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Scenario mirrors the official docs example almost exactly (/sandbox redirect); tests recall more than application."
+  ],
+  "suggestedFix": "Optionally change the scenario (e.g. redirect writes to /reports/out) so it is not a copy of the docs example."
+ },
+ {
+  "id": "CCDV-F-B2-D2-008",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Python SDK generally follows SemVer but may ship changes that only affect static types in minor versions",
+    "url": "https://platform.claude.com/docs/en/api/sdks/python",
+    "supported": true
+   },
+   {
+    "claim": "anthropic package is on 1.x (1.11.0 on PyPI), so >=1.0 premise is realistic",
+    "url": "https://pypi.org/project/anthropic/",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D2-017",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "tool_use block input is an object conforming to input_schema",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A5-009",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [
+   "Judgment item (stratified sampling); unique key."
+  ],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D2-024",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Omitting settingSources is equivalent to ['user','project','local']; 'user' loads ~/.claude/CLAUDE.md",
+    "url": "https://code.claude.com/docs/en/agent-sdk/claude-code-features",
+    "supported": true
+   },
+   {
+    "claim": "'project' loads CLAUDE.md, .claude/rules, and .claude/settings.json; [] disables user, project and local (CLAUDE.md not loaded)",
+    "url": "https://code.claude.com/docs/en/agent-sdk/modifying-system-prompts",
+    "supported": true
+   },
+   {
+    "claim": "CLAUDE_CODE_DISABLE_AUTO_MEMORY is a real env var (distractor A) but auto memory is not ~/.claude/CLAUDE.md",
+    "url": "https://code.claude.com/docs/en/agent-sdk/claude-code-features",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A4-001",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "revise",
+  "verifiedFacts": [
+   {
+    "claim": "Few-shot/concrete examples improve consistency of output",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Word-match cue: stem names 'an unchecked null' and the key's example repeats 'an unchecked null that crashes a request'; no distractor echoes stem wording."
+  ],
+  "suggestedFix": "Change the example in B to a different defect (e.g. 'such as an unvalidated input that corrupts stored data'), or give a distractor that also references the null case."
+ },
+ {
+  "id": "CCAR-F-B2-A2-006",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [
+   "Judgment item (scoped tool for the common case, least privilege); consistent with ARCH-CASE-03."
+  ],
+  "suggestedFix": ""
+ }
+]

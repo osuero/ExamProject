@@ -1,0 +1,643 @@
+[
+ {
+  "id": "CCDV-F-B2-D1-013",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Threshold compaction is enabled with the compact_20260112 edit in context_management.edits (beta header compact-2026-01-12); the client appends the response as usual and the API drops content before the compaction block",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/compaction-threshold",
+    "supported": true
+   },
+   {
+    "claim": "Threshold compaction is the choice when you want the API to manage context inside ordinary requests; tool result clearing is a separate context-editing feature",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/compaction",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Minor: the overview says to prefer on-demand compaction where available, but the stem's 'inside ordinary requests with minimal client code' and the option set make A the only answer."
+  ],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D7-008",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "apiKeyHelper runs a script for dynamic or rotating credentials such as short-lived tokens fetched from a vault",
+    "url": "https://code.claude.com/docs/en/authentication",
+    "supported": true
+   },
+   {
+    "claim": "claude setup-token produces a long-lived (one-year) OAuth token",
+    "url": "https://code.claude.com/docs/en/authentication",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A4-009",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Strict tool use supports {type: string, format: date}; schema constraints guarantee format, not semantic correctness of resolved dates",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "D is noticeably the longest option (147 chars vs 112-126), a mild length cue.",
+   "D says 'return null with the raw phrase', but the stem's schema has only due_date; returning the raw phrase implies a field the stem does not mention. 'created_at' is also not introduced in the stem."
+  ],
+  "suggestedFix": "Optional polish: mention that tickets carry created_at in the stem, and reword D to '...return null and copy the raw phrase into a due_date_raw field when day and month are ambiguous'; trim D slightly."
+ },
+ {
+  "id": "CCAR-F-B2-A1-008",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [
+   "Design-judgment item; no doc claim needed. Distractors plausible."
+  ],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D3-002",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Token streaming in print mode uses --output-format stream-json --verbose --include-partial-messages",
+    "url": "https://code.claude.com/docs/en/headless",
+    "supported": true
+   },
+   {
+    "claim": "--include-partial-messages requires --print and --output-format stream-json",
+    "url": "https://code.claude.com/docs/en/cli-reference",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A4-018",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [
+   "Design-judgment item; distractors plausible."
+  ],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D5-009",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Python SDK retries certain errors 2 times by default with backoff; timed-out requests are retried twice by default; default timeout is 10 minutes",
+    "url": "https://platform.claude.com/docs/en/api/sdks/python",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D7-004",
+  "chosen": [
+   "A",
+   "E"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "permissions.disableBypassPermissionsMode set to \"disable\" prevents bypassPermissions mode; most useful in managed settings",
+    "url": "https://code.claude.com/docs/en/permissions",
+    "supported": true
+   },
+   {
+    "claim": "allowManagedPermissionRulesOnly makes managed settings the only source of permission rules",
+    "url": "https://code.claude.com/docs/en/permissions",
+    "supported": true
+   },
+   {
+    "claim": "defaultMode 'default' is labeled Manual in the CLI",
+    "url": "https://code.claude.com/docs/en/permissions",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Option A omits the required value (\"disable\"); harmless but slightly imprecise."
+  ],
+  "suggestedFix": "Optional: 'Set permissions.disableBypassPermissionsMode to \"disable\" in managed settings...'."
+ },
+ {
+  "id": "CCAR-F-B2-A4-007",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Claude Opus 5.5 rejects tool_choice any and tool with a 400 invalid_request_error; auto and none are accepted; structured outputs recommended for a fixed JSON shape",
+    "url": "https://platform.claude.com/docs/en/api/errors",
+    "supported": true
+   },
+   {
+    "claim": "The models in that row reject forced tool use regardless of thinking settings",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use",
+    "supported": true
+   },
+   {
+    "claim": "Structured outputs (output_config.format) supports claude-opus-5-5",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D8-007",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "For backwards compatibility, a tool that returns structuredContent SHOULD also return the serialized JSON in a TextContent block",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/server/tools",
+    "supported": true
+   },
+   {
+    "claim": "isError is for tool execution errors; JSON-RPC errors are for protocol errors",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/server/tools",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A3-004",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Same-name skills: personal overrides project, so a personal review-billing would shadow the team skill",
+    "url": "https://code.claude.com/docs/en/skills",
+    "supported": true
+   },
+   {
+    "claim": "A skill wins over a same-name file in .claude/commands/",
+    "url": "https://code.claude.com/docs/en/skills",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D7-007",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "API keys can be scoped to a single workspace; workspaces have spend limits",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/workspaces",
+    "supported": true
+   },
+   {
+    "claim": "Usage and Cost Admin API can filter/group usage by api_key_id",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/usage-cost-api",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A3-016",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Print mode (-p) is the non-interactive mode; --max-turns applies to print mode only",
+    "url": "https://code.claude.com/docs/en/cli-reference",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Minor coherence gap: the task needs merged-PR data, but --allowedTools 'Read,Edit' grants no git/gh access, so the job would complete but probably with a poor changelog."
+  ],
+  "suggestedFix": "Optional: allow 'Read,Edit,Bash(git log *)' in the stem so the scenario is internally consistent."
+ },
+ {
+  "id": "CCDV-F-B2-D5-017",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Minimum cacheable length is 4,096 tokens for Claude Opus 4.6; shorter prompts are processed uncached with no error, and both cache usage fields are 0",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+    "supported": true
+   },
+   {
+    "claim": "claude-opus-4-6 is Active as of the review date",
+    "url": "https://platform.claude.com/docs/en/about-claude/model-deprecations",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A4-019",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [
+   "Design-judgment item; distractors plausible."
+  ],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A1-009",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "A subagent receives its own AgentDefinition.prompt, not the parent's system prompt or conversation",
+    "url": "https://code.claude.com/docs/en/agent-sdk/subagents",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D4-002",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "If a response hits max_tokens with an incomplete tool use block, retry the request with a higher max_tokens",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D5-011",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Spend-cap 429 has error type rate_limit_error, no retry-after header, and error.details.error_code enforced_spend_limit_reached; retrying fails until access resumes",
+    "url": "https://platform.claude.com/docs/en/api/rate-limits",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D6-007",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Prompting guide snippet: 'After completing a task that involves tool use, provide a quick summary of the work you've done.'",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "B quotes the official prompting guide almost verbatim; acceptable but recognizable to doc readers."
+  ],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D1-010",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Without systemPrompt the SDK uses a minimal prompt that omits the claude_code preset's safety instructions, unlike claude -p; claude_code preset with append is the recommended way to add coding standards; CI lint-fixing still fits the preset",
+    "url": "https://code.claude.com/docs/en/agent-sdk/modifying-system-prompts",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D2-001",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [
+   "Success-criteria item; B is the only measurable, automatable criterion."
+  ],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A1-001",
+  "chosen": [
+   "A",
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "ResultMessage subtype distinguishes success from error_max_turns / error_max_budget_usd; result field only on success",
+    "url": "https://code.claude.com/docs/en/agent-sdk/agent-loop",
+    "supported": true
+   },
+   {
+    "claim": "The loop ends when Claude produces a response with no tool calls; maxTurns and maxBudgetUsd cap the loop",
+    "url": "https://code.claude.com/docs/en/agent-sdk/agent-loop",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A2-010",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "A disallowedTools entry with a specifier such as Bash(git push *) removes the whole tool; to keep Bash and block specific commands, add a Bash deny rule to permissions.deny, which applies to subagents too",
+    "url": "https://code.claude.com/docs/en/sub-agents",
+    "supported": true
+   },
+   {
+    "claim": "If a tool is in both tools and disallowedTools, it is removed",
+    "url": "https://code.claude.com/docs/en/sub-agents",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A5-011",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Prompting guide recommends specifying output format explicitly and avoiding excessive bullets where prose fits",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A3-003",
+  "chosen": [
+   "A",
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "revise",
+  "verifiedFacts": [
+   {
+    "claim": "Managed CLAUDE.md applies to all users and cannot be excluded by individual settings (claudeMdExcludes)",
+    "url": "https://code.claude.com/docs/en/memory",
+    "supported": true
+   },
+   {
+    "claim": ".claudeignore has no effect; use Read deny rules",
+    "url": "https://code.claude.com/docs/en/permissions",
+    "supported": true
+   },
+   {
+    "claim": "Read deny rules cover built-in file tools and recognized Bash file commands, but not arbitrary subprocesses (e.g. a Python script) that read files; OS-level enforcement requires the sandbox",
+    "url": "https://code.claude.com/docs/en/permissions",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Stem demands Claude Code 'never read' customer-samples files and option A claims client enforcement 'whatever Claude decides'; the docs state Read deny rules do not cover indirect reads by subprocesses, so A overstates the guarantee. Key A+C is still the best pair, but the absolute wording is technically inaccurate."
+  ],
+  "suggestedFix": "Soften the stem to 'never read ... with its file tools or common file commands' or change A to 'A Read deny rule for customer-samples paths in managed settings, which Claude Code enforces on its file tools and recognized file commands, regardless of the model's choices'. Alternatively mention managed sandbox filesystem rules for full enforcement."
+ },
+ {
+  "id": "CCDV-F-B2-D8-008",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Subagent frontmatter supports tools allowlist and model: haiku; runs in its own context and returns only its final message",
+    "url": "https://code.claude.com/docs/en/sub-agents",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Minor: a skill with context: fork, model and disallowed-tools could approximate D, but option A as written describes an inline skill, so it remains wrong."
+  ],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D2-010",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Claude works best when images come before text; with multiple images, introduce each with a label such as 'Image 1:'",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/vision",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D5-008",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Messages API streams with server-sent events when stream is true",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/streaming",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A4-006",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Examples are one of the most reliable ways to steer output format and structure",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D2-025",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Custom Skills do not sync across surfaces; claude.ai skills must be separately uploaded to the API; API skills are workspace-wide",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview",
+    "supported": true
+   },
+   {
+    "claim": "Skills are referenced in the Messages API container parameter",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/skills-guide",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D5-015",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Lookback window is 20 blocks per breakpoint; if a growing conversation pushes the breakpoint 20+ blocks past the last write, add a second breakpoint closer to it",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+    "supported": true
+   },
+   {
+    "claim": "Consecutive tool_use or tool_result blocks count as one position; the stem's interleaved text/reasoning avoids this exception",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+    "supported": true
+   },
+   {
+    "claim": "Automatic caching has the same 20-block lookback",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A3-019",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "The GitHub Action starts the inline comment MCP server only when --allowedTools in claude_args names it, even if the skill's allowed-tools lists it",
+    "url": "https://code.claude.com/docs/en/github-actions",
+    "supported": true
+   },
+   {
+    "claim": "Automation mode (prompt input) writes results to the workflow log by default",
+    "url": "https://code.claude.com/docs/en/github-actions",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ }
+]

@@ -45,6 +45,7 @@ public class CatalogProfile
     public int QuestionCount { get; set; }
     public int ExamDurationMinutes { get; set; }
     public int? AppointmentDurationMinutes { get; set; }
+    public int? ScenariosPerForm { get; set; }
     public List<string> AllowedQuestionTypes { get; set; } = new();
     public decimal SimulatorPassPercent { get; set; } = 80;
     public string? OfficialScoreReference { get; set; }
@@ -58,6 +59,31 @@ public class CatalogProfile
 public class Bootstrapper(AppDbContext db, ContentImporter importer, ReviewApplier reviews, TimeProvider clock, ILogger<Bootstrapper> log)
 {
     private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web);
+
+    /// <summary>When catalog.json changes a profile, record it as a new profile version; attempts keep the version they used.</summary>
+    private async Task VersionProfileIfChanged(Certification cert, CatalogCert c, CancellationToken ct)
+    {
+        var cur = cert.Profiles.Single(p => p.IsCurrent);
+        var weights = c.Domains.Select(d => new DomainWeight { Code = d.Code, WeightPercent = d.WeightPercent }).ToList();
+        var same = cur.QuestionCount == c.Profile.QuestionCount && cur.ExamDurationMinutes == c.Profile.ExamDurationMinutes
+            && cur.AppointmentDurationMinutes == c.Profile.AppointmentDurationMinutes && cur.ScenariosPerForm == c.Profile.ScenariosPerForm
+            && cur.SimulatorPassPercent == c.Profile.SimulatorPassPercent && cur.VerificationStatus == c.Profile.VerificationStatus
+            && cur.DomainWeights.Count == weights.Count && cur.DomainWeights.Zip(weights).All(z => z.First.Code == z.Second.Code && z.First.WeightPercent == z.Second.WeightPercent);
+        if (same) return;
+        cur.IsCurrent = false;
+        await db.SaveChangesAsync(ct);
+        db.ExamProfiles.Add(new ExamProfile
+        {
+            CertificationId = cert.Id, Version = cert.Profiles.Max(p => p.Version) + 1, IsCurrent = true, QuestionCount = c.Profile.QuestionCount,
+            ExamDurationMinutes = c.Profile.ExamDurationMinutes, AppointmentDurationMinutes = c.Profile.AppointmentDurationMinutes,
+            ScenariosPerForm = c.Profile.ScenariosPerForm, AllowedQuestionTypes = c.Profile.AllowedQuestionTypes, DomainWeights = weights,
+            SimulatorPassPercent = c.Profile.SimulatorPassPercent, ScoringPolicy = cur.ScoringPolicy, OfficialScoreReference = c.Profile.OfficialScoreReference,
+            VerificationStatus = c.Profile.VerificationStatus, SourceIds = c.Profile.SourceIds, BlueprintVersion = c.Profile.BlueprintVersion,
+            Notes = c.Profile.Notes, CreatedAt = clock.GetUtcNow()
+        });
+        await db.SaveChangesAsync(ct);
+        log.LogInformation("Profile for {Code} versioned from catalog.json", c.Code);
+    }
 
     public async Task RunAsync(string contentDir, CancellationToken ct)
     {
@@ -75,7 +101,12 @@ public class Bootstrapper(AppDbContext db, ContentImporter importer, ReviewAppli
             var catalog = JsonSerializer.Deserialize<CatalogFile>(await File.ReadAllTextAsync(catalogPath, ct), Json)!;
             foreach (var c in catalog.Certifications)
             {
-                if (await db.Certifications.AnyAsync(x => x.Code == c.Code, ct)) continue; // profile changes go through versioning, not bootstrap
+                var existingCert = await db.Certifications.Include(x => x.Profiles).SingleOrDefaultAsync(x => x.Code == c.Code, ct);
+                if (existingCert is not null)
+                {
+                    await VersionProfileIfChanged(existingCert, c, ct); // never edits a profile in place
+                    continue;
+                }
                 var cert = new Certification
                 {
                     Code = c.Code, Title = c.Title, Level = c.Level, ShortDescription = c.ShortDescription, Description = c.Description,
@@ -87,7 +118,7 @@ public class Bootstrapper(AppDbContext db, ContentImporter importer, ReviewAppli
                 cert.Profiles.Add(new ExamProfile
                 {
                     Version = 1, IsCurrent = true, QuestionCount = c.Profile.QuestionCount, ExamDurationMinutes = c.Profile.ExamDurationMinutes,
-                    AppointmentDurationMinutes = c.Profile.AppointmentDurationMinutes, AllowedQuestionTypes = c.Profile.AllowedQuestionTypes,
+                    AppointmentDurationMinutes = c.Profile.AppointmentDurationMinutes, ScenariosPerForm = c.Profile.ScenariosPerForm, AllowedQuestionTypes = c.Profile.AllowedQuestionTypes,
                     DomainWeights = c.Domains.Select(d => new DomainWeight { Code = d.Code, WeightPercent = d.WeightPercent }).ToList(),
                     SimulatorPassPercent = c.Profile.SimulatorPassPercent, OfficialScoreReference = c.Profile.OfficialScoreReference,
                     VerificationStatus = c.Profile.VerificationStatus, SourceIds = c.Profile.SourceIds, BlueprintVersion = c.Profile.BlueprintVersion,

@@ -1,0 +1,701 @@
+[
+ {
+  "id": "CCDV-F-B2-D2-029",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "revise",
+  "verifiedFacts": [
+   {
+    "claim": "'Can you suggest some changes' leads Claude to suggest rather than implement; a <default_to_action> system prompt ('By default, implement changes rather than only suggesting them') or explicit phrasing fixes it",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Literal user request is not quoted in the stem ('such as can you suggest some changes...'), which hurts readability.",
+   "Key D bundles two remedies ('...or phrase requests as edits'); acceptable since the docs give both, but slightly loose."
+  ],
+  "suggestedFix": "Quote the user text: Users type requests such as \"Can you suggest some changes to make this function faster?\". Optionally drop the 'or phrase requests as edits' clause from D."
+ },
+ {
+  "id": "CCDV-F-B2-D6-005",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Newer models are more responsive to the system prompt; replace 'CRITICAL: You MUST use this tool when...' with 'Use this tool when...' to stop overtriggering",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Docs example cites Opus 4.5/4.6; the stem's generic 'newer Claude Opus model' keeps it valid."
+  ],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B2-D8-009",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Anthropic pre-built skills (xlsx) are specified in the container parameter and require the code execution tool",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/skills-guide",
+    "supported": true
+   },
+   {
+    "claim": "Files created by skills are returned as file_id and must be downloaded with the Files API",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/skills-guide",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B2-D1-001",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "For many applications, optimizing single LLM calls with retrieval and in-context examples is usually enough",
+    "url": "https://www.anthropic.com/engineering/building-effective-agents",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B2-A1-003",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Client tools: Claude responds with stop_reason tool_use and tool_use blocks; the app returns tool_result and Claude continues",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B2-D5-012",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Claude Opus 5.5 default effort is medium; Claude Opus 5 default is high; set effort explicitly",
+    "url": "https://platform.claude.com/docs/en/models/opus-5-5/migration-guide",
+    "supported": true
+   },
+   {
+    "claim": "Opus 5.5 rejects thinking type disabled/enabled; adaptive thinking always on (refutes C)",
+    "url": "https://platform.claude.com/docs/en/models/opus-5-5/migration-guide",
+    "supported": true
+   },
+   {
+    "claim": "Run a fresh effort sweep on your own evals",
+    "url": "https://platform.claude.com/docs/en/models/opus-5-5/migration-guide",
+    "supported": true
+   },
+   {
+    "claim": "Opus 5.5 context window is 1M tokens (refutes D)",
+    "url": "https://platform.claude.com/docs/en/about-claude/models/overview",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Time-bound by design ('As of October 2026'); will need review when model defaults change."
+  ],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B2-D1-005",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Evaluator-optimizer fits when responses improve with articulated human feedback and an LLM can provide such feedback",
+    "url": "https://www.anthropic.com/engineering/building-effective-agents",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Stem closely paraphrases the two documented 'signs of good fit'; recognisable but legitimate."
+  ],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B2-D2-030",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "revise",
+  "verifiedFacts": [
+   {
+    "claim": "--system-prompt replaces the entire default prompt; --append-system-prompt appends to it",
+    "url": "https://code.claude.com/docs/en/cli-reference",
+    "supported": true
+   },
+   {
+    "claim": "--system-prompt-file also replaces the default prompt (refutes B)",
+    "url": "https://code.claude.com/docs/en/cli-reference",
+    "supported": true
+   },
+   {
+    "claim": "--bare skips auto-discovery of hooks, skills, CLAUDE.md etc. (refutes C)",
+    "url": "https://code.claude.com/docs/en/cli-reference",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Prompt text is unquoted, so 'with --system-prompt set to Write commit messages in Conventional Commits format, so that Claude Code fixes lint errors and commits' parses as if the flag causes the lint fixing.",
+   "'ignores coding conventions it followed before' is slightly loose: CLAUDE.md conventions are not removed by --system-prompt; the degradation is in tool-use/coding guidance from the default prompt."
+  ],
+  "suggestedFix": "Rewrite: 'A CI script runs claude -p to fix lint errors and commit. It passes --system-prompt \"Write commit messages in Conventional Commits format.\" Since the flag was added, Claude uses its tools poorly and no longer follows the default coding guidance...'"
+ },
+ {
+  "id": "CCDV-F-B2-D4-001",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "revise",
+  "verifiedFacts": [
+   {
+    "claim": "413 request_too_large when request exceeds per-endpoint maximum; Messages API limit 32 MB",
+    "url": "https://platform.claude.com/docs/en/api/errors",
+    "supported": true
+   },
+   {
+    "claim": "For large PDFs, upload with the Files API and reference by file_id to keep payloads small",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/pdf-support",
+    "supported": true
+   },
+   {
+    "claim": "Python SDK automatically retries connection errors, 408, 409, 429 and >=500 only",
+    "url": "https://platform.claude.com/docs/en/api/sdks/python",
+    "supported": false
+   }
+  ],
+  "issues": [
+   "Stem claims 'the SDK's automatic retries fail the same way', but the official SDKs do not retry 413 errors; this detail is factually wrong."
+  ],
+  "suggestedFix": "Replace 'and the SDK's automatic retries fail the same way' with 'and retrying the same request fails the same way'."
+ },
+ {
+  "id": "CCDV-F-B2-D2-005",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Evals should mirror the real task distribution and include edge cases (rerunning them on each prompt change is general practice, not a quoted doc rule)",
+    "url": "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Judgement item; no premise depends on a specific doc fact."
+  ],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B2-D8-004",
+  "chosen": [
+   "B",
+   "E"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Implement pagination, range selection, filtering and/or truncation with sensible defaults; steer agents with helpful instructions when truncating",
+    "url": "https://www.anthropic.com/engineering/writing-tools-for-agents",
+    "supported": true
+   },
+   {
+    "claim": "Expose a response_format enum (concise/detailed); avoid low-level identifiers like uuid",
+    "url": "https://www.anthropic.com/engineering/writing-tools-for-agents",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B2-D2-006",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Audit usage: Console Usage page > Export > CSV broken down by API key and model",
+    "url": "https://platform.claude.com/docs/en/about-claude/model-deprecations",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B2-D5-006",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Response header anthropic-ratelimit-input-tokens-remaining reports remaining input tokens",
+    "url": "https://platform.claude.com/docs/en/api/rate-limits",
+    "supported": true
+   },
+   {
+    "claim": "retry-after is the wait time sent with 429 responses",
+    "url": "https://platform.claude.com/docs/en/api/rate-limits",
+    "supported": true
+   },
+   {
+    "claim": "Python SDK exposes headers via .with_raw_response",
+    "url": "https://platform.claude.com/docs/en/api/sdks/python",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B2-D2-015",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "revise",
+  "verifiedFacts": [
+   {
+    "claim": "server_tool_use blocks (srvtoolu_ ids) are executed by the API; no tool_result is needed",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/server-tools",
+    "supported": true
+   },
+   {
+    "claim": "When Claude calls a client tool in the same turn, the server_tool_use block appears WITHOUT its result; the API runs it after you return client tool_results",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/server-tools",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Key D asserts 'its result block is already in the response'; the docs say that in mixed server+client turns the result block is deferred to the next response. The key is still the best answer, but its rationale is partly inaccurate for exactly this app (which mixes client and server tools)."
+  ],
+  "suggestedFix": "Reword D: 'Dispatch only tool_use blocks; server_tool_use blocks are executed by the API, so the app never runs them or returns a tool_result for them.'"
+ },
+ {
+  "id": "CCDV-F-B2-D1-007",
+  "chosen": [
+   "C",
+   "E"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Do not rely on default query() options for multi-tenant isolation; run each tenant in its own filesystem and set settingSources: [] plus CLAUDE_CODE_DISABLE_AUTO_MEMORY=1 in env",
+    "url": "https://code.claude.com/docs/en/agent-sdk/claude-code-features",
+    "supported": true
+   },
+   {
+    "claim": "Omitting settingSources is equivalent to ['user','project','local'] (refutes A)",
+    "url": "https://code.claude.com/docs/en/agent-sdk/claude-code-features",
+    "supported": true
+   },
+   {
+    "claim": "Passing mcpServers: {} does not suppress claude.ai connectors (refutes B)",
+    "url": "https://code.claude.com/docs/en/agent-sdk/claude-code-features",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B2-A3-009",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Path-scoped rules in .claude/rules with paths frontmatter load only when Claude works with matching files",
+    "url": "https://code.claude.com/docs/en/memory",
+    "supported": true
+   },
+   {
+    "claim": "Task/procedure content fits skills invoked directly (disable-model-invocation for manual workflows)",
+    "url": "https://code.claude.com/docs/en/skills",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B2-A4-002",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [
+   "Prompt-design judgement (explicit criteria over vague/confidence-based filters); no specific doc premise to verify."
+  ],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B2-D2-012",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "The Messages API is stateless; you always send the full conversational history",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/working-with-messages",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B2-A4-014",
+  "chosen": [
+   "A",
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Structured outputs guarantee schema-compliant responses (always valid JSON, required fields) via constrained decoding, so B adds little",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "D conflicts with the case requirement to retain unresolved disagreements, a good consistency-based distractor."
+  ],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B2-A2-012",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Grep respects .gitignore; to search a gitignored file, Claude passes its path directly",
+    "url": "https://code.claude.com/docs/en/tools-reference",
+    "supported": true
+   },
+   {
+    "claim": "Glob does not respect .gitignore by default",
+    "url": "https://code.claude.com/docs/en/tools-reference",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B2-A3-005",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "A failed injected command aborts the whole skill invocation with 'Shell command failed for pattern'; Claude never sees the skill",
+    "url": "https://code.claude.com/docs/en/skills",
+    "supported": true
+   },
+   {
+    "claim": "Any non-zero exit counts as failure (bash); append || true to commands expected to exit non-zero, e.g. a check script that exits 1",
+    "url": "https://code.claude.com/docs/en/skills",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B2-D2-009",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Most batches finish within 1 hour, but batches can take up to 24 hours and may expire",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B2-D2-018",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "List Message Batches: limit defaults to 20; has_more; last_id can be used as after_id for the next page",
+    "url": "https://platform.claude.com/docs/en/api/messages/batches/list",
+    "supported": true
+   },
+   {
+    "claim": "Most recently created batches are returned first",
+    "url": "https://platform.claude.com/docs/en/api/messages/batches/list",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B2-D1-015",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "On resume, the runtime restarts the entire node from the beginning",
+    "url": "https://docs.langchain.com/oss/python/langgraph/interrupts",
+    "supported": true
+   },
+   {
+    "claim": "Side effects can be moved to a separate node; wrapping interrupt() in try/except breaks it; same thread_id must be used",
+    "url": "https://docs.langchain.com/oss/python/langgraph/interrupts",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Source is LangChain docs (third-party), outside the Anthropic doc set; confirm LangGraph is in scope for CCDV-F D1.",
+   "LangGraph docs suggest a separate node AFTER the interrupt or idempotent side effects; key's 'separate, earlier node' is mechanically correct (completed nodes are not re-run) but not the docs' literal wording."
+  ],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCDV-F-B2-D2-002",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "For most models only uncached input tokens (input_tokens + cache_creation_input_tokens) count toward ITPM; cache reads count only for Claude Haiku 3.5",
+    "url": "https://platform.claude.com/docs/en/api/rate-limits",
+    "supported": true
+   },
+   {
+    "claim": "OTPM counts only actual tokens generated; max_tokens does not factor into OTPM",
+    "url": "https://platform.claude.com/docs/en/api/rate-limits",
+    "supported": true
+   },
+   {
+    "claim": "Claude Sonnet 5.5 is a current model",
+    "url": "https://platform.claude.com/docs/en/about-claude/models/overview",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Arithmetic checked: 300x1,500=450,000 ITPM; 300x400=120,000 OTPM; distractors 7.65M and 1.23M computed consistently."
+  ],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B2-A1-015",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "PreToolUse exit code 2 blocks the tool call; exit 1 is non-blocking",
+    "url": "https://code.claude.com/docs/en/hooks",
+    "supported": true
+   },
+   {
+    "claim": "Project hooks in .claude/settings.json are shared via version control",
+    "url": "https://code.claude.com/docs/en/hooks",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B2-A5-006",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [
+   "Key A is the longest option (134 vs <=119 chars), a mild length cue."
+  ],
+  "suggestedFix": "Optionally lengthen one distractor (e.g. C) to balance option lengths."
+ },
+ {
+  "id": "CCAR-F-B2-A4-003",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [
+   "Key A is the longest option (145 vs <=130 chars), a mild length cue; D ('be strict and careful') is a deliberately weak distractor."
+  ],
+  "suggestedFix": "Optionally shorten A (e.g. 'Define a disagreement as incompatible values for the same measure, population and period; annotate other differences.')."
+ },
+ {
+  "id": "CCDV-F-B2-D2-011",
+  "chosen": [
+   "A",
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Claude in Amazon Bedrock does not support input sources incl. Files API",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/claude-in-amazon-bedrock",
+    "supported": true
+   },
+   {
+    "claim": "Server-side tools (code execution, web search, web fetch) not supported on Claude in Amazon Bedrock",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/claude-in-amazon-bedrock",
+    "supported": true
+   },
+   {
+    "claim": "Prompt caching and thinking are supported; endpoint is the Messages API at /anthropic/v1/messages",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/claude-in-amazon-bedrock",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B2-A1-017",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "PreToolUse permissionDecisionReason for 'deny' is shown to Claude",
+    "url": "https://code.claude.com/docs/en/hooks",
+    "supported": true
+   },
+   {
+    "claim": "For 'ask' in a -p run with no one to answer, the call is denied and Claude reads the reason (refutes B)",
+    "url": "https://code.claude.com/docs/en/hooks",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B2-A3-007",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "argument-hint: hint shown during autocomplete, e.g. [issue-number] or [filename] [format]",
+    "url": "https://code.claude.com/docs/en/skills",
+    "supported": true
+   },
+   {
+    "claim": "arguments field declares named positional arguments for $name substitution (not documented as a menu hint)",
+    "url": "https://code.claude.com/docs/en/skills",
+    "supported": true
+   },
+   {
+    "claim": "$N is shorthand for $ARGUMENTS[N], 0-based ($0 first)",
+    "url": "https://code.claude.com/docs/en/skills",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Distractor A uses a real field ('arguments') with an undocumented effect; plausible and fair, but if Claude Code ever shows declared argument names in the menu, A would become defensible. Recheck on doc updates."
+  ],
+  "suggestedFix": null
+ },
+ {
+  "id": "CCAR-F-B2-A1-022",
+  "chosen": [
+   "B",
+   "E"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Prompt chaining fits tasks cleanly decomposed into fixed subtasks; orchestrator-workers fits tasks where subtasks can't be predicted",
+    "url": "https://www.anthropic.com/engineering/building-effective-agents",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": null
+ }
+]

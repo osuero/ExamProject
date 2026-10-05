@@ -10,7 +10,7 @@ type Tab = 'questions' | 'coverage' | 'imports' | 'sources' | 'exam' | 'audit';
 interface QRow { questionId: string; externalId: string; version: number; status: string; domainCode: string; objective: string; questionType: string; locale: string; stem: string; versions: number; }
 interface ImportReport {
   fileName: string; valid: boolean; fileErrors: string[]; casesNew: number; casesUnchanged: number; toCreate: number; unchanged: number; toVersion: number; rejected: number;
-  items: { externalId: string; action: string; issues: { severity: string; code: string; message: string }[] }[];
+  items: { externalId: string; location?: string; action: string; issues: { severity: string; code: string; message: string }[] }[];
 }
 
 @Component({

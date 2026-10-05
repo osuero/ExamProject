@@ -15,11 +15,11 @@ stored server-side. No LLM is called while a student takes an exam.
 - Email sign-in with single-use magic links. One account for every exam. Roles Student and Admin.
 - Practice with optional immediate feedback: why the right option fits and why each other option does not, with documentation links.
 - Timed simulation that reproduces the profile (53 items / 120 min for CCDV-F, 60 / 120 for CCAR-F) with solutions hidden.
-  Turning feedback on during a simulation marks the attempt as *assisted* for good.
+  CCAR-F simulations draw from 4 of the 6 scenarios, as in the official exam. Turning feedback on during a simulation marks the attempt as *assisted* for good.
 - Custom sets (domains, number of questions, optional time limit).
 - Results by domain with numerator and denominator, history, progress that keeps clean and assisted attempts apart.
 - Administration: question lifecycle (draft → technical review → editorial review → approved → published, quarantined, retired),
-  versioned edits, coverage and answer-key cue statistics, sources, profile versions, verified languages, JSON/Markdown import with preview, audit log.
+  versioned edits, coverage and answer-key cue statistics, sources, profile versions, verified languages, JSON/Markdown/Word/PDF import with preview, audit log.
 
 ## Stack
 

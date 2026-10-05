@@ -11,7 +11,7 @@ public record EditQuestionDto(string DomainCode, string Objective, string? Scena
     List<QuestionOption> Options, List<string> CorrectOptionIds, string Explanation, string Difficulty, List<string> SourceIds, string? Note);
 public record LanguageDto(string Locale, string SourceId, string Evidence);
 public record ProfileDto(int QuestionCount, int ExamDurationMinutes, int? AppointmentDurationMinutes, List<string> AllowedQuestionTypes,
-    List<DomainWeight> DomainWeights, decimal SimulatorPassPercent, string VerificationStatus, List<string> SourceIds, string? BlueprintVersion, string? Notes);
+    List<DomainWeight> DomainWeights, decimal SimulatorPassPercent, string VerificationStatus, List<string> SourceIds, string? BlueprintVersion, string? Notes, int? ScenariosPerForm = null);
 
 public static class AdminEndpoints
 {
@@ -205,6 +205,7 @@ public static class AdminEndpoints
                 return Problems.Error(400, "weights_invalid", "Weights must reference this certification's domains and be non-negative.");
             if (dto.AllowedQuestionTypes.Except(new[] { QuestionTypes.Single, QuestionTypes.Multiple }).Any()) return Problems.Error(400, "types_invalid", "Unknown question type.");
             if (dto.SimulatorPassPercent is < 1 or > 100) return Problems.Error(400, "threshold_invalid", "Threshold must be between 1 and 100.");
+            if (dto.ScenariosPerForm is < 1 or > 20) return Problems.Error(400, "scenarios_invalid", "Scenarios per form must be between 1 and 20.");
             var strategy = db.Database.CreateExecutionStrategy();
             ExamProfile? created = null;
             await strategy.ExecuteAsync(async () =>
@@ -216,7 +217,7 @@ public static class AdminEndpoints
                 created = new ExamProfile
                 {
                     CertificationId = c.Id, Version = c.Profiles.Max(x => x.Version) + 1, IsCurrent = true, QuestionCount = dto.QuestionCount,
-                    ExamDurationMinutes = dto.ExamDurationMinutes, AppointmentDurationMinutes = dto.AppointmentDurationMinutes,
+                    ExamDurationMinutes = dto.ExamDurationMinutes, AppointmentDurationMinutes = dto.AppointmentDurationMinutes, ScenariosPerForm = dto.ScenariosPerForm,
                     AllowedQuestionTypes = dto.AllowedQuestionTypes, DomainWeights = dto.DomainWeights, SimulatorPassPercent = dto.SimulatorPassPercent,
                     ScoringPolicy = current.ScoringPolicy, OfficialScoreReference = current.OfficialScoreReference,
                     VerificationStatus = dto.VerificationStatus, SourceIds = dto.SourceIds, BlueprintVersion = dto.BlueprintVersion, Notes = dto.Notes,

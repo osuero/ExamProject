@@ -82,8 +82,8 @@
     @case ('imports') {
       <section class="sheet">
         <h2>Import questions</h2>
-        <p class="small">JSON or Markdown, up to 2 MB. Preview first: nothing is written until you import a file with no errors. Re-importing the same content changes nothing. PDF and DOCX import is not available yet.</p>
-        <input type="file" accept=".json,.md" (change)="pick($event)" aria-label="Question bank file" />
+        <p class="small">JSON, Markdown, Word (.docx) or PDF, up to 2 MB. Word and PDF files must follow the Markdown bank layout (see docs/content-format.md). Preview first: nothing is written until you import a file with no errors. Re-importing the same content changes nothing.</p>
+        <input type="file" accept=".json,.md,.docx,.pdf" (change)="pick($event)" aria-label="Question bank file" />
         <p class="btns">
           <button type="button" class="btn secondary" (click)="upload('preview')" [disabled]="!file() || busy()">Preview</button>
           <button type="button" class="btn" (click)="upload('commit')" [disabled]="!file() || busy() || !report()?.valid">Import</button>
@@ -94,10 +94,10 @@
           @for (e of r.fileErrors; track e) { <div class="notice error small">{{ e }}</div> }
           <div class="table-scroll">
             <table class="data">
-              <thead><tr><th scope="col">Id</th><th scope="col">Action</th><th scope="col">Findings</th></tr></thead>
+              <thead><tr><th scope="col">Id</th><th scope="col">Where</th><th scope="col">Action</th><th scope="col">Findings</th></tr></thead>
               <tbody>
                 @for (i of r.items; track i.externalId) {
-                  <tr><td>{{ i.externalId }}</td><td><span class="tag" [class.bad]="i.action === 'reject'">{{ i.action }}</span></td>
+                  <tr><td>{{ i.externalId }}</td><td class="small">{{ i.location }}</td><td><span class="tag" [class.bad]="i.action === 'reject'">{{ i.action }}</span></td>
                     <td class="small">@for (x of i.issues; track $index) { <div [class.errtxt]="x.severity === 'error'">{{ x.severity }}: {{ x.message }}</div> }</td></tr>
                 }
               </tbody>

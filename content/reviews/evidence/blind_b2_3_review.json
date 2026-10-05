@@ -1,0 +1,675 @@
+[
+ {
+  "id": "CCDV-F-B2-D5-003",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Fast mode: speed 'fast' + fast-mode-2026-02-01 beta header; supported on Claude Opus 5.5; premium pricing",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/fast-mode",
+    "supported": true
+   },
+   {
+    "claim": "Fast mode runs same model weights, no change in intelligence; gains are OTPS not TTFT",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/fast-mode",
+    "supported": true
+   },
+   {
+    "claim": "Haiku 4.5 is fastest current model but a different model (quality changes)",
+    "url": "https://platform.claude.com/docs/en/about-claude/models/overview",
+    "supported": true
+   },
+   {
+    "claim": "Batches are asynchronous (no priority); speed/fast mode does not apply to batch",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Minor: fast mode is a research preview requiring access; stem says 'can pay premium pricing' but not that access is granted. Not fatal."
+  ],
+  "suggestedFix": "Optional: add 'and has research-preview access to fast mode' to the stem."
+ },
+ {
+  "id": "CCAR-F-B2-A4-012",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A4-020",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D5-001",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "On Claude Sonnet 5.5 a non-default temperature, top_p or top_k returns 400 (all three sampling params)",
+    "url": "https://platform.claude.com/docs/en/models/sonnet-5-5/migration-guide",
+    "supported": true
+   },
+   {
+    "claim": "Structured outputs support enum; output_config.format is the current parameter",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D2-021",
+  "chosen": [
+   "A",
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "REVIEW.md at repo root can redefine severity and add repo-specific checks like 'new API routes must have an integration test'",
+    "url": "https://code.claude.com/docs/en/code-review",
+    "supported": true
+   },
+   {
+    "claim": "CLAUDE.md violations are flagged as nits",
+    "url": "https://code.claude.com/docs/en/code-review",
+    "supported": true
+   },
+   {
+    "claim": "Claude Code Review check run always completes neutral; gate merges by reading severity counts from check run output in your own CI",
+    "url": "https://code.claude.com/docs/en/code-review",
+    "supported": true
+   },
+   {
+    "claim": "Manual Review Behavior only changes triggering, not blocking",
+    "url": "https://code.claude.com/docs/en/code-review",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D8-003",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "At least one tool must be non-deferred; never defer the tool search tool (400 if all deferred)",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool",
+    "supported": true
+   },
+   {
+    "claim": "Keep 3-5 most frequently used tools non-deferred; selection accuracy degrades past 30-50 tools",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool",
+    "supported": true
+   },
+   {
+    "claim": "A deferred tool cannot carry cache_control (400)",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A4-016",
+  "chosen": [
+   "B",
+   "E"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Batch + prompt caching discounts stack; include identical cache_control blocks in every request",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+    "supported": true
+   },
+   {
+    "claim": "Batches can take longer than 5 minutes; consider the 1-hour cache duration",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+    "supported": true
+   },
+   {
+    "claim": "Cache prefix order tools -> system -> messages; shared content must come first",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D5-013",
+  "chosen": [
+   "B",
+   "E"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Claude Sonnet 5.5 rejects tool_choice type 'any' and 'tool' with 400",
+    "url": "https://platform.claude.com/docs/en/models/sonnet-5-5/migration-guide",
+    "supported": true
+   },
+   {
+    "claim": "Recommended: tool_choice auto + strict true, say in prompt when to use the tool; additionalProperties false on every object",
+    "url": "https://platform.claude.com/docs/en/models/sonnet-5-5/migration-guide",
+    "supported": true
+   },
+   {
+    "claim": "Assistant prefill and thinking type disabled return 400 on Sonnet 5.5",
+    "url": "https://platform.claude.com/docs/en/models/sonnet-5-5/migration-guide",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D5-005",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "On 4.5+ models, input + max_tokens may exceed the window; generation that reaches the limit stops with model_context_window_exceeded",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/context-windows",
+    "supported": true
+   },
+   {
+    "claim": "Input alone over the window returns 400 'prompt is too long'",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/context-windows",
+    "supported": true
+   },
+   {
+    "claim": "Sonnet 5.5: 1M context, 128K max output",
+    "url": "https://platform.claude.com/docs/en/about-claude/models/overview",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A2-007",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "medium",
+  "verdict": "revise",
+  "verifiedFacts": [
+   {
+    "claim": "MCP tool execution errors are reported in tool results with isError: true",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/server/tools",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Ambiguous sentence: 'Engineers have been told that restricted tickets do not exist' can be read as an organizational disclosure policy (which would argue for keeping 'not found' to avoid leaking existence of restricted tickets) rather than as the harm caused by the current tool. Under the policy reading, A/current behavior becomes defensible and D could be seen as an information leak.",
+   "Error category/retryable flags are an application convention, not MCP spec fields; fine as design pattern but avoid implying spec fields."
+  ],
+  "suggestedFix": "Reword to: 'As a result, the assistant has told engineers that restricted tickets do not exist, and they stop pursuing legitimate requests. Security policy allows confirming that a ticket is restricted.' Optionally say 'structured error content (category, retryable flag)' in D."
+ },
+ {
+  "id": "CCDV-F-B2-D8-006",
+  "chosen": [
+   "B",
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "MCP servers MUST validate tokens were issued specifically for them as audience",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization",
+    "supported": true
+   },
+   {
+    "claim": "MCP server MUST NOT pass through the client token to upstream APIs; use a separate token from the upstream AS",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization",
+    "supported": true
+   },
+   {
+    "claim": "Access tokens MUST NOT be in URI query string",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization",
+    "supported": true
+   },
+   {
+    "claim": "Invalid or expired tokens MUST receive HTTP 401 (403 is for insufficient scope)",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization",
+    "supported": true
+   },
+   {
+    "claim": "MCP clients MUST implement PKCE",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A4-017",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Haiku 4.5 context window 200K",
+    "url": "https://platform.claude.com/docs/en/about-claude/models/overview",
+    "supported": true
+   },
+   {
+    "claim": "errored results include invalid requests; each request handled independently, custom_id identifies results",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+    "supported": true
+   },
+   {
+    "claim": "Input over the context window returns invalid_request_error 'prompt is too long'",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/context-windows",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Minor: Haiku 4.5 retirement is 'not sooner than October 15, 2026'; if the item is dated Oct 2026 later, the premise may age quickly."
+  ],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A5-003",
+  "chosen": [
+   "B",
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A1-014",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A3-017",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "In claude -p, permissions.allow rules in project .claude/settings.json are not used in an untrusted folder; stderr warns 'this workspace has not been trusted'",
+    "url": "https://code.claude.com/docs/en/permissions",
+    "supported": true
+   },
+   {
+    "claim": "A tracked (committed) .claude/settings.local.json is treated as repository-supplied and held until trust",
+    "url": "https://code.claude.com/docs/en/permissions",
+    "supported": true
+   },
+   {
+    "claim": "--allowedTools grants tools without prompting, with permission rule syntax such as Bash(git log *)",
+    "url": "https://code.claude.com/docs/en/cli-reference",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D2-013",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "usage token counts in message_delta are cumulative",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/streaming",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D1-002",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D5-002",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Sonnet 5.5 tokenizer yields ~30% more tokens than Sonnet 4.6, varying by content; recount with token counting",
+    "url": "https://platform.claude.com/docs/en/models/sonnet-5-5/migration-guide",
+    "supported": true
+   },
+   {
+    "claim": "Token counting counts under the tokenizer of the model passed",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/token-counting",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A4-008",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Structured outputs: required properties appear first, then optional, each in schema order",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+    "supported": true
+   },
+   {
+    "claim": "Union type arrays such as ['string','null'] are supported (counted toward union-type limit)",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D2-007",
+  "chosen": [
+   "B",
+   "E"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Workspaces separate environments with centralized billing; API keys can be scoped to one workspace",
+    "url": "https://platform.claude.com/docs/en/manage-claude/workspaces",
+    "supported": true
+   },
+   {
+    "claim": "Spend and rate limits can be set per workspace; cannot set limits on the Default Workspace",
+    "url": "https://platform.claude.com/docs/en/manage-claude/workspaces",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D7-002",
+  "chosen": [
+   "C",
+   "E"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Without --bare, -p runs project .claude/settings.json hooks and connects .mcp.json servers even in untrusted folder; no trust dialog",
+    "url": "https://code.claude.com/docs/en/headless",
+    "supported": true
+   },
+   {
+    "claim": "--bare skips hooks and .mcp.json; pass settings/MCP explicitly via flags",
+    "url": "https://code.claude.com/docs/en/headless",
+    "supported": true
+   },
+   {
+    "claim": "--setting-sources user: Claude Code reads neither project settings files nor .mcp.json",
+    "url": "https://code.claude.com/docs/en/permissions",
+    "supported": true
+   },
+   {
+    "claim": "disableAllHooks in user settings alone isn't enough: project settings take precedence",
+    "url": "https://code.claude.com/docs/en/permissions",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D6-009",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Numerical constraints (minimum/maximum) not supported in structured outputs schema",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+    "supported": true
+   },
+   {
+    "claim": "SDK removes unsupported constraints, adds them to descriptions, and validates responses against the original schema",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D6-008",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Required properties are output first, then optional; account for reordering in parsing",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A1-007",
+  "chosen": [
+   "C",
+   "E"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D6-010",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Stop hook can return decision block with reason to keep Claude working; stop_hook_active and an 8-consecutive-continuation cap (reset on tool calls) prevent infinite loops",
+    "url": "https://code.claude.com/docs/en/hooks",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Minor: 'until it exits zero' slightly overstates; Claude Code caps consecutive Stop-hook continuations (resets when Claude calls a tool). Not answer-changing."
+  ],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A1-021",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D2-016",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Mid-conversation system messages ({role: system}) supported on Claude Opus 5.5; keep cached prefix; operator-level priority",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/mid-conversation-system-messages",
+    "supported": true
+   },
+   {
+    "claim": "A content-carrying system message cannot be the first entry in messages; must follow a user turn",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/mid-conversation-system-messages",
+    "supported": true
+   },
+   {
+    "claim": "Editing top-level system invalidates the cache for system and later messages",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A5-001",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Messages API is stateless; send full conversational history",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/working-with-messages",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A3-013",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A5-005",
+  "chosen": [
+   "C",
+   "E"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D5-016",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Cache hierarchy tools -> system -> messages; modifying tool definitions invalidates the entire cache",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A1-018",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "MCP tools use mcp__<server>__<action> where <server> is the mcpServers key",
+    "url": "https://code.claude.com/docs/en/agent-sdk/hooks",
+    "supported": true
+   },
+   {
+    "claim": "A matcher like 'mcp__memory' (only exact-match characters) is compared as an exact string and matches no tool; use 'mcp__memory__.*'",
+    "url": "https://code.claude.com/docs/en/hooks",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ }
+]

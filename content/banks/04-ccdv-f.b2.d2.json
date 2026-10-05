@@ -1,0 +1,1964 @@
+{
+ "schemaVersion": "1.0",
+ "examCode": "CCDV-F",
+ "cases": [],
+ "questions": [
+  {
+   "id": "CCDV-F-B2-D2-001",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Understanding Requirements",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A logistics company's product owner states the requirement for a new email-triage feature as: the assistant must route customer emails well, and the team should know when it is ready to launch. Engineering must turn this into a requirement that can be tested before every release. Which statement best serves that purpose?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Routing quality must satisfy the support managers, who will read a sample of outputs and sign off on the launch.",
+     "rationale": "Manager sign-off is a human judgment without a defined metric or threshold; it is slow, hard to repeat for every release, and not measurable."
+    },
+    {
+     "id": "B",
+     "text": "At least 95% of a labeled set of 1,000 emails, edge cases included, reach the correct queue in an automated eval.",
+     "rationale": "Correct. It is specific (correct queue), measurable (95%), task-specific (labeled set with edge cases), and automatable, so it can gate each release."
+    },
+    {
+     "id": "C",
+     "text": "The assistant must use the most capable model available and a detailed system prompt so that routing stays accurate.",
+     "rationale": "This prescribes a solution rather than stating a testable outcome; it gives no criterion for deciding whether the feature is ready."
+    },
+    {
+     "id": "D",
+     "text": "Routing must be accurate and fast for all realistic customer emails, including unusual ones, before launch.",
+     "rationale": "This restates the vague goal; accurate and fast have no metric or threshold, so the team still cannot test it."
+    }
+   ],
+   "correctOptionIds": [
+    "B"
+   ],
+   "explanation": "Good success criteria are specific, measurable, achievable, and relevant, and they are checked with task-specific evals that include edge cases. A threshold on a labeled set turns a business wish into a requirement the team can test on every release.",
+   "points": 1,
+   "difficulty": "foundational",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T121"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-001",
+   "tags": [
+    "requirements",
+    "success-criteria",
+    "evals"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-002",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Understanding Requirements",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A support platform expects a peak of 300 requests per minute to Claude Sonnet 5.5. Each request sends a 24,000-token system prompt that is read from the prompt cache after the first call, plus about 1,500 uncached input tokens. Each request sets max_tokens to 4,096, but replies average 400 tokens. The team must state the input-tokens-per-minute (ITPM) and output-tokens-per-minute (OTPM) capacity it needs for steady-state peak traffic. Which estimate is correct?",
+   "options": [
+    {
+     "id": "A",
+     "text": "About 7.65 million ITPM, counting cached and uncached input alike, and about 1.23 million OTPM based on max_tokens.",
+     "rationale": "Both figures are inflated: cache reads do not count toward ITPM for this model, and OTPM counts tokens actually generated, not max_tokens."
+    },
+    {
+     "id": "B",
+     "text": "About 450,000 ITPM for the uncached input, and about 1.23 million OTPM, because max_tokens is reserved against OTPM.",
+     "rationale": "The ITPM figure is right, but max_tokens does not factor into OTPM; only generated output tokens count."
+    },
+    {
+     "id": "C",
+     "text": "About 7.65 million ITPM, because cache reads count like any other input, and about 120,000 OTPM from actual output.",
+     "rationale": "The OTPM figure is right, but for most current models cache_read_input_tokens do not count toward ITPM (Claude Haiku 3.5 is a documented exception)."
+    },
+    {
+     "id": "D",
+     "text": "About 450,000 ITPM, because cache reads do not count for this model, and about 120,000 OTPM from actual output.",
+     "rationale": "Correct. Uncached input (1,500 x 300) counts toward ITPM while cache reads do not, and OTPM counts generated tokens (400 x 300), not max_tokens."
+    }
+   ],
+   "correctOptionIds": [
+    "D"
+   ],
+   "explanation": "For most Claude models only uncached input tokens (and cache writes) count toward ITPM, and OTPM is measured on tokens actually produced. Capacity requirements built on total input or on max_tokens overstate what the rate limits must cover; recheck the model-specific exceptions before sizing.",
+   "points": 1,
+   "difficulty": "advanced",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T230"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-002",
+   "tags": [
+    "requirements",
+    "rate-limits",
+    "capacity-planning",
+    "prompt-caching"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-003",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Understanding Requirements",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A SaaS company has a zero data retention (ZDR) arrangement with Anthropic, and its customer contracts require every Claude feature it uses to be covered by ZDR. A new requirement is to re-summarize about 40,000 stored case notes overnight; cost matters, but results are needed only by the next morning. An engineer proposes the Message Batches API, with each note uploaded once through the Files API. Which design satisfies the requirements?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Send the notes as inline text through the Messages API with bounded concurrency; Batches and Files are not ZDR-eligible.",
+     "rationale": "Correct. The Messages API is ZDR-eligible, whereas the Message Batches API (29-day retention) and the Files API (files kept until deleted or expired) are not."
+    },
+    {
+     "id": "B",
+     "text": "Use the Message Batches API with inline note text but skip the Files API, since only stored files fall outside ZDR.",
+     "rationale": "Batch processing is itself not ZDR-eligible because results are stored asynchronously for 29 days, so this still breaks the contract."
+    },
+    {
+     "id": "C",
+     "text": "Keep the proposed design, because a ZDR arrangement covers every endpoint the organization calls once it is in place.",
+     "rationale": "ZDR eligibility is per feature; some endpoints, including Batches and Files, are explicitly not covered even under a ZDR arrangement."
+    },
+    {
+     "id": "D",
+     "text": "Upload notes through the Files API and reference them from synchronous Messages calls, deleting each file after use.",
+     "rationale": "The Files API is not ZDR-eligible; deleting files afterwards does not change the feature's eligibility."
+    }
+   ],
+   "correctOptionIds": [
+    "A"
+   ],
+   "explanation": "A contractual retention requirement constrains which API features the design may use, not just how data is handled afterwards. Check the ZDR eligibility of each feature; cheaper asynchronous options such as batches can be ruled out by the requirement.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T231",
+    "T22"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-003",
+   "tags": [
+    "requirements",
+    "zero-data-retention",
+    "batch-api",
+    "files-api"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-004",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Understanding Requirements",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "An internal HR assistant built on the Messages API must call tools from an MCP server that runs inside the company's private network. Security rules forbid exposing the server to the internet or opening inbound firewall ports, and the architecture board does not allow research-preview features, which carry no support or continuity commitment. The application backend runs inside the same private network. Which integration meets these requirements?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Pass the server's internal URL in the mcp_servers parameter, so that the MCP connector reaches it during the request.",
+     "rationale": "The MCP connector calls servers from Anthropic's side and requires a server publicly exposed over HTTP; an internal URL is not reachable."
+    },
+    {
+     "id": "B",
+     "text": "Deploy an MCP tunnel, so that Anthropic reaches the private server through an outbound-only connection from the network.",
+     "rationale": "This meets the network rule, but MCP tunnels are a research preview without uptime or continuity commitments, which the board forbids."
+    },
+    {
+     "id": "C",
+     "text": "Have the backend connect to the server with an MCP client and offer its tools to Claude as client tools it executes.",
+     "rationale": "Correct. The backend reaches the server inside the network and runs the tool calls itself, so nothing is exposed and no preview feature is needed; the SDKs offer helpers that convert MCP tools to API tools."
+    },
+    {
+     "id": "D",
+     "text": "Expose the server through a public HTTPS gateway protected by OAuth, then register its URL with the MCP connector.",
+     "rationale": "OAuth protects the endpoint but still exposes the server to the internet, which the security rule forbids."
+    }
+   ],
+   "correctOptionIds": [
+    "C"
+   ],
+   "explanation": "Turn infrastructure constraints into integration choices: the MCP connector needs a publicly reachable server, so a private server is integrated client-side, where the application owns the connection. Tunnels address the same problem but were a research preview when checked.",
+   "points": 1,
+   "difficulty": "advanced",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T208",
+    "T248"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-004",
+   "tags": [
+    "requirements",
+    "mcp",
+    "private-network",
+    "integration-design"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-005",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Systems Life Cycle",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "Two months after launch, a contract-classification feature misroutes amendments that reference a parent agreement. A developer fixes the prompt and confirms that the five reported examples now classify correctly. The team ships prompt changes every few weeks and wants this failure class to stay fixed. What should the team do as part of maintaining the system?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Add the five examples to the prompt as few-shot demonstrations, so that every later prompt version shows the fix to the model.",
+     "rationale": "Examples can help the model, but they do not test anything: a later prompt change could still regress the failure class without anyone noticing."
+    },
+    {
+     "id": "B",
+     "text": "Ask a reviewer to recheck the five reported examples by hand before each prompt release and record the outcome.",
+     "rationale": "Manual checks of five cases are slow, easy to skip, and too narrow to cover similar amendments; automated grading scales better."
+    },
+    {
+     "id": "C",
+     "text": "Add these cases and similar amendment variants to the automated eval set, and run that set on every prompt change.",
+     "rationale": "Correct. Turning production failures into regression cases, including variants, makes every future change prove the fix still holds."
+    },
+    {
+     "id": "D",
+     "text": "Set temperature to 0 for the classifier, so that the corrected behavior on these examples cannot change later.",
+     "rationale": "Lower temperature reduces variability but does not protect against regressions caused by later prompt or model changes."
+    }
+   ],
+   "correctOptionIds": [
+    "C"
+   ],
+   "explanation": "In the operate-and-maintain phase, production failures should feed the eval suite so each change is tested against them. Evals should be task-specific, include edge cases, and be automated where possible.",
+   "points": 1,
+   "difficulty": "foundational",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T121"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-005",
+   "tags": [
+    "life-cycle",
+    "maintenance",
+    "regression-evals"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-006",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Systems Life Cycle",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "Anthropic has announced the deprecation of a model your organization uses, with a retirement date three months away. The organization runs about 40 services, each with its own API key, and nobody is sure which services still request the deprecated model. What is the most direct first step to scope the migration?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Export usage from the Claude Console Usage page and review the CSV, which breaks usage down by API key and model.",
+     "rationale": "Correct. The documented audit path shows which keys, and therefore which services, still call the deprecated model, so migration can be prioritized before retirement."
+    },
+    {
+     "id": "B",
+     "text": "Wait for the retirement date and fix whichever services start failing, since requests to retired models return errors.",
+     "rationale": "Requests to a retired model do fail, but waiting turns a planned migration into an outage across unknown services."
+    },
+    {
+     "id": "C",
+     "text": "Ask each service owner to search their repository for the model ID and report back, then plan from the replies.",
+     "rationale": "Model IDs often live in configuration or environment variables, so code searches miss usage; replies are slow and incomplete compared with usage data."
+    },
+    {
+     "id": "D",
+     "text": "Switch every service to the model's alias now, so that requests move to the replacement before the retirement date.",
+     "rationale": "This changes behavior everywhere without evaluation and does not tell the team which services were affected; an alias is not a migration plan."
+    }
+   ],
+   "correctOptionIds": [
+    "A"
+   ],
+   "explanation": "Retirement planning starts with an inventory of where the deprecated model is used; the Console usage export by API key and model provides it. Deprecated models keep working until retirement, which gives time to evaluate the replacement.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T120"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-006",
+   "tags": [
+    "life-cycle",
+    "deprecation",
+    "usage-audit"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-007",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Systems Life Cycle",
+   "scenarioId": null,
+   "questionType": "multiple_response",
+   "selectCount": 2,
+   "stem": "A team runs development, staging, and production traffic for one Claude application in its organization's Default Workspace, using a single shared API key. Last week a development load test exhausted the rate limits and slowed production. The team wants the environments isolated, production protected from runaway usage elsewhere, and billing kept central. Which TWO actions should it take?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Set per-environment spend and rate limits on the Default Workspace, so that each environment receives its own share.",
+     "rationale": "Limits cannot be set on the Default Workspace, and a single workspace with one key cannot separate environments."
+    },
+    {
+     "id": "B",
+     "text": "Create separate development, staging, and production workspaces, and issue each environment a key scoped to its workspace.",
+     "rationale": "Correct. Workspaces separate environments under central billing, and a workspace-scoped key can only use its own workspace."
+    },
+    {
+     "id": "C",
+     "text": "Create a separate organization for each environment, so that limits and billing for each one are fully independent.",
+     "rationale": "This isolates environments but splits billing and administration, violating the requirement to keep billing central."
+    },
+    {
+     "id": "D",
+     "text": "Keep the shared key and tag each request with an environment header, then filter usage reports by that header.",
+     "rationale": "Tagging helps reporting but enforces nothing: development can still consume the capacity production needs."
+    },
+    {
+     "id": "E",
+     "text": "Give the development and staging workspaces lower rate limits and monthly spend limits than the production workspace.",
+     "rationale": "Correct. Per-workspace rate and spend limits cap non-production usage, so a load test cannot take the capacity production relies on."
+    }
+   ],
+   "correctOptionIds": [
+    "B",
+    "E"
+   ],
+   "explanation": "Workspaces are the documented way to separate environments while keeping centralized billing; each gets scoped keys and its own rate and spend limits. Organization-wide limits still apply on top of workspace limits.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T232"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-007",
+   "tags": [
+    "life-cycle",
+    "environments",
+    "workspaces",
+    "spend-limits"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-008",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Systems Life Cycle",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A Python service declares its dependency as anthropic>=1.0 with no lock file. After an unrelated deploy, the CI type-check step fails on code that calls the SDK, although the service behaves the same at runtime. The installed SDK had moved to a newer minor version. Which change best fits maintaining this system?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Treat the failure as an SDK regression, since SemVer forbids breaking changes in minor releases, and wait for a fix.",
+     "rationale": "The SDK generally follows SemVer but documents that some backward-incompatible changes, such as type-only changes, may ship in minor versions."
+    },
+    {
+     "id": "B",
+     "text": "Remove type checking of SDK calls from CI, since type-only differences cannot change how the service behaves at runtime.",
+     "rationale": "This hides the symptom and gives up a useful safety check instead of controlling when dependency changes arrive."
+    },
+    {
+     "id": "C",
+     "text": "Change the requirement to anthropic>=1.0,<2.0, so that only minor and patch releases of the SDK can be installed.",
+     "rationale": "This still floats across minor versions, which is exactly where the type-only change arrived."
+    },
+    {
+     "id": "D",
+     "text": "Pin the exact SDK version in a lock file and upgrade deliberately, after reviewing the changelog and running the tests.",
+     "rationale": "Correct. Pinned, deliberate upgrades keep builds reproducible and let the team absorb documented minor-version changes on its own schedule."
+    }
+   ],
+   "correctOptionIds": [
+    "D"
+   ],
+   "explanation": "Maintenance includes controlling dependency drift. The Python SDK allows certain backward-incompatible changes in minor versions (static types, internals), so services should pin exact versions and upgrade through tested changes.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T125"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-008",
+   "tags": [
+    "life-cycle",
+    "dependency-management",
+    "sdk-versioning"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-009",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Claude API Mechanics",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "Every weekday the input data for 3,000 product descriptions is finalized at 07:00, and a retailer must have Claude's quality checks for all of them published by 09:00 without exception. A developer proposes the Message Batches API to halve the cost, noting that most batches finish in under an hour. Which approach fits the requirement?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Submit a Message Batches job at 07:00, because batches usually finish within an hour and cost half the standard price.",
+     "rationale": "Most batches do finish within an hour, but a batch may take up to 24 hours, so the 09:00 deadline is not guaranteed."
+    },
+    {
+     "id": "B",
+     "text": "Use the Messages API with bounded concurrency, because a batch can take up to 24 hours and cannot guarantee 09:00.",
+     "rationale": "Correct. A hard two-hour deadline calls for realtime requests sized to the rate limits; the batch discount does not come with a completion guarantee."
+    },
+    {
+     "id": "C",
+     "text": "Submit a batch at 07:00 and, if it is still running at 08:30, cancel it and resubmit the remaining requests as a new batch.",
+     "rationale": "Resubmitting puts the remaining work into another batch with the same lack of guarantee, now with even less time left."
+    },
+    {
+     "id": "D",
+     "text": "Split the work into 30 batches of 100 requests each, since smaller batches are processed first and finish sooner.",
+     "rationale": "Batch size does not give a completion guarantee; any batch can take up to 24 hours before expiring."
+    }
+   ],
+   "correctOptionIds": [
+    "B"
+   ],
+   "explanation": "The Batches API trades latency guarantees for a 50% discount: results arrive when all requests finish or after 24 hours. Choose it when the deadline tolerates that window, and use the realtime API when a firm deadline is shorter.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T22"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-009",
+   "tags": [
+    "batch-api",
+    "realtime-vs-batch",
+    "latency-requirements"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-010",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Claude API Mechanics",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "An insurance app sends two photos of the same vehicle, taken before and after an incident, and asks Claude which panels are newly damaged. The request contains the question text first, then both images back to back with no labels. Answers sometimes describe damage from the wrong photo. Which request structure best addresses this?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Merge the two photos side by side into one image, so that Claude sees both states of the vehicle in a single picture.",
+     "rationale": "Combining images reduces the resolution available for each photo and still leaves Claude to infer which half is which."
+    },
+    {
+     "id": "B",
+     "text": "Keep the question first and add a sentence saying that the first image is the before photo and the second is the after photo.",
+     "rationale": "This helps somewhat, but positional references are weaker than labeling each image, and the text-before-images order is not the recommended structure."
+    },
+    {
+     "id": "C",
+     "text": "Send each photo in a separate request, then ask Claude to compare its two written descriptions in a third request.",
+     "rationale": "Comparing text descriptions loses visual detail and adds calls; Claude can compare the images directly when they are labeled."
+    },
+    {
+     "id": "D",
+     "text": "Put the images first, each preceded by a label such as Image 1: before and Image 2: after, then ask the question.",
+     "rationale": "Correct. Claude works best with images before text, and short labels let the prompt and the answer refer to each image unambiguously."
+    }
+   ],
+   "correctOptionIds": [
+    "D"
+   ],
+   "explanation": "With several images, introduce each with a short text label (Image 1:, Image 2:) and prefer an image-then-text structure. Labels also make follow-up turns unambiguous.",
+   "points": 1,
+   "difficulty": "foundational",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T235"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-010",
+   "tags": [
+    "vision",
+    "multiple-images",
+    "prompt-structure"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-011",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Claude API Mechanics",
+   "scenarioId": null,
+   "questionType": "multiple_response",
+   "selectCount": 2,
+   "stem": "A document-analysis service on the Claude API uploads PDFs once with the Files API and references them by file_id, uses the web search server tool for background facts, caches its long system prompt, and uses adaptive thinking. The company must move the service to Claude in Amazon Bedrock (the Messages API endpoint for Opus 4.7 and later), authenticating with AWS credentials. Which TWO parts of the design must change?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Document inputs, because the Files API is not available there, so PDFs must be sent inline instead of by file_id.",
+     "rationale": "Correct. Bedrock lists the Files API and URL sources among unsupported input sources, so documents must be sent as inline content."
+    },
+    {
+     "id": "B",
+     "text": "Prompt caching, because cache_control is not supported there, so the long system prompt must be resent uncached.",
+     "rationale": "Prompt caching is listed as supported on Claude in Amazon Bedrock, so the caching design can stay."
+    },
+    {
+     "id": "C",
+     "text": "Thinking, because Bedrock rejects thinking configuration, so the service must drop adaptive thinking from requests.",
+     "rationale": "Thinking is listed as supported on Claude in Amazon Bedrock; no change is required here."
+    },
+    {
+     "id": "D",
+     "text": "Web research, because server-side tools such as web search are unavailable there, so search must run as a client tool.",
+     "rationale": "Correct. Server-side tools (web search, web fetch, code execution) are not available, so the application must run search itself as a client tool."
+    },
+    {
+     "id": "E",
+     "text": "Request format, because Bedrock accepts only the Converse API, so every Messages API call must be rewritten for it.",
+     "rationale": "This integration serves the Messages API at /anthropic/v1/messages; the Converse and InvokeModel APIs belong to the older integration."
+    }
+   ],
+   "correctOptionIds": [
+    "A",
+    "D"
+   ],
+   "explanation": "Third-party platforms expose a subset of Claude API features. Check the platform's feature list before migrating: here, Files API inputs and server tools need redesign, while caching and thinking carry over. Feature lists change, so re-verify at migration time.",
+   "points": 1,
+   "difficulty": "advanced",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T237"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-011",
+   "tags": [
+    "third-party-platforms",
+    "bedrock",
+    "feature-availability"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-012",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Claude API Mechanics",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A chat feature calls the Messages API. To save bandwidth, the backend sends only the user's newest message on each turn and stores the id of Claude's last response, expecting the API to link the turns. Users report that Claude forgets what they said two messages earlier. What should the backend do?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Store the conversation itself and send the full history of user and assistant turns with every request.",
+     "rationale": "Correct. The Messages API is stateless, so the application owns conversation state and sends the full history each turn."
+    },
+    {
+     "id": "B",
+     "text": "Pass the stored response id in the next request, so that the API can retrieve the earlier turns of the conversation.",
+     "rationale": "The Messages API does not retrieve earlier turns by response id; every request must carry the context it needs."
+    },
+    {
+     "id": "C",
+     "text": "Enable prompt caching on the latest user message, so that the earlier turns are remembered between requests.",
+     "rationale": "Caching reuses processing of a prefix that is sent again; it is not memory and does not add turns that are not in the request."
+    },
+    {
+     "id": "D",
+     "text": "Put the earlier turns into the system prompt once at session start, so that later requests inherit them.",
+     "rationale": "Nothing carries over between requests; a system prompt sent once is absent from later calls unless it is sent again."
+    }
+   ],
+   "correctOptionIds": [
+    "A"
+   ],
+   "explanation": "Because the Messages API is stateless, the application stores conversation history and resends it (or a managed summary of it) on every call. Prompt caching can reduce the cost of resending a stable prefix.",
+   "points": 1,
+   "difficulty": "foundational",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T233"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-012",
+   "tags": [
+    "messages-api",
+    "conversation-state",
+    "data-access"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-013",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Claude API Mechanics",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A billing service consumes Messages API streams and records output tokens from the usage object in the message_start event. Finance finds that recorded output tokens are far below the invoiced amount for long responses. How should the service record output usage?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Add up output token counts reported in each content_block_delta event, then store the total at message_stop.",
+     "rationale": "content_block_delta events carry text or input deltas, not usage counts, so there is nothing to add up."
+    },
+    {
+     "id": "B",
+     "text": "Count the characters of the streamed text deltas and convert them to tokens with an average ratio.",
+     "rationale": "A character ratio only approximates tokenization and ignores non-text blocks, so it will not match billed usage."
+    },
+    {
+     "id": "C",
+     "text": "Read usage from the message_delta event, whose token counts are cumulative, and keep the last value seen.",
+     "rationale": "Correct. message_start arrives before generation; the usage in message_delta is cumulative, so its final value is the response's total."
+    },
+    {
+     "id": "D",
+     "text": "Sum the usage values of all message_delta events, because each one reports only tokens since the last event.",
+     "rationale": "message_delta usage is cumulative, so summing several events would double count output tokens."
+    }
+   ],
+   "correctOptionIds": [
+    "C"
+   ],
+   "explanation": "In streaming, message_start carries a Message with empty content, and the usage reported in message_delta is cumulative. Record the final cumulative value; new event types may appear, so ignore unknown ones gracefully.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T05"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-013",
+   "tags": [
+    "streaming",
+    "usage-tracking",
+    "sse-events"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-014",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Claude API Mechanics",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A coding assistant runs on Claude Sonnet 4.6 with thinking set to adaptive and streams its responses. The UI never shows thinking, but users wait while summarized thinking streams before the answer text starts. Finance also asks why billed output tokens exceed the tokens visible in responses. The team must not reduce reasoning depth. What should it do?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Lower the effort level, so that less thinking is generated, which shortens the wait and brings billing closer to visible tokens.",
+     "rationale": "This would cut cost and latency, but by reducing how much Claude thinks, which the team must not do."
+    },
+    {
+     "id": "B",
+     "text": "Set display to omitted for faster first text, and explain that billing counts full thinking, which omitting does not cut.",
+     "rationale": "Correct. Omitted display skips streaming thinking so text starts sooner; charges still cover the full thinking tokens, not the summary."
+    },
+    {
+     "id": "C",
+     "text": "Set display to omitted, which shortens the wait and also stops billing for the thinking tokens that are no longer returned.",
+     "rationale": "Omitting reduces latency, not cost: the full thinking tokens are still charged."
+    },
+    {
+     "id": "D",
+     "text": "Strip thinking blocks from the stream in the backend, which hides them and lets the API bill only the delivered text.",
+     "rationale": "Filtering on the client changes neither when the text starts nor what is billed, since the API still streams and charges for thinking."
+    }
+   ],
+   "correctOptionIds": [
+    "B"
+   ],
+   "explanation": "With summarized thinking, billing reflects the full thinking tokens, so billed output exceeds visible output. Setting display to omitted returns empty thinking blocks with a signature, which speeds time to first text token but does not reduce cost.",
+   "points": 1,
+   "difficulty": "advanced",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T133"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-014",
+   "tags": [
+    "thinking",
+    "thinking-display",
+    "latency",
+    "billing"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-015",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Claude API Mechanics",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "An app gives Claude a client tool, get_account, and the web search server tool. Its dispatcher handles every content block whose type ends in tool_use by calling the local function that matches the block's name. Whenever Claude searches the web, the dispatcher raises unknown tool: web_search. What is the correct fix?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Implement a local web_search function and return its output in a tool_result block that references the srvtoolu_ id.",
+     "rationale": "Server tools are executed by the API; returning your own results for them duplicates work the API has already done."
+    },
+    {
+     "id": "B",
+     "text": "Remove get_account whenever web search is enabled, because client and server tools cannot be offered in one request.",
+     "rationale": "Client and server tools can be combined in the same request; the problem is how the dispatcher classifies blocks."
+    },
+    {
+     "id": "C",
+     "text": "Catch the error and send a tool_result with is_error set for web_search, so that Claude continues without search results.",
+     "rationale": "The app must not answer server tool calls at all; an is_error result misreports a search that the API runs and returns results for itself."
+    },
+    {
+     "id": "D",
+     "text": "Dispatch only tool_use blocks, because server_tool_use blocks are run by the API and need no tool_result from the app.",
+     "rationale": "Correct. The API runs server tools and supplies their result blocks, either in the same turn or, when a client tool was also called, in the next response after the app returns its client tool_result blocks."
+    }
+   ],
+   "correctOptionIds": [
+    "D"
+   ],
+   "explanation": "Client tools produce tool_use blocks that the application executes and answers with tool_result; server tools run inside the API, which supplies their result blocks. Dispatch on the exact block type. Caveat: when Claude also calls a client tool in the same turn, the server tool's result arrives in the next response.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T236"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-015",
+   "tags": [
+    "server-tools",
+    "client-tools",
+    "tool-dispatch"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-016",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Claude API Mechanics",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A long agentic session on Claude Opus 5.5 has dozens of turns behind a prompt-cache breakpoint. At turn 40, the application must add a new operator rule, from now on all SQL must use parameterized queries, with the same authority as the system prompt. The team wants requests to keep reading the cached prefix. Which change fits?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Append a message with role system right after the latest user turn, leaving the top-level system field unchanged.",
+     "rationale": "Correct. On supported models a mid-conversation system message has system-level authority and sits after the cached prefix, so the cache still matches."
+    },
+    {
+     "id": "B",
+     "text": "Add the rule to the top-level system field, since changes there take effect at once while the prefix stays cached.",
+     "rationale": "Changing the top-level system prompt changes the start of the prefix, so the cached conversation would no longer match."
+    },
+    {
+     "id": "C",
+     "text": "Insert a message with role system as the first entry in messages, so that the rule applies to the whole conversation.",
+     "rationale": "A system message cannot be the first entry in messages, and inserting content at the start would also change the cached prefix."
+    },
+    {
+     "id": "D",
+     "text": "Prefill the next assistant turn with an acknowledgment of the rule, so that Claude commits to it in its own words.",
+     "rationale": "Prefill is not supported on Claude 4.6 and later models and returns a 400 error; it would also lack system authority."
+    }
+   ],
+   "correctOptionIds": [
+    "A"
+   ],
+   "explanation": "Mid-conversation system messages add operator instructions without invalidating earlier cache entries; they must follow a user turn and are available only on listed models. Instructions that apply from the start still belong in the top-level system field.",
+   "points": 1,
+   "difficulty": "advanced",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T234",
+    "T233"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-016",
+   "tags": [
+    "system-messages",
+    "prompt-caching",
+    "message-structure"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-017",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Software Engineering Foundations",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A Python handler for a create_invoice tool runs json.loads(block.input) on each tool_use block from the SDK response and fails with a TypeError before any invoice is created. The tool's input_schema is valid. What should the handler do?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Wrap json.loads in a try block, and when parsing fails, ask Claude to resend its input as a JSON string.",
+     "rationale": "The input is not a JSON string to begin with, so retrying parsing or asking Claude to resend does not address the cause."
+    },
+    {
+     "id": "B",
+     "text": "Set strict to true on the tool, so that Claude returns its input as a JSON string that json.loads can parse.",
+     "rationale": "Strict tool use enforces schema conformance; it does not change the input into a string."
+    },
+    {
+     "id": "C",
+     "text": "Use block.input directly as an already parsed object that conforms to input_schema, then validate its fields.",
+     "rationale": "Correct. The tool_use input is an object conforming to the input schema; the handler should validate its fields, not parse it again."
+    },
+    {
+     "id": "D",
+     "text": "Read the arguments from the text block before the tool_use block, since the tool_use block only names the tool.",
+     "rationale": "The tool_use block carries the id, name, and input; a preceding text block, if any, is commentary."
+    }
+   ],
+   "correctOptionIds": [
+    "C"
+   ],
+   "explanation": "In a tool_use block, input is a structured object matching the tool's input_schema, which the SDK exposes as native data. Treat it as data to validate rather than text to parse.",
+   "points": 1,
+   "difficulty": "foundational",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T113"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-017",
+   "tags": [
+    "json",
+    "tool-use",
+    "parsing"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-018",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Software Engineering Foundations",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A nightly reconciliation script calls GET /v1/messages/batches over raw HTTP and processes the data array it returns. The workspace has about 300 batches, but the script never sees more than 20. Which change fixes the script?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Sort the request by created_at in ascending order, so that the older batches appear within the first page.",
+     "rationale": "Sorting would not change the page size; the list is cursor-paginated and returns 20 items per page by default."
+    },
+    {
+     "id": "B",
+     "text": "Loop while has_more is true, passing the previous response's last_id as after_id on the next request.",
+     "rationale": "Correct. The list endpoint uses cursor pagination: has_more signals more results, and last_id is the cursor for the next page via after_id."
+    },
+    {
+     "id": "C",
+     "text": "Call the endpoint with increasing page numbers until a request comes back with an empty data array.",
+     "rationale": "The endpoint uses ID cursors (after_id, before_id), not page numbers."
+    },
+    {
+     "id": "D",
+     "text": "Pass the response's first_id as before_id on the next request, repeating until the data array comes back empty.",
+     "rationale": "before_id returns the page immediately before an object, which here points back toward newer batches, not on to the rest of the list."
+    }
+   ],
+   "correctOptionIds": [
+    "B"
+   ],
+   "explanation": "Anthropic list endpoints use cursor pagination with has_more, first_id, last_id, after_id, and before_id. Client SDKs offer auto-pagination that follows the cursors for you.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T246"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-018",
+   "tags": [
+    "rest-api",
+    "pagination",
+    "batch-api"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-019",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Software Engineering Foundations",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A Node.js service summarizes the 40 documents in a case file in parallel with the TypeScript SDK, awaiting Promise.all over the calls. When one oversized document gets a 400 BadRequestError, the whole request fails and the 39 finished summaries are lost. Users need every summary that succeeded plus a list of failures. Which change fits best?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Raise maxRetries on the client to 5, so the failed call is retried with backoff until all 40 summaries complete.",
+     "rationale": "The SDK retries connection errors, 408, 409, 429, and 5xx; a 400 is not retried and would fail again unchanged."
+    },
+    {
+     "id": "B",
+     "text": "Wrap the awaited Promise.all in try/catch and, in the catch block, return an error message for the case file.",
+     "rationale": "Promise.all rejects on the first rejection, so the catch block still has no access to the successful summaries."
+    },
+    {
+     "id": "C",
+     "text": "Process the documents one at a time in a for loop, so that a failure stops the loop after earlier results are saved.",
+     "rationale": "This loses parallelism and still stops at the first failure, so later documents are never summarized."
+    },
+    {
+     "id": "D",
+     "text": "Use Promise.allSettled, return the fulfilled summaries, and report each rejected document with its error type.",
+     "rationale": "Correct. allSettled waits for every promise and reports each outcome, so partial success is preserved and failures are listed."
+    }
+   ],
+   "correctOptionIds": [
+    "D"
+   ],
+   "explanation": "Promise.all fails fast on the first rejection, while Promise.allSettled collects every outcome. Combine it with typed SDK errors to report non-retryable failures such as 400s per item.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T247"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-019",
+   "tags": [
+    "async",
+    "promises",
+    "error-handling",
+    "typescript-sdk"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-020",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Software Engineering Foundations",
+   "scenarioId": null,
+   "questionType": "multiple_response",
+   "selectCount": 2,
+   "stem": "A developer runs two Claude Code sessions in the same repository checkout: one builds a feature while the other fixes a bug. Edits from one session keep showing up in the other session's test runs. The project needs a gitignored .env file for its tests. Which TWO steps best set up isolated parallel work?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Start the second session with --fork-session, so that it gets its own copy of the project files to edit.",
+     "rationale": "--fork-session creates a new session ID for a resumed conversation; it does not copy or isolate files."
+    },
+    {
+     "id": "B",
+     "text": "Have each session switch to its own branch with git switch in the same checkout before it starts work.",
+     "rationale": "A checkout has one working tree, so switching branches in it affects both sessions and does not isolate edits."
+    },
+    {
+     "id": "C",
+     "text": "Start each session with claude --worktree and a name, so that each one edits its own checkout on its own branch.",
+     "rationale": "Correct. Each worktree is a separate working directory on its own branch that shares repository history, so edits do not collide."
+    },
+    {
+     "id": "D",
+     "text": "Run the bug fix in a subagent of the feature session, since subagents always edit an isolated copy of the files.",
+     "rationale": "Subagents isolate context, not files; they edit the same working tree unless configured to use a worktree."
+    },
+    {
+     "id": "E",
+     "text": "List .env in a .worktreeinclude file at the project root, so that it is copied into each new worktree.",
+     "rationale": "Correct. A worktree is a fresh checkout without gitignored files; .worktreeinclude copies matching gitignored files into new worktrees."
+    }
+   ],
+   "correctOptionIds": [
+    "C",
+    "E"
+   ],
+   "explanation": "Git worktrees give parallel sessions separate working directories and branches over shared history. Because a worktree is a fresh checkout, environment setup such as gitignored files and dependencies must be handled for each one.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T243"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-020",
+   "tags": [
+    "version-control",
+    "git-worktrees",
+    "parallel-sessions"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-021",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Software Engineering Foundations",
+   "scenarioId": null,
+   "questionType": "multiple_response",
+   "selectCount": 2,
+   "stem": "An organization uses Claude's managed Code Review on its GitHub pull requests. The team wants every new API route without an integration test reported as an Important finding, not a nit, and wants merges blocked while any Important finding is open. Today the rule sits in a long CLAUDE.md. Which TWO changes meet these goals?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Add the rule to REVIEW.md at the repository root and state that a route without an integration test counts as Important.",
+     "rationale": "Correct. REVIEW.md gives review-only instructions directly to the review agents, including how to calibrate severity."
+    },
+    {
+     "id": "B",
+     "text": "Keep the rule in CLAUDE.md and mark it IMPORTANT, since Code Review reports emphasized CLAUDE.md lines as Important.",
+     "rationale": "Code Review treats newly introduced CLAUDE.md violations as nits by default; emphasis does not change that."
+    },
+    {
+     "id": "C",
+     "text": "Add a CI step that reads the severity counts in the Claude Code Review check run and fails when any Important finding exists.",
+     "rationale": "Correct. The check run's details end with machine-readable severity counts that a CI step can parse to gate merges."
+    },
+    {
+     "id": "D",
+     "text": "Mark the Claude Code Review check as required in branch protection, since that check fails when Important findings exist.",
+     "rationale": "The check run always completes with a neutral conclusion so it never blocks merging on its own."
+    },
+    {
+     "id": "E",
+     "text": "Set the repository's Review Behavior to Manual, so that reviewers decide when a pull request is reviewed and blocked.",
+     "rationale": "Manual mode only changes when reviews run; it neither raises severity nor blocks merges."
+    }
+   ],
+   "correctOptionIds": [
+    "A",
+    "C"
+   ],
+   "explanation": "Code Review findings never block merges by themselves; severity guidance belongs in REVIEW.md, and gating is done in your own CI by reading the check run output. CLAUDE.md applies to all Claude Code tasks and yields nit-level review findings.",
+   "points": 1,
+   "difficulty": "advanced",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T244"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-021",
+   "tags": [
+    "code-review",
+    "sdlc-integration",
+    "merge-gating"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-022",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Software Engineering Foundations",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A repository's workflow runs anthropics/claude-code-action@v1 with github_token set to the default GITHUB_TOKEN secret so that Claude can push fixes to pull request branches. Claude's commits appear on the branches, but the test workflow, which triggers on push and pull_request events and runs for human commits, never starts for them. Required checks therefore block the merges. What should the team change?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Remove the github_token input so the action authenticates as the Claude GitHub App, or pass a custom app token instead.",
+     "rationale": "Correct. GitHub does not trigger workflows on commits made with the default GITHUB_TOKEN; app-authenticated pushes do trigger them."
+    },
+    {
+     "id": "B",
+     "text": "Add --allowedTools with a Bash rule for git push to claude_args, so that Claude pushes with git and the push starts CI.",
+     "rationale": "How Claude pushes does not matter; commits made with the default token still do not trigger other workflows."
+    },
+    {
+     "id": "C",
+     "text": "Grant the workflow the actions: write permission, so that the default token is allowed to start the test workflow.",
+     "rationale": "GitHub suppresses workflow triggers for events created with the default token regardless of the permissions granted."
+    },
+    {
+     "id": "D",
+     "text": "Authenticate with an ANTHROPIC_API_KEY secret instead of an OAuth token, so that commits are attributed to an API account.",
+     "rationale": "The Claude credential controls model access, not the GitHub identity that pushes commits, so CI still would not start."
+    }
+   ],
+   "correctOptionIds": [
+    "A"
+   ],
+   "explanation": "When integrating Claude into the SDLC through GitHub Actions, the GitHub identity used for pushes matters: commits made with the default GITHUB_TOKEN do not trigger workflows. Use the Claude GitHub App or a custom app token.",
+   "points": 1,
+   "difficulty": "advanced",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T24"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-022",
+   "tags": [
+    "sdlc-integration",
+    "github-actions",
+    "ci"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-023",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Software Engineering Foundations",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A developer asks Claude Code to refactor a 60-line parse_address function in one file to remove duplicated branches. Behavior must not change, and the function has no tests yet. The developer wants to step away while Claude works instead of reviewing each step. Which prompt approach fits best?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Enter plan mode, have Claude write a multi-step plan for the refactor, review the plan, and only then let it edit the file.",
+     "rationale": "Planning adds overhead that a one-function change does not need, and it still gives Claude no check to prove behavior is unchanged."
+    },
+    {
+     "id": "B",
+     "text": "Ask Claude to refactor the function, then explain in its summary why the new version behaves the same as the old one.",
+     "rationale": "An explanation is an assertion, not evidence; without a runnable check, the developer remains the verification loop."
+    },
+    {
+     "id": "C",
+     "text": "Ask Claude to first add tests that pin current behavior, then refactor and rerun them until they pass, showing the output.",
+     "rationale": "Correct. Characterization tests give Claude a pass/fail signal it can iterate against, so the refactor can run unattended and show evidence."
+    },
+    {
+     "id": "D",
+     "text": "Ask Claude to suggest a cleaner version of the function, then paste in the suggestion yourself after reading it carefully.",
+     "rationale": "This keeps the developer in the loop for every step and still relies on reading rather than testing to confirm behavior."
+    }
+   ],
+   "correctOptionIds": [
+    "C"
+   ],
+   "explanation": "For small refactors, the highest-leverage step is giving Claude a check it can run, such as tests that pin current behavior. Plan mode pays off for uncertain or multi-file changes, not for a diff you can describe in one sentence.",
+   "points": 1,
+   "difficulty": "foundational",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T204"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-023",
+   "tags": [
+    "refactoring",
+    "verification",
+    "claude-code"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-024",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Claude Application Design",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A team ships an Agent SDK service in TypeScript that calls query() without a settingSources option and relies on the repository's CLAUDE.md for conventions. On developers' laptops, the agent also follows personal rules, such as a preferred commit style, that never appear in the production container. Investigation shows these rules come from each developer's ~/.claude/CLAUDE.md. The team wants the same instruction set everywhere. What should it change?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Set CLAUDE_CODE_DISABLE_AUTO_MEMORY=1 in env, since personal rules on laptops are loaded through auto memory.",
+     "rationale": "Auto memory is a separate input; the personal rules here come from user CLAUDE.md files, which this variable does not affect."
+    },
+    {
+     "id": "B",
+     "text": "Pass settingSources with only project, so the repository's CLAUDE.md, rules, and settings load but user files do not.",
+     "rationale": "Correct. Omitting settingSources loads user, project, and local sources; limiting it to project keeps repository conventions and drops personal files."
+    },
+    {
+     "id": "C",
+     "text": "Pass settingSources as an empty array, so that the SDK still reads the project CLAUDE.md but skips user-level files.",
+     "rationale": "An empty array disables user, project, and local settings, so the repository's CLAUDE.md would no longer load either."
+    },
+    {
+     "id": "D",
+     "text": "Move the CLAUDE.md content into each developer's ~/.claude/CLAUDE.md, so that every machine sees the same instructions.",
+     "rationale": "User-level files are not present in the production container and drift per developer, which is the problem to solve."
+    }
+   ],
+   "correctOptionIds": [
+    "B"
+   ],
+   "explanation": "How Claude is instructed depends on the interface and its configuration: the Agent SDK, when settingSources is omitted, reads the same filesystem settings as the CLI, including user files. Choose sources explicitly for reproducible behavior; some inputs, such as managed settings and auto memory, load regardless.",
+   "points": 1,
+   "difficulty": "advanced",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T238"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-024",
+   "tags": [
+    "agent-sdk",
+    "setting-sources",
+    "instructions-across-interfaces"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-025",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Claude Application Design",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A product manager built a custom contract-summary Skill in claude.ai, and it works well there. The engineering team now wants the same Skill in a Messages API application that everyone in its workspace uses. In the API app, Claude does not seem to know the Skill exists. What should the team do?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Ask the product manager to share the Skill with the organization in claude.ai, so that API workspaces inherit it.",
+     "rationale": "Custom Skills do not sync across surfaces; a Skill in claude.ai is not available to the API, however it is shared there."
+    },
+    {
+     "id": "B",
+     "text": "Name the Skill in the API app's system prompt, so that Claude loads it from the account that created it in claude.ai.",
+     "rationale": "Naming a Skill does not load it; the API can use only Skills uploaded to the API and referenced in the request."
+    },
+    {
+     "id": "C",
+     "text": "Commit the Skill folder under .claude/skills/ in the API app's repository, so that the Messages API discovers it.",
+     "rationale": "Filesystem discovery of .claude/skills/ is a Claude Code feature; the Messages API does not read the application's repository."
+    },
+    {
+     "id": "D",
+     "text": "Upload the Skill through the Skills API, where it is shared workspace-wide, and reference it in the request container.",
+     "rationale": "Correct. Skills uploaded through the API are shared across the workspace and are attached to requests via the container parameter, with code execution enabled."
+    }
+   ],
+   "correctOptionIds": [
+    "D"
+   ],
+   "explanation": "Skills are managed per surface: claude.ai uploads are per user, API uploads are workspace-wide, and Claude Code Skills live on the filesystem or in plugins. Plan to upload and maintain a Skill separately on each surface that needs it.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T241",
+    "T242"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-025",
+   "tags": [
+    "skills",
+    "interfaces",
+    "skill-distribution"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-026",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Claude Application Design",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "An invoice extractor uses structured outputs. Its schema marks due_date as a required string, and downstream code expects every key to be present. For invoices that show no due date, Claude returns plausible but invented dates. Which schema change fits best?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Keep due_date required but allow null as a type, and instruct Claude to return null when no due date appears.",
+     "rationale": "Correct. A nullable required field gives Claude a valid way to express absence while keeping every key present for downstream code."
+    },
+    {
+     "id": "B",
+     "text": "Remove due_date from the required list, so that Claude can leave the field out when an invoice has no due date.",
+     "rationale": "This lets Claude express absence, but missing keys break the downstream expectation that every key is present."
+    },
+    {
+     "id": "C",
+     "text": "Add a date format to the due_date string, so that only well-formed dates can ever appear in that field.",
+     "rationale": "A format constrains how a date looks, not whether it exists; an invented date can be perfectly well formed."
+    },
+    {
+     "id": "D",
+     "text": "Add a minLength of 10 to due_date, so that Claude cannot return a short placeholder such as an empty string.",
+     "rationale": "minLength is not supported by structured outputs (SDK helpers move it into the description and validate afterwards), and it pushes Claude to fill in a value."
+    }
+   ],
+   "correctOptionIds": [
+    "A"
+   ],
+   "explanation": "Schema design should give the model a legitimate way to say that data is missing; otherwise a required string invites fabrication. Structured outputs guarantee shape, not truth, so semantic checks are still needed.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T10"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-026",
+   "tags": [
+    "schema-design",
+    "structured-outputs",
+    "missing-data"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-027",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Claude Application Design",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "During a Claude Code session, Claude edited three source files with its Edit tool and then ran a code-generation script through Bash that rewrote files in src/generated/. The result is wrong, and the developer opens /rewind and chooses Restore code at the prompt before these changes. What should the developer expect?",
+   "options": [
+    {
+     "id": "A",
+     "text": "The edited source files and the generated files both return to their earlier state, since every change in a turn is checkpointed.",
+     "rationale": "Checkpoints cover edits made through Claude's file-editing tools only; changes made by Bash commands are not tracked."
+    },
+    {
+     "id": "B",
+     "text": "Nothing is restored, because checkpoints capture only the conversation, and file changes always require git to undo.",
+     "rationale": "Restore code does revert tracked edits made with Claude's editing tools; only untracked changes need git."
+    },
+    {
+     "id": "C",
+     "text": "The three edited files are restored, but the files the Bash script rewrote are not, so those must be reverted with git.",
+     "rationale": "Correct. Rewind restores edits from Claude's file-editing tools, while files changed by Bash commands stay as they are."
+    },
+    {
+     "id": "D",
+     "text": "The generated files are restored, but the edited source files are not, since tool edits must be undone by asking Claude.",
+     "rationale": "This reverses the actual behavior: tool edits are tracked and restorable, while Bash-made changes are not."
+    }
+   ],
+   "correctOptionIds": [
+    "C"
+   ],
+   "explanation": "Checkpoints give quick session-level recovery for edits made with Claude's file tools, not for Bash side effects, subagent edits, or external changes. Keep using git for anything checkpoints do not track.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T239"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-027",
+   "tags": [
+    "session-hygiene",
+    "checkpointing",
+    "rewind"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-028",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Claude Application Design",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A security team wants Claude Code users across the company to install plugins only from the company's own marketplace repository and Anthropic's official marketplace. It also wants the company marketplace registered automatically on every machine, and developers must not be able to override any of this. Which configuration fits?",
+   "options": [
+    {
+     "id": "A",
+     "text": "In each repository's .claude/settings.json, list both marketplaces under extraKnownMarketplaces and commit the file.",
+     "rationale": "Project settings register marketplaces for that repository after trust, but they do not stop users from adding other marketplaces."
+    },
+    {
+     "id": "B",
+     "text": "In managed settings, allowlist both sources in strictKnownMarketplaces and register the company one in extraKnownMarketplaces.",
+     "rationale": "Correct. Managed settings cannot be overridden; the allowlist restricts sources, and the managed extraKnownMarketplaces entry registers the company marketplace."
+    },
+    {
+     "id": "C",
+     "text": "In managed settings, set strictKnownMarketplaces to an empty array and register the company marketplace in extraKnownMarketplaces.",
+     "rationale": "An empty allowlist blocks every marketplace source, including the company's own, so the registration would be refused."
+    },
+    {
+     "id": "D",
+     "text": "In managed settings, list known unsafe sources in blockedMarketplaces and register the company marketplace there too.",
+     "rationale": "A blocklist stops only the sources it names, so users could still add any other marketplace."
+    }
+   ],
+   "correctOptionIds": [
+    "B"
+   ],
+   "explanation": "Plugin governance belongs in managed settings: strictKnownMarketplaces is an allowlist of sources, and registration still needs extraKnownMarketplaces entries that pass the allowlist. Project-level settings suit per-repository rollouts, not enforcement.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T240"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-028",
+   "tags": [
+    "plugin-management",
+    "managed-settings",
+    "marketplaces"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-029",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Claude Application Design",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "An internal coding assistant built on the Messages API gives Claude an edit_file tool. Users type requests such as \"Can you suggest some changes to make this function faster?\" and expect the file to be updated, but Claude usually replies with suggestions and does not call the tool. What is the most effective fix?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Raise the temperature, so that Claude explores more actions, including calling edit_file instead of answering in text.",
+     "rationale": "Sampling randomness does not change how Claude interprets a request for suggestions; it only makes outputs less predictable."
+    },
+    {
+     "id": "B",
+     "text": "Expand the edit_file description with examples, since unclear tool descriptions are why Claude answers in text.",
+     "rationale": "Good descriptions help tool selection, but here Claude is following the request literally: the user asked for suggestions."
+    },
+    {
+     "id": "C",
+     "text": "Switch to a larger model, because smaller models cannot infer that a request for suggestions means editing the file.",
+     "rationale": "Recent models are trained for precise instruction following, so a larger model is just as likely to answer with suggestions."
+    },
+    {
+     "id": "D",
+     "text": "Add a system prompt instruction to implement changes by default rather than only suggesting them, using edit_file.",
+     "rationale": "Correct. Claude follows instructions precisely; an explicit default-to-action instruction in the system prompt makes it edit the file instead of only proposing changes."
+    }
+   ],
+   "correctOptionIds": [
+    "D"
+   ],
+   "explanation": "Recent Claude models take requests literally: asking for suggestions yields suggestions. State the intended default in the system prompt (implement versus only recommend); phrasing individual requests as direct actions also helps.",
+   "points": 1,
+   "difficulty": "foundational",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T150"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-029",
+   "tags": [
+    "instruction-interpretation",
+    "tool-use",
+    "system-prompt"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-030",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Claude Application Design",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A CI script runs claude -p to fix lint errors and commit the result. It passes --system-prompt \"Write commit messages in Conventional Commits format.\" Since the flag was added, Claude uses its tools poorly and no longer follows the default coding guidance it applied before. The team wants Claude to remain a coding assistant with this one extra rule. What should it change?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Replace --system-prompt with --append-system-prompt, which keeps the default prompt and adds the commit rule after it.",
+     "rationale": "Correct. Appending preserves Claude Code's default prompt, including its tool guidance, safety instructions and coding conventions, and adds only the new rule."
+    },
+    {
+     "id": "B",
+     "text": "Move the rule into --system-prompt-file, since a file-based system prompt is merged with Claude Code's default prompt.",
+     "rationale": "--system-prompt-file also replaces the default prompt, so the same guidance would still be lost."
+    },
+    {
+     "id": "C",
+     "text": "Keep --system-prompt and add --bare, so that Claude Code skips discovery and relies only on the custom prompt text.",
+     "rationale": "Bare mode skips CLAUDE.md, skills, and other discovery, which removes even more context instead of restoring the default prompt."
+    },
+    {
+     "id": "D",
+     "text": "Keep --system-prompt and paste Claude Code's tool guidance into the script, since the default prompt cannot be extended.",
+     "rationale": "The default prompt can be extended with the append flags; copying guidance by hand is brittle and drifts across versions."
+    }
+   ],
+   "correctOptionIds": [
+    "A"
+   ],
+   "explanation": "--system-prompt replaces the entire default prompt, dropping its tool guidance and safety instructions; the append flags keep the default and add to it. Use replacement only when the identity or permission model truly differs, and CLAUDE.md for persistent project conventions.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T202"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-030",
+   "tags": [
+    "claude-code",
+    "system-prompt",
+    "headless"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-031",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Configuration Management",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A monorepo has many packages, and React test files (*.test.tsx) sit in folders across all of them. The team has 40 lines of testing conventions that apply only to those files. Putting them in the root CLAUDE.md made it long, and Claude now follows other root rules less reliably. Where should the conventions go?",
+   "options": [
+    {
+     "id": "A",
+     "text": "In a CLAUDE.md inside each package folder, so that they load whenever Claude reads any file in that package.",
+     "rationale": "Subdirectory CLAUDE.md files load for every file in the subtree, and the same 40 lines would be duplicated across many packages."
+    },
+    {
+     "id": "B",
+     "text": "In the root CLAUDE.md under a clear heading marked IMPORTANT, so that Claude gives these lines extra weight.",
+     "rationale": "Emphasizing many lines keeps the file long and dilutes the emphasis; the root file stays bloated."
+    },
+    {
+     "id": "C",
+     "text": "In a .claude/rules/ file whose paths frontmatter matches **/*.test.tsx, loading only when Claude works on those files.",
+     "rationale": "Correct. Path-scoped rules load only when Claude reads or edits matching files, keeping the root CLAUDE.md short."
+    },
+    {
+     "id": "D",
+     "text": "In CLAUDE.local.md at the repository root, so that the conventions load only on demand rather than at each session start.",
+     "rationale": "CLAUDE.local.md is for personal, uncommitted preferences and loads at launch like CLAUDE.md; teammates would not get it."
+    }
+   ],
+   "correctOptionIds": [
+    "C"
+   ],
+   "explanation": "Keep CLAUDE.md files short and move instructions that apply to part of the codebase into path-scoped rules under .claude/rules/. Rules without a paths field load at launch like the project CLAUDE.md.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T15"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-031",
+   "tags": [
+    "claude-md",
+    "path-scoped-rules",
+    "monorepo"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-032",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Configuration Management",
+   "scenarioId": null,
+   "questionType": "multiple_response",
+   "selectCount": 2,
+   "stem": "A team is setting up Claude Code for a shared repository. It needs team-wide permission rules and hooks that every clone receives, and one developer wants Claude to know her personal sandbox URL without it reaching her teammates. Which TWO placements are correct?",
+   "options": [
+    {
+     "id": "A",
+     "text": "The team's permission rules and hooks in ~/.claude/settings.json on each machine, copied there by a setup script.",
+     "rationale": "User settings apply to all of one person's projects and are not versioned with the repository, so team rules drift."
+    },
+    {
+     "id": "B",
+     "text": "The team's permission rules and hooks in .claude/settings.json, committed to the repository.",
+     "rationale": "Correct. The shared project settings file is meant to be committed so everyone who clones the repository gets the same rules and hooks."
+    },
+    {
+     "id": "C",
+     "text": "The developer's sandbox URL in the repository's CLAUDE.md, under a heading that names her as its owner.",
+     "rationale": "The committed CLAUDE.md reaches every teammate, which the developer wants to avoid."
+    },
+    {
+     "id": "D",
+     "text": "The developer's sandbox URL in CLAUDE.local.md at the project root, kept out of git with .gitignore.",
+     "rationale": "Correct. CLAUDE.local.md holds personal project-specific instructions, such as sandbox URLs, and is not committed."
+    },
+    {
+     "id": "E",
+     "text": "The team's permission rules and hooks in .claude/settings.local.json, so that personal overrides cannot change them.",
+     "rationale": "settings.local.json is the personal, uncommitted file, and it overrides the shared project file rather than the reverse."
+    }
+   ],
+   "correctOptionIds": [
+    "B",
+    "D"
+   ],
+   "explanation": "Match each item to the scope that matches its audience: committed .claude/settings.json and CLAUDE.md for the team, and settings.local.json or CLAUDE.local.md for one person in one project. Settings enforce behavior, while CLAUDE.md files only guide it.",
+   "points": 1,
+   "difficulty": "foundational",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T140",
+    "T15"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-032",
+   "tags": [
+    "settings-json",
+    "claude-md",
+    "configuration-scopes"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D2-033",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D2",
+   "objective": "Configuration Management",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A claims-processing agent on the Messages API loads a custom Skill with version set to latest. A colleague uploaded a new version of the Skill for testing, and production output formats changed within minutes. The team wants Skill updates to reach production only after review. What should it change?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Restrict the Skill to one API key, since a workspace Skill update applies only to requests made with the uploading key.",
+     "rationale": "Skills uploaded through the API are workspace-wide; any upload changes what latest resolves to for every request in the workspace."
+    },
+    {
+     "id": "B",
+     "text": "Reference a specific Skill version ID in the container instead of latest, and update that ID after review.",
+     "rationale": "Correct. Pinning a version keeps production on a reviewed snapshot; moving to a new version becomes a deliberate configuration change."
+    },
+    {
+     "id": "C",
+     "text": "Ask testers to upload new versions only outside business hours, so that latest changes while production traffic is low.",
+     "rationale": "Timing reduces the blast radius but still ships unreviewed versions to production automatically."
+    },
+    {
+     "id": "D",
+     "text": "Copy the Skill's instructions into the system prompt, since Skills cannot be pinned to a version through the API.",
+     "rationale": "Skill versions can be pinned through the API; abandoning the Skill also loses its bundled files and scripts."
+    }
+   ],
+   "correctOptionIds": [
+    "B"
+   ],
+   "explanation": "Treat Skills like other versioned dependencies: latest follows every upload in the workspace, while a pinned version only changes when configuration changes. Use latest for development and pinned versions for production.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T242"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D2-033",
+   "tags": [
+    "skills",
+    "version-pinning",
+    "configuration"
+   ]
+  }
+ ],
+ "newSources": [
+  {
+   "id": "T230",
+   "url": "https://platform.claude.com/docs/en/api/rate-limits",
+   "title": "Rate limits",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "ITPM/OTPM accounting, cache reads excluded from ITPM for most models, max_tokens not counted in OTPM"
+  },
+  {
+   "id": "T231",
+   "url": "https://platform.claude.com/docs/en/build-with-claude/zero-data-retention",
+   "title": "Zero data retention",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "ZDR eligibility per feature: Messages and caching eligible; Batches, Files, code execution, Skills not"
+  },
+  {
+   "id": "T232",
+   "url": "https://platform.claude.com/docs/en/build-with-claude/workspaces",
+   "title": "Workspaces",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "Environment separation, workspace-scoped keys, per-workspace rate and spend limits, Default Workspace limits"
+  },
+  {
+   "id": "T233",
+   "url": "https://platform.claude.com/docs/en/build-with-claude/working-with-messages",
+   "title": "Working with the Messages API",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "Stateless API, top-level system field, mid-conversation system role placement, prefill support"
+  },
+  {
+   "id": "T234",
+   "url": "https://platform.claude.com/docs/en/build-with-claude/mid-conversation-system-messages",
+   "title": "Mid-conversation system messages",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "Supported models, placement rules, interaction with prompt caching"
+  },
+  {
+   "id": "T235",
+   "url": "https://platform.claude.com/docs/en/build-with-claude/vision",
+   "title": "Vision",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "Image-before-text structure, labeling multiple images, limits"
+  },
+  {
+   "id": "T236",
+   "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/server-tools",
+   "title": "Server tools",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "server_tool_use and result blocks, no tool_result needed, mixing with client tools, pause_turn"
+  },
+  {
+   "id": "T237",
+   "url": "https://platform.claude.com/docs/en/build-with-claude/claude-in-amazon-bedrock",
+   "title": "Claude in Amazon Bedrock (Opus 4.7 and later)",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "Bedrock Messages endpoint, AWS auth, supported and unsupported features"
+  },
+  {
+   "id": "T238",
+   "url": "https://code.claude.com/docs/en/agent-sdk/claude-code-features",
+   "title": "Use Claude Code features in the SDK",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "settingSources defaults and sources, CLAUDE.md load locations in the Agent SDK"
+  },
+  {
+   "id": "T239",
+   "url": "https://code.claude.com/docs/en/checkpointing",
+   "title": "Checkpointing",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "Rewind options; Bash, subagent and external changes not tracked"
+  },
+  {
+   "id": "T240",
+   "url": "https://code.claude.com/docs/en/plugins/org",
+   "title": "Manage Claude Code plugins for your organization",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "strictKnownMarketplaces, blockedMarketplaces, extraKnownMarketplaces, enabledPlugins in managed settings"
+  },
+  {
+   "id": "T241",
+   "url": "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview",
+   "title": "Agent Skills overview",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "Custom Skills do not sync across surfaces; sharing scope per surface"
+  },
+  {
+   "id": "T242",
+   "url": "https://platform.claude.com/docs/en/build-with-claude/skills-guide",
+   "title": "Using Agent Skills with the API",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "container.skills, latest vs pinned versions, code execution requirement"
+  },
+  {
+   "id": "T243",
+   "url": "https://code.claude.com/docs/en/worktrees",
+   "title": "Run parallel sessions with worktrees",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "--worktree, .worktreeinclude, cleanup, isolation"
+  },
+  {
+   "id": "T244",
+   "url": "https://code.claude.com/docs/en/code-review",
+   "title": "Code Review",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "Managed PR review, REVIEW.md vs CLAUDE.md, neutral check run, severity counts for CI gating"
+  },
+  {
+   "id": "T246",
+   "url": "https://platform.claude.com/docs/en/api/messages/batches/list",
+   "title": "List Message Batches",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "Cursor pagination: limit, after_id, before_id, has_more, first_id, last_id"
+  },
+  {
+   "id": "T247",
+   "url": "https://platform.claude.com/docs/en/cli-sdks-libraries/sdks/typescript",
+   "title": "TypeScript SDK",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "APIError subclasses, retried status codes, maxRetries, timeouts, request IDs"
+  },
+  {
+   "id": "T248",
+   "url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/overview",
+   "title": "MCP tunnels",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "Research-preview outbound-only tunnels to private MCP servers"
+  }
+ ]
+}
