@@ -1,0 +1,1956 @@
+{
+ "schemaVersion": "1.0",
+ "examCode": "CCDV-F",
+ "cases": [],
+ "questions": [
+  {
+   "id": "CCDV-F-B2-D5-001",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D5",
+   "objective": "LLM Fundamentals",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "As of October 2026, a ticket classifier sends temperature 0 to Claude Sonnet 4.6 because the team believed this made labels fully repeatable. After the model ID is switched to Claude Sonnet 5.5, every request fails with a 400 error. Labels must stay within a fixed set of eight categories, and the team wants label consistency it can measure. Which change is most appropriate?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Replace temperature 0 with top_k set to 1, which gives greedy decoding without using the temperature parameter at all.",
+     "rationale": "Claude Sonnet 5.5 rejects non-default values of top_k, top_p and temperature alike, so this request still fails with a 400 error."
+    },
+    {
+     "id": "B",
+     "text": "Remove temperature, enforce the eight labels with an enum in structured outputs, and measure run-to-run agreement.",
+     "rationale": "Correct. Sampling parameters must be removed on Claude Sonnet 5.5; temperature 0 was never fully deterministic anyway, so consistency comes from an output constraint and is verified on evals."
+    },
+    {
+     "id": "C",
+     "text": "Keep temperature 0 but move it into output_config, where newer models read all of their generation settings.",
+     "rationale": "output_config carries settings such as effort and format; it has no temperature field, and the sampling change cannot be bypassed this way."
+    },
+    {
+     "id": "D",
+     "text": "Set top_p to a low value such as 0.1, since only temperature was removed from the newer request schema.",
+     "rationale": "top_p is rejected with a non-default value on Claude Sonnet 5.5 as well, so the request would still return 400."
+    }
+   ],
+   "correctOptionIds": [
+    "B"
+   ],
+   "explanation": "As of October 2026, Claude Sonnet 5.5 rejects non-default temperature, top_p and top_k values, and the API reference notes that even temperature 0.0 is not fully deterministic. Constrain the output space (enum, structured outputs) and measure consistency instead of relying on sampling settings.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T144",
+    "T275",
+    "T10"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D5-001",
+   "tags": [
+    "sampling",
+    "temperature",
+    "non-determinism",
+    "migration"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D5-002",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D5",
+   "objective": "LLM Fundamentals",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A SaaS product enforces monthly input-token quotas per tenant. Before each request it estimates input tokens with a characters-per-token ratio that was calibrated on Claude Sonnet 4.6. After the product moved to Claude Sonnet 5.5, billed input tokens run well above the estimates for the same prompts, and tenants exceed quotas the estimator says they have not reached. What should the team do?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Keep the ratio, because Claude models share one tokenizer and the gap must come from cache writes billed as input.",
+     "rationale": "Tokenizers differ across Claude models: Claude Sonnet 5.5 produces about 30% more tokens than Claude Sonnet 4.6 for the same text, so the old ratio undercounts."
+    },
+    {
+     "id": "B",
+     "text": "Raise every tenant's quota by a fixed 30 percent, since that is the exact difference for every kind of content.",
+     "rationale": "The documented increase is approximate and depends on the content, so a fixed uplift remains a guess rather than a measurement."
+    },
+    {
+     "id": "C",
+     "text": "Count tokens once per template on any Claude model and reuse that count for every model and version.",
+     "rationale": "Token counts are model-specific; the docs say to recount against the model you plan to use rather than reuse earlier counts."
+    },
+    {
+     "id": "D",
+     "text": "Recount with the token counting endpoint for claude-sonnet-5-5 and recalibrate quotas against billed usage.",
+     "rationale": "Correct. Counting with the target model reflects its tokenizer, and comparing against billed usage keeps the quota logic aligned after a model change."
+    }
+   ],
+   "correctOptionIds": [
+    "D"
+   ],
+   "explanation": "A token is model-specific: newer tokenizers can turn the same text into more tokens. When changing models, recount with the token counting endpoint for the target model and revisit budgets, max_tokens and cost; token counts remain estimates.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T144",
+    "T09"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D5-002",
+   "tags": [
+    "tokens",
+    "tokenizer",
+    "token-counting",
+    "migration"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D5-003",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D5",
+   "objective": "LLM Fundamentals",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "As of October 2026, an internal coding assistant on Claude Opus 5.5 streams long refactoring diffs through the Claude API. Time to first token is acceptable, but developers complain that long outputs take too long to finish. Output quality must stay exactly at the current Opus 5.5 level, and the team can pay premium pricing. Which option best fits?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Request fast mode by setting speed to fast with its beta header, keeping the same model and effort.",
+     "rationale": "Correct. Fast mode (research preview) runs the same model with a faster inference configuration, raising output tokens per second at premium pricing without changing capability."
+    },
+    {
+     "id": "B",
+     "text": "Lower effort to low, which raises output speed while leaving the quality of every response unchanged.",
+     "rationale": "Lower effort trades some capability for speed and cost, which violates the requirement to keep quality unchanged."
+    },
+    {
+     "id": "C",
+     "text": "Switch to Claude Haiku 4.5, the fastest current model, and keep the same prompts and the same output length.",
+     "rationale": "Haiku is faster but is a different, less capable model, so quality would not stay at the Opus 5.5 level."
+    },
+    {
+     "id": "D",
+     "text": "Submit the refactoring requests through the Message Batches API, which runs them at higher priority.",
+     "rationale": "Batches are asynchronous and latency-tolerant rather than faster for an interactive user, and fast mode is not available with the Batch API."
+    }
+   ],
+   "correctOptionIds": [
+    "A"
+   ],
+   "explanation": "Fast mode targets output tokens per second rather than time to first token, using the same model weights. As of October 2026 it is a research preview on the Claude API for supported Opus models, priced at a premium multiplier.",
+   "points": 1,
+   "difficulty": "foundational",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T260",
+    "T08"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D5-003",
+   "tags": [
+    "fast-mode",
+    "latency",
+    "model-options"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D5-004",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D5",
+   "objective": "LLM Fundamentals",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "As of October 2026, a long-running agent session on Claude Opus 5.5 relies on prompt caching of a large, growing conversation. Planning turns need high effort, but many later turns are routine confirmations that the team wants to run at low effort to save output tokens, without losing cache hits on the earlier turns. Which approach fits?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Change the top-level output_config.effort to low for routine requests and back to high for planning.",
+     "rationale": "Top-level effort is rendered into the prompt, so changing it between requests invalidates the cached prefix from earlier turns."
+    },
+    {
+     "id": "B",
+     "text": "Send thinking with type disabled on routine turns, so those requests skip reasoning entirely.",
+     "rationale": "Adaptive thinking is always on for Claude Opus 5.5, and thinking type disabled returns a 400 error."
+    },
+    {
+     "id": "C",
+     "text": "Append a role system message with empty content and output_config.effort low (per-message effort beta).",
+     "rationale": "Correct. A per-message effort change takes effect from the next user turn and leaves everything before it unchanged, so the cached prefix still matches."
+    },
+    {
+     "id": "D",
+     "text": "Keep effort at high and lower max_tokens on routine turns so that the model spends fewer tokens on thinking.",
+     "rationale": "max_tokens is a hard cap on thinking plus text; a tight cap truncates responses rather than steering how much the model reasons."
+    }
+   ],
+   "correctOptionIds": [
+    "C"
+   ],
+   "explanation": "Effort is the primary control over thinking and output volume. On models that support per-message effort (beta header mid-conversation-output-config-2026-07-01 as of October 2026), an effort-only system message changes the level mid-conversation while preserving the prompt cache.",
+   "points": 1,
+   "difficulty": "advanced",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T145",
+    "T262"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D5-004",
+   "tags": [
+    "effort",
+    "adaptive-thinking",
+    "prompt-caching"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D5-005",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D5",
+   "objective": "LLM Fundamentals",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A log-analysis service on Claude Sonnet 5.5 (1M-token context window) sends about 950,000 input tokens and sets max_tokens to 64,000. Some responses return HTTP 200 but end early with stop_reason model_context_window_exceeded. What does this indicate, and what is the best fix?",
+   "options": [
+    {
+     "id": "A",
+     "text": "max_tokens was reached; raise max_tokens to the 128,000 maximum so the report can be completed.",
+     "rationale": "The stop reason refers to the context window, not max_tokens; a larger max_tokens cannot add room beyond the window."
+    },
+    {
+     "id": "B",
+     "text": "The service hit transient overload; retry the identical request with exponential backoff.",
+     "rationale": "Overload surfaces as an error, not as a successful response with this stop reason, and an identical retry hits the same limit."
+    },
+    {
+     "id": "C",
+     "text": "The input alone was over the window; split the logs, since oversized input returns this stop reason.",
+     "rationale": "Input that alone exceeds the window is rejected with a 400 prompt-too-long error rather than producing a partial response."
+    },
+    {
+     "id": "D",
+     "text": "Input plus generated output reached the context window; trim or summarize the input to leave room for output.",
+     "rationale": "Correct. On Claude 4.5 and newer models the API accepts input plus max_tokens above the window and stops generation when the window is full."
+    }
+   ],
+   "correctOptionIds": [
+    "D"
+   ],
+   "explanation": "The context window holds the input and the output being generated. Newer models accept requests whose input plus max_tokens exceeds the window and stop with model_context_window_exceeded when it fills, so the fix is to reduce input, for example by retrieval or summarization.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T261",
+    "T04"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D5-005",
+   "tags": [
+    "context-window",
+    "stop-reason",
+    "tokens"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D5-006",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D5",
+   "objective": "Technical Fundamentals",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A Python worker pool calls the Messages API through the official SDK. The team wants each worker to slow down before it hits 429 errors, using the remaining input-token capacity that the API itself reports on each successful response. Which approach provides that signal?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Use messages.with_raw_response.create and read the anthropic-ratelimit-input-tokens-remaining header.",
+     "rationale": "Correct. The raw-response accessor exposes response headers, and the rate-limit headers report remaining capacity for the most restrictive limit in effect."
+    },
+    {
+     "id": "B",
+     "text": "Read the retry-after header from every successful response and pause workers for that many seconds.",
+     "rationale": "retry-after accompanies 429 responses; it is not a capacity signal on successful responses."
+    },
+    {
+     "id": "C",
+     "text": "Call the token counting endpoint before each request, since its response includes the remaining quota.",
+     "rationale": "Token counting estimates the tokens in a planned request; it does not report rate-limit capacity."
+    },
+    {
+     "id": "D",
+     "text": "Sum usage.input_tokens across workers and compare the total with the tier limit shown in the Console.",
+     "rationale": "A local sum misses other clients sharing the limit and cache-creation tokens that also count toward input limits, so it is not the API-reported value."
+    }
+   ],
+   "correctOptionIds": [
+    "A"
+   ],
+   "explanation": "Every response carries anthropic-ratelimit-* headers with limits, remaining capacity and reset times; SDKs expose headers through raw-response accessors. Remaining token values are rounded, so treat them as a throttling signal rather than an exact budget.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T267",
+    "T125"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D5-006",
+   "tags": [
+    "rate-limits",
+    "response-headers",
+    "sdk"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D5-007",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D5",
+   "objective": "Technical Fundamentals",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A model-routing service keeps a hardcoded table of each model's context window, maximum output tokens and thinking support. Every model release needs a code change, and the table was wrong twice last quarter, causing 400 errors. Which change best reduces this maintenance risk?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Read the limits from the anthropic-version response header, which describes the model that served the call.",
+     "rationale": "anthropic-version selects the API version and is not a description of model limits or capabilities."
+    },
+    {
+     "id": "B",
+     "text": "Probe each new model with a very large max_tokens and record the limit quoted in the resulting error.",
+     "rationale": "Parsing error messages is brittle and costs failed calls; the API offers a structured source for these values."
+    },
+    {
+     "id": "C",
+     "text": "Query the Models API at startup and read max_input_tokens, max_tokens and the capabilities object.",
+     "rationale": "Correct. The Models API returns token limits and a capabilities object (for example thinking types and effort levels) for every available model."
+    },
+    {
+     "id": "D",
+     "text": "Use dateless model IDs so that context and output limits stay constant as each family moves forward.",
+     "rationale": "From the 4.6 generation on, dateless IDs are pinned snapshots per model, and limits differ between models, so this does not remove the table."
+    }
+   ],
+   "correctOptionIds": [
+    "C"
+   ],
+   "explanation": "Discovering model limits and capabilities through GET /v1/models keeps routing logic in sync with the platform instead of a hand-maintained table. Cache the response and still validate changes on evals.",
+   "points": 1,
+   "difficulty": "foundational",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T268",
+    "T264"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D5-007",
+   "tags": [
+    "models-api",
+    "rest",
+    "configuration"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D5-008",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D5",
+   "objective": "Technical Fundamentals",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A web chat keeps a WebSocket open between each browser and the company's backend so it can push typing indicators and let users cancel a reply. Replies from Claude should appear token by token, and the API key must never reach the browser. Which design fits?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Open a WebSocket from the browser straight to the Messages API, passing a short-lived copy of the API key.",
+     "rationale": "The Messages API streams over server-sent events rather than a WebSocket endpoint, and the key would reach the browser."
+    },
+    {
+     "id": "B",
+     "text": "Have the backend stream from the Messages API over server-sent events and relay each text delta on the WebSocket.",
+     "rationale": "Correct. The backend keeps the key, consumes the SSE stream (for example through the SDK stream helper) and relays deltas to the browser over its own WebSocket."
+    },
+    {
+     "id": "C",
+     "text": "Have the backend request complete replies without streaming, then split each finished reply into words for the WebSocket.",
+     "rationale": "Users would wait for the whole reply before seeing anything, which defeats incremental display."
+    },
+    {
+     "id": "D",
+     "text": "Have the backend poll the Messages API every second for partial output of the message in progress.",
+     "rationale": "There is no endpoint for polling a message's partial output; incremental output is delivered by streaming."
+    }
+   ],
+   "correctOptionIds": [
+    "B"
+   ],
+   "explanation": "Claude API streaming uses server-sent events with typed events such as content_block_delta. An application can bridge that stream to its own transport, such as a WebSocket, while keeping credentials server-side.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T05",
+    "T266"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D5-008",
+   "tags": [
+    "streaming",
+    "sse",
+    "websockets"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D5-009",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D5",
+   "objective": "Technical Fundamentals",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A support endpoint calls the Messages API through the official Python SDK and must return either an answer or a fallback message within about 25 seconds. The team set timeout=20.0 on the client and left every other setting at its default. During a slow period, some users waited more than a minute before seeing the fallback. What explains this, and what is the best fix?",
+   "options": [
+    {
+     "id": "A",
+     "text": "The timeout covers only the first byte; switch to streaming so that 20 seconds covers the whole response.",
+     "rationale": "The SDK timeout bounds the request attempt; streaming changes delivery, not the retry behavior that causes the wait."
+    },
+    {
+     "id": "B",
+     "text": "The SDK ignores timeout for non-streaming calls; wrap every call in an external asyncio timeout instead.",
+     "rationale": "The SDK honors the timeout option and raises APITimeoutError when it expires."
+    },
+    {
+     "id": "C",
+     "text": "The default 10-minute timeout overrides the client value; also set it per request with with_options.",
+     "rationale": "A client-level timeout replaces the default; with_options is an alternative, not a requirement."
+    },
+    {
+     "id": "D",
+     "text": "Timed-out requests are retried twice by default; size timeout and max_retries so all attempts fit 25 seconds.",
+     "rationale": "Correct. A 20-second timeout with two automatic retries can exceed a minute, so the per-attempt timeout and retry count must fit the end-to-end budget."
+    }
+   ],
+   "correctOptionIds": [
+    "D"
+   ],
+   "explanation": "SDK timeouts apply per attempt, and timeouts are retried by default (twice in the Python SDK). Design latency budgets as attempts times timeout plus backoff, and lower timeout or max_retries where a fast fallback matters.",
+   "points": 1,
+   "difficulty": "advanced",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T125"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D5-009",
+   "tags": [
+    "sdk",
+    "timeouts",
+    "retries"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D5-010",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D5",
+   "objective": "Technical Fundamentals",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A nightly reconciliation script lists Message Batches with the Python SDK by calling client.messages.batches.list(limit=20) and looping over the data attribute of the result. The workspace has several thousand batches, but the script reports only the most recent ones. Which change fixes the gap?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Raise limit above the total number of batches so that the first page always contains every batch.",
+     "rationale": "limit accepts at most 1,000 items per page, fewer than the several thousand batches in the workspace, so one page can never hold them all; the client must page through results."
+    },
+    {
+     "id": "B",
+     "text": "Iterate over the returned page object, which auto-paginates and fetches later pages as needed.",
+     "rationale": "Correct. SDK list methods return pages that auto-paginate when iterated; data holds only the current page."
+    },
+    {
+     "id": "C",
+     "text": "Call list again with the same arguments until a call returns no batch IDs that were not seen before.",
+     "rationale": "Repeating the same request returns the same first page, so the loop never reaches older batches."
+    },
+    {
+     "id": "D",
+     "text": "Use the Usage and Cost API, which returns every batch ID for the organization in a single response.",
+     "rationale": "That API reports usage and cost data; it is not a listing of Message Batches."
+    }
+   ],
+   "correctOptionIds": [
+    "B"
+   ],
+   "explanation": "List endpoints are paginated: batches are listed per workspace, most recent first, with at most 1,000 per page. SDKs auto-paginate when you iterate the page object, and offer has_next_page and get_next_page for manual control.",
+   "points": 1,
+   "difficulty": "foundational",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T125",
+    "T266"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D5-010",
+   "tags": [
+    "pagination",
+    "sdk",
+    "rest"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D5-011",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D5",
+   "objective": "Technical Fundamentals",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "As of October 2026, an overnight pipeline treats every HTTP 429 as a rate limit and retries with backoff for up to an hour. One night every request returned 429 with error type rate_limit_error, no retry-after header, and error.details.error_code set to enforced_spend_limit_reached. The pipeline spent hours retrying. Which handling change is most appropriate?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Retry immediately without backoff, since a 429 without retry-after means capacity is already restored.",
+     "rationale": "This response means usage is paused until the spend limit resets or is raised, so immediate retries keep failing."
+    },
+    {
+     "id": "B",
+     "text": "Spread the requests across more API keys in the same organization so that each key gets its own separate limit.",
+     "rationale": "Spend caps and rate limits apply at the organization level, so extra keys in the same organization do not help."
+    },
+    {
+     "id": "C",
+     "text": "Branch on error_code: stop and alert on enforced_spend_limit_reached; keep backoff for real rate limits.",
+     "rationale": "Correct. The spend-cap 429 shares the error type with rate limits but carries this error code and no retry-after, and retrying fails until access resumes."
+    },
+    {
+     "id": "D",
+     "text": "Switch the pipeline to the Message Batches API, whose separate rate limits are not affected by this error.",
+     "rationale": "Batch requests are API usage too; reaching the spend cap pauses usage for the organization."
+    }
+   ],
+   "correctOptionIds": [
+    "C"
+   ],
+   "explanation": "Not every 429 is transient. As documented in October 2026, the spend-cap response uses rate_limit_error with details.error_code enforced_spend_limit_reached and no retry-after; handle it as an operational alert rather than a retryable error.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T267",
+    "T07"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D5-011",
+   "tags": [
+    "error-handling",
+    "rate-limits",
+    "spend-limits"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D5-012",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D5",
+   "objective": "Model Selection and Tradeoffs",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "As of October 2026, a team moved a contract-analysis service from Claude Opus 5 to Claude Opus 5.5 by changing the model ID and removing a thinking setting the new model rejects. The service never sets effort. Cost per request fell, but evals show weaker answers on the hardest multi-clause questions. What is the most likely cause, and what should the team do?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Omitted effort now means medium, not high; set effort explicitly and rerun an effort sweep on the evals.",
+     "rationale": "Correct. Claude Opus 5.5 defaults to medium effort while Claude Opus 5 defaults to high, so unchanged requests run one level lower."
+    },
+    {
+     "id": "B",
+     "text": "Opus 5.5 caches less of each prompt, so add cache_control to the contract text to restore analysis depth.",
+     "rationale": "Prompt caching changes cost and latency for repeated prefixes; it has no effect on reasoning depth."
+    },
+    {
+     "id": "C",
+     "text": "Adaptive thinking is off by default on Opus 5.5; send thinking with type adaptive to switch it on.",
+     "rationale": "Adaptive thinking is always on for Claude Opus 5.5; sending type adaptive is equivalent to omitting the field."
+    },
+    {
+     "id": "D",
+     "text": "Opus 5.5 has a smaller context window, so long contracts are truncated; split each contract into parts.",
+     "rationale": "Claude Opus 5.5 serves a 1M-token context window by default, so truncation does not explain the drop."
+    }
+   ],
+   "correctOptionIds": [
+    "A"
+   ],
+   "explanation": "Model upgrades can change defaults as well as request validation. Set effort explicitly and re-run an effort sweep on your own evals instead of carrying over settings tuned for an earlier model.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T143",
+    "T145"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D5-012",
+   "tags": [
+    "model-migration",
+    "effort",
+    "breaking-changes"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D5-013",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D5",
+   "objective": "Model Selection and Tradeoffs",
+   "scenarioId": null,
+   "questionType": "multiple_response",
+   "selectCount": 2,
+   "stem": "As of October 2026, an extraction service sends tool_choice with type tool and the name record_invoice so that Claude always returns invoice fields as tool input. After the Claude API model ID is switched to Claude Sonnet 5.5, requests fail with a 400 error saying this tool_choice type is not supported. The tool input must still match the tool's JSON schema. Which TWO changes are most appropriate?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Use tool_choice type any, which still lets Claude pick a tool while guaranteeing that one is called.",
+     "rationale": "Claude Sonnet 5.5 rejects tool_choice type any as well as type tool."
+    },
+    {
+     "id": "B",
+     "text": "Send tool_choice type auto, and state in the prompt that every invoice is recorded with record_invoice.",
+     "rationale": "Correct. With auto the model may answer without the tool, so the prompt must say when to call it."
+    },
+    {
+     "id": "C",
+     "text": "Prefill the assistant turn with a tool_use block for record_invoice so the model continues inside it.",
+     "rationale": "Assistant prefill is rejected on Claude Sonnet 5.5; the conversation must end with a user message."
+    },
+    {
+     "id": "D",
+     "text": "Send thinking with type disabled, since forced tool use is rejected only while thinking is active on the model.",
+     "rationale": "Forced tool choice is rejected regardless of thinking, and type disabled itself returns a 400 error on this model."
+    },
+    {
+     "id": "E",
+     "text": "Mark record_invoice with strict true and additionalProperties false on every object in its schema.",
+     "rationale": "Correct. Strict tool use makes the tool input conform to the schema; it supports a subset of JSON Schema and needs additionalProperties false on objects."
+    }
+   ],
+   "correctOptionIds": [
+    "B",
+    "E"
+   ],
+   "explanation": "Releases can remove request options. The documented replacement for forced tool use on Claude Sonnet 5.5 is tool_choice auto plus strict tool use, with the prompt saying when to call the tool (on Amazon Bedrock, validate input in code instead).",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T144",
+    "T129"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D5-013",
+   "tags": [
+    "breaking-changes",
+    "tool-choice",
+    "strict-tools"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D5-014",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D5",
+   "objective": "Model Selection and Tradeoffs",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "As of October 2026, a router sends simple tickets to Claude Haiku 4.5 and complex ones to Claude Sonnet 5.5. Both paths share one request builder that sends thinking with type adaptive and an output_config.effort value. Sonnet requests succeed, but every Haiku request fails with a 400 error. The Haiku path still needs some reasoning before it answers. Which fix is most appropriate?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Send thinking with type disabled on the Haiku path, since Haiku 4.5 already thinks adaptively by default.",
+     "rationale": "Thinking is off by default on Haiku 4.5, so disabling it removes the reasoning the path needs."
+    },
+    {
+     "id": "B",
+     "text": "Move both paths to between_tools thinking, which every current model accepts as its lowest setting.",
+     "rationale": "Only Claude Sonnet 5.5 accepts between_tools, so Haiku requests would still fail."
+    },
+    {
+     "id": "C",
+     "text": "Keep adaptive thinking on the Haiku path and drop only the effort field, since effort is what Haiku 4.5 rejects.",
+     "rationale": "Claude Haiku 4.5 supports extended thinking only and rejects type adaptive with a 400 error, so this still fails."
+    },
+    {
+     "id": "D",
+     "text": "Build thinking per model: extended thinking with budget_tokens for Haiku 4.5, adaptive plus effort for Sonnet 5.5.",
+     "rationale": "Correct. Haiku 4.5 uses manual extended thinking and has no effort setting, while Sonnet 5.5 uses adaptive thinking steered by effort."
+    }
+   ],
+   "correctOptionIds": [
+    "D"
+   ],
+   "explanation": "Thinking support differs by model: as of October 2026, Claude 4.7 and later reject budget-based extended thinking, while Claude Haiku 4.5 and Sonnet 4.5 accept only extended thinking. Multi-model routers need per-model request settings.",
+   "points": 1,
+   "difficulty": "advanced",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T263",
+    "T264"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D5-014",
+   "tags": [
+    "adaptive-thinking",
+    "extended-thinking",
+    "routing",
+    "model-capabilities"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D5-015",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D5",
+   "objective": "Cost and Token Management",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A coding agent resends its whole conversation on every request, with one cache_control breakpoint on the final block. Usually each turn adds a few blocks and the next request reads the cache. After turns where Claude makes many sequential tool calls with text and reasoning between them, the next request is more than 20 blocks longer and shows cache_read_input_tokens of zero. Which change restores cache reads on those requests?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Switch to a 1-hour cache TTL so the earlier cache entry is still alive when the next request arrives.",
+     "rationale": "The entry has not expired; the issue is that the lookback from the new breakpoint never reaches it."
+    },
+    {
+     "id": "B",
+     "text": "Also place a breakpoint near where the previous request ended, so a lookback window reaches that write.",
+     "rationale": "Correct. Each breakpoint checks at most 20 positions backward; a second breakpoint closer to the previous write starts its own window that finds that entry."
+    },
+    {
+     "id": "C",
+     "text": "Move the single breakpoint to the first user message, since the lookback scans forward from the breakpoint.",
+     "rationale": "The lookback walks backward, and a breakpoint at the start caches only a small prefix of the conversation."
+    },
+    {
+     "id": "D",
+     "text": "Enable automatic caching at the top level, which lifts the 20-block lookback limit for growing conversations.",
+     "rationale": "Automatic caching uses the same infrastructure, including the 20-block lookback window."
+    }
+   ],
+   "correctOptionIds": [
+    "B"
+   ],
+   "explanation": "Cache writes happen only at breakpoints, and reads look back at most 20 blocks per breakpoint for earlier writes. When a turn can add 20 or more blocks, use an additional breakpoint (up to four) as a checkpoint so a prior write stays reachable.",
+   "points": 1,
+   "difficulty": "advanced",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T148"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D5-015",
+   "tags": [
+    "prompt-caching",
+    "cache-breakpoints",
+    "agents"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D5-016",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D5",
+   "objective": "Cost and Token Management",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "An agent sends about 40 tool definitions and a long system prompt on every request, with a cache breakpoint at the end of the system prompt. To help tool selection, the code sorts the tools array by each tool's recent usage count before every call. Usage shows frequent cache writes and few cache reads, although the definitions themselves never change. What is the best fix?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Move the breakpoint into the messages array so that the tools and system prompt are cached as part of the conversation.",
+     "rationale": "Any breakpoint's prefix still starts with the tools array, so a reordered array changes the hash wherever the breakpoint sits."
+    },
+    {
+     "id": "B",
+     "text": "Keep the sorting and add a second breakpoint after the tools array so the system prompt is cached separately.",
+     "rationale": "The cache follows the order tools, system, messages; a change in tools invalidates the system and message caches after it."
+    },
+    {
+     "id": "C",
+     "text": "Send the tools in one fixed order every time, since a changed tools array invalidates every later cache level.",
+     "rationale": "Correct. Reordering counts as modifying tool definitions, which invalidates the whole cache; a stable order lets the prefix match."
+    },
+    {
+     "id": "D",
+     "text": "Switch to a 1-hour cache TTL, because the sorting step delays requests beyond the 5-minute cache lifetime.",
+     "rationale": "The entries are not expiring; each request writes a different prefix, so a longer TTL does not produce reads."
+    }
+   ],
+   "correctOptionIds": [
+    "C"
+   ],
+   "explanation": "Prompt cache hits require an identical prefix in the order tools, then system, then messages. Keep tool definitions and their order stable; for genuinely dynamic tool sets, use features designed to preserve the prefix (such as deferred loading) rather than rewriting the array.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T148"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D5-016",
+   "tags": [
+    "prompt-caching",
+    "cache-invalidation",
+    "tools"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D5-017",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D5",
+   "objective": "Cost and Token Management",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A service on Claude Opus 4.6 sends a stable system prompt of about 3,000 tokens marked with cache_control, followed by a short user question. Requests arrive every few seconds. No errors occur, but cache_creation_input_tokens and cache_read_input_tokens are both 0 on every response. What is the most likely explanation?",
+   "options": [
+    {
+     "id": "A",
+     "text": "The prompt is below this model's minimum cacheable length, so it is processed uncached and no error is returned.",
+     "rationale": "Correct. Claude Opus 4.6 needs at least 4,096 tokens to cache; shorter prompts are silently processed uncached, which shows as zero in both cache fields."
+    },
+    {
+     "id": "B",
+     "text": "Cache entries are written only when a 1-hour TTL is requested, so the default marker is ignored in system blocks.",
+     "rationale": "The default 5-minute TTL writes cache entries normally; no TTL is required for caching to occur."
+    },
+    {
+     "id": "C",
+     "text": "A cache entry is available only after the first response begins, so requests a few seconds apart always miss.",
+     "rationale": "That timing rule affects concurrent requests, and even then the first request would report cache_creation_input_tokens."
+    },
+    {
+     "id": "D",
+     "text": "System prompts can be cached only through top-level automatic caching, so block-level markers there are ignored.",
+     "rationale": "Content blocks in the system array can carry cache_control and are cached normally."
+    }
+   ],
+   "correctOptionIds": [
+    "A"
+   ],
+   "explanation": "Each model has a minimum cacheable prompt length (it differs by model). If both cache usage fields are zero, the prefix was likely too short; extending it with useful stable content can be worthwhile for frequently reused prompts.",
+   "points": 1,
+   "difficulty": "foundational",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T148"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D5-017",
+   "tags": [
+    "prompt-caching",
+    "cache-minimum",
+    "usage-tracking"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D5-018",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D5",
+   "objective": "Cost and Token Management",
+   "scenarioId": null,
+   "questionType": "multiple_response",
+   "selectCount": 2,
+   "stem": "A finance team is building a cost model for an assistant on Claude Sonnet 5.5, where adaptive thinking runs by default and thinking display is omitted, so thinking blocks arrive with an empty thinking field. The current model estimates output cost from the length of the visible response text. Which TWO statements should the corrected cost model reflect?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Thinking tokens are billed as output tokens even though display is omitted and no thinking text is returned.",
+     "rationale": "Correct. Billing covers the full thinking Claude generated; display only changes what the response shows."
+    },
+    {
+     "id": "B",
+     "text": "Omitted thinking is billed at the cache-read rate, because the thinking text is never sent back to the client.",
+     "rationale": "Omitted thinking is still output that the model generated, billed at the output rate."
+    },
+    {
+     "id": "C",
+     "text": "Thinking is billed by the length of its summary, so switching display to summarized raises the cost.",
+     "rationale": "Summary generation is not charged, and billing is the same for summarized and omitted display."
+    },
+    {
+     "id": "D",
+     "text": "usage.output_tokens is the billed total including thinking, and output_tokens_details.thinking_tokens gives its share.",
+     "rationale": "Correct. output_tokens is the inclusive total used for billing; the details field breaks out the reasoning portion for observability."
+    },
+    {
+     "id": "E",
+     "text": "Thinking tokens count toward the context window but not toward max_tokens, so they never truncate a reply.",
+     "rationale": "Thinking tokens are a subset of max_tokens, so heavy thinking can exhaust the cap before the answer is complete."
+    }
+   ],
+   "correctOptionIds": [
+    "A",
+    "D"
+   ],
+   "explanation": "With adaptive thinking, cost depends on output tokens that may not be visible. Track usage.output_tokens and its thinking breakdown per request, and use effort and max_tokens to bound spend.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T262",
+    "T261"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D5-018",
+   "tags": [
+    "cost-modeling",
+    "thinking-tokens",
+    "usage-tracking"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D1-001",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D1",
+   "objective": "Agent Architecture",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "An HR team wants an assistant that answers employee questions from a fixed set of about 40 policy documents. Each answer needs one lookup and one response, and answers must arrive within a few seconds at low cost. An engineer proposes an autonomous agent that plans, calls several tools, and reflects on its own answers. Which design best fits these requirements?",
+   "options": [
+    {
+     "id": "A",
+     "text": "An orchestrator that splits each question into subtasks for worker models and merges their partial answers.",
+     "rationale": "Orchestrator-workers suits tasks whose subtasks cannot be predicted; here every question has the same simple shape, so it adds latency and cost."
+    },
+    {
+     "id": "B",
+     "text": "An autonomous agent with a maximum iteration count, so the planning loop cannot run indefinitely.",
+     "rationale": "A stopping condition limits runaway loops but keeps the agent's extra turns, latency and cost that this task does not need."
+    },
+    {
+     "id": "C",
+     "text": "A single model call per question, with retrieved policy passages and a few examples in the prompt.",
+     "rationale": "Correct. Anthropic recommends the simplest solution that works; an optimized single call with retrieval and in-context examples is often enough."
+    },
+    {
+     "id": "D",
+     "text": "An evaluator-optimizer loop in which a second call critiques each answer until it satisfies a rubric.",
+     "rationale": "Iterative refinement multiplies calls per question and is unnecessary when one grounded answer meets the need."
+    }
+   ],
+   "correctOptionIds": [
+    "C"
+   ],
+   "explanation": "Agentic systems trade latency and cost for flexibility. Add workflows or agents only when they demonstrably improve outcomes; well-defined single-step tasks are usually best served by one well-prompted, retrieval-augmented call.",
+   "points": 1,
+   "difficulty": "foundational",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T01"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D1-001",
+   "tags": [
+    "workflow-vs-agent",
+    "simplicity",
+    "augmented-llm"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D1-002",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D1",
+   "objective": "Agent Architecture",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A support assistant uses one large prompt for general questions, refund requests and technical troubleshooting. Each time the team tunes the prompt for refunds, technical answers get worse. The three categories are easy to tell apart, and most general questions are simple enough for a smaller, cheaper model. Which pattern best fits?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Prompt chaining that passes every query through the general, refund and technical prompts in a fixed sequence.",
+     "rationale": "Chaining suits fixed sequential subtasks; running every query through all three prompts wastes calls and still mixes concerns."
+    },
+    {
+     "id": "B",
+     "text": "Parallel sectioning that sends each query to all three specialist prompts and merges the three answers.",
+     "rationale": "Each query belongs to one category, so running every specialist and merging adds cost without improving the answer."
+    },
+    {
+     "id": "C",
+     "text": "A single prompt with more few-shot examples per category, so one prompt can serve every query type.",
+     "rationale": "This keeps the coupling that causes tuning for one category to hurt the others."
+    },
+    {
+     "id": "D",
+     "text": "Routing that classifies each query and sends it to a category-specific prompt, tool set and model.",
+     "rationale": "Correct. Routing separates concerns for distinct, accurately classifiable categories and lets easy queries go to a cheaper model."
+    }
+   ],
+   "correctOptionIds": [
+    "D"
+   ],
+   "explanation": "Routing classifies an input and directs it to a specialized follow-up. It fits distinct categories that are better handled separately, including sending easy queries to smaller models and hard ones to more capable models.",
+   "points": 1,
+   "difficulty": "foundational",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T01"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D1-002",
+   "tags": [
+    "routing",
+    "workflow-patterns",
+    "model-routing"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D1-003",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D1",
+   "objective": "Agent Architecture",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A platform reviews pull requests for security vulnerabilities before merge. Missing a real vulnerability is far more costly than a false alarm, and reviewers accept extra alerts. A single review prompt misses some issues that a differently worded prompt catches. Which workflow best fits?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Voting: run several differently prompted reviews of the diff in parallel and flag it if any review objects.",
+     "rationale": "Correct. Parallel voting gathers multiple perspectives on the same task; a low flag threshold favors recall when false negatives are costly."
+    },
+    {
+     "id": "B",
+     "text": "Prompt chaining: summarize the diff first, then run one security review on the summary to focus attention.",
+     "rationale": "A summary can drop the detail a vulnerability hides in, and a single review keeps the blind spots of one prompt."
+    },
+    {
+     "id": "C",
+     "text": "Routing: classify the diff by programming language and send it to one language-specific security review prompt.",
+     "rationale": "Routing still relies on one review per diff, so issues that prompt misses remain missed."
+    },
+    {
+     "id": "D",
+     "text": "Evaluator-optimizer: have one call rewrite the diff and another critique it until no vulnerability remains.",
+     "rationale": "The goal is to detect problems for human reviewers, not to have the model rewrite the code in a refinement loop."
+    }
+   ],
+   "correctOptionIds": [
+    "A"
+   ],
+   "explanation": "Parallelization has two forms: sectioning splits independent subtasks, and voting runs the same task several times for higher-confidence results. Vote thresholds let you balance false positives against false negatives.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T01"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D1-003",
+   "tags": [
+    "parallelization",
+    "voting",
+    "workflow-patterns"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D1-004",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D1",
+   "objective": "Agent Architecture",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A research product uses a lead agent that spawns subagents for web research. Logs show that simple fact lookups, such as a company's founding year, often trigger eight or more subagents and hundreds of tool calls, while complex comparisons work well. The team wants to cut this waste without hurting complex queries. Which change best addresses the root cause?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Cap every query at two subagents, so simple and complex questions share one small, predictable budget.",
+     "rationale": "A uniform cap removes the waste but starves complex research that needs many subagents with divided responsibilities."
+    },
+    {
+     "id": "B",
+     "text": "Add explicit scaling rules to the lead agent's prompt that match subagent count and tool calls to query complexity.",
+     "rationale": "Correct. Agents struggle to judge appropriate effort, so embedding scaling guidance in the lead agent's prompt prevents overinvestment in simple queries."
+    },
+    {
+     "id": "C",
+     "text": "Run subagents asynchronously so the lead agent can start answering before all of them have finished.",
+     "rationale": "Asynchronous execution changes coordination timing but does not stop the lead agent from spawning too many subagents."
+    },
+    {
+     "id": "D",
+     "text": "Move all subagents to a cheaper model, since the price of extra subagents matters more than their number.",
+     "rationale": "This lowers the cost per call but leaves the over-spawning in place and may reduce quality on complex queries."
+    }
+   ],
+   "correctOptionIds": [
+    "B"
+   ],
+   "explanation": "In a manager-subagent hierarchy, the lead agent decides how much work to delegate. Anthropic's research system embedded rules such as one agent with a few tool calls for simple fact-finding and many subagents only for complex research.",
+   "points": 1,
+   "difficulty": "advanced",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T110",
+    "T128"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D1-004",
+   "tags": [
+    "multi-agent",
+    "supervisor",
+    "effort-scaling"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D1-005",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D1",
+   "objective": "Agent Architecture",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A retailer generates product descriptions that must satisfy a detailed brand checklist covering tone, banned claims and required specifications. When human editors give written feedback against the checklist, the next draft reliably improves, and a model can apply the same checklist to give that feedback. Which workflow best fits?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Parallel voting that generates five descriptions at once and publishes the one most of them agree on.",
+     "rationale": "Voting suits classification-style decisions; free-text drafts rarely agree, and it provides no feedback to improve them."
+    },
+    {
+     "id": "B",
+     "text": "Routing that classifies each product by category and sends it to a category-specific writing prompt.",
+     "rationale": "Routing can specialize prompts but provides no loop for checking drafts against the checklist and improving them."
+    },
+    {
+     "id": "C",
+     "text": "Evaluator-optimizer: one call drafts, another checks it against the checklist and feeds back, in a loop.",
+     "rationale": "Correct. Clear evaluation criteria plus feedback that measurably improves drafts are the two signs this workflow fits; cap the iterations."
+    },
+    {
+     "id": "D",
+     "text": "An autonomous agent that browses competitor sites and decides on its own when each description is finished.",
+     "rationale": "Open-ended autonomy adds cost and unpredictability where the task has a defined checklist and a fixed shape."
+    }
+   ],
+   "correctOptionIds": [
+    "C"
+   ],
+   "explanation": "Evaluator-optimizer pairs a generator with an evaluator in a feedback loop. It fits when criteria are clear and iterative refinement adds value; include a maximum number of rounds to bound cost.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T01"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D1-005",
+   "tags": [
+    "evaluator-optimizer",
+    "workflow-patterns",
+    "iteration"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D1-006",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D1",
+   "objective": "Agent Construction with Claude",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "An Agent SDK application shows users an approval dialog from its canUseTool callback before any file write. Its options set allowedTools to Read, Glob, Write and Edit, with permissionMode default. In testing, Claude writes files and no dialog ever appears. Which change makes the dialog appear for writes?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Switch permissionMode to acceptEdits, so file edits are routed to the callback for an explicit decision.",
+     "rationale": "acceptEdits auto-approves file edits, so the callback would still be skipped."
+    },
+    {
+     "id": "B",
+     "text": "Add Write and Edit to disallowedTools, so that each attempted write falls through to the callback for approval.",
+     "rationale": "A bare tool name in disallowedTools removes the tool from the request, so Claude could no longer write at all."
+    },
+    {
+     "id": "C",
+     "text": "Register the approval logic as a PostToolUse hook, which runs before the file is written to disk.",
+     "rationale": "PostToolUse runs after the tool has executed, so it cannot ask for approval before the write."
+    },
+    {
+     "id": "D",
+     "text": "Remove Write and Edit from allowedTools, since bare allow entries approve those calls before the callback.",
+     "rationale": "Correct. Allow rules are evaluated before canUseTool, and auto-approved calls never reach the callback."
+    }
+   ],
+   "correctOptionIds": [
+    "D"
+   ],
+   "explanation": "The SDK evaluates hooks, deny rules, ask rules, the permission mode and allow rules before canUseTool. Anything approved earlier skips the callback; for checks that must run on every call, use a PreToolUse hook.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T104",
+    "T273"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D1-006",
+   "tags": [
+    "agent-sdk",
+    "permissions",
+    "human-approval"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D1-007",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D1",
+   "objective": "Agent Construction with Claude",
+   "scenarioId": null,
+   "questionType": "multiple_response",
+   "selectCount": 2,
+   "stem": "A company runs the Claude Agent SDK on shared servers to execute agents for many customer tenants. A security review found that one tenant's agent loaded a CLAUDE.md and settings from the host user's home directory, and that auto memory files from earlier runs exist on the host. Each tenant's agent must see only the configuration the application passes in code. Which TWO measures does the SDK documentation recommend?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Rely on default query options, which load only project-level settings from the tenant's working directory.",
+     "rationale": "When settingSources is omitted, the SDK loads user, project and local settings, including ~/.claude content."
+    },
+    {
+     "id": "B",
+     "text": "Pass mcpServers as an empty object, which also stops claude.ai connectors and memory from loading.",
+     "rationale": "The docs state that an empty mcpServers object does not suppress claude.ai connectors, and it has no effect on memory."
+    },
+    {
+     "id": "C",
+     "text": "Run each tenant in its own filesystem, so per-directory files and memory cannot leak between tenants.",
+     "rationale": "Correct. Some inputs are read regardless of settingSources, so the documented multi-tenant setup isolates each tenant's filesystem."
+    },
+    {
+     "id": "D",
+     "text": "Use the claude_code system prompt preset, which prevents CLAUDE.md files from being injected into context.",
+     "rationale": "CLAUDE.md loading is controlled by setting sources, not by the system prompt preset."
+    },
+    {
+     "id": "E",
+     "text": "Set settingSources to an empty list and set CLAUDE_CODE_DISABLE_AUTO_MEMORY=1 in the agent's env option.",
+     "rationale": "Correct. An empty settingSources stops user, project and local settings, and the environment variable disables auto memory, which settingSources does not control."
+    }
+   ],
+   "correctOptionIds": [
+    "C",
+    "E"
+   ],
+   "explanation": "Default SDK options mirror the CLI and read filesystem configuration. For multi-tenant deployments, the docs recommend a separate filesystem per tenant, settingSources set to an empty list, and auto memory disabled, since managed policy and some global inputs are read regardless.",
+   "points": 1,
+   "difficulty": "advanced",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T270"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D1-007",
+   "tags": [
+    "agent-sdk",
+    "deployment",
+    "multi-tenant",
+    "isolation"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D1-008",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D1",
+   "objective": "Agent Construction with Claude",
+   "scenarioId": null,
+   "questionType": "multiple_response",
+   "selectCount": 2,
+   "stem": "A Python Agent SDK application needs a lookup_order tool that calls the company's order service. The tool must run inside the application process with no separate server process, and Claude must be able to call it without a permission prompt. Which TWO steps accomplish this?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Define the tool with @tool, wrap it with create_sdk_mcp_server, and pass that server in mcpServers as orders.",
+     "rationale": "Correct. The SDK's in-process MCP server hosts custom tools inside the application rather than as a separate process."
+    },
+    {
+     "id": "B",
+     "text": "Add lookup_order to allowedTools, since the SDK matches custom tool names without a server prefix.",
+     "rationale": "Custom tools are exposed under fully qualified names of the form mcp__server__tool, so the bare name does not match."
+    },
+    {
+     "id": "C",
+     "text": "Add mcp__orders__lookup_order to allowedTools so that calls to the tool are approved without a prompt.",
+     "rationale": "Correct. The key in mcpServers becomes the server segment of the name, and listing it in allowedTools pre-approves the tool."
+    },
+    {
+     "id": "D",
+     "text": "Set readOnlyHint to true on the tool, which tells the SDK to skip permission prompts for that tool.",
+     "rationale": "readOnlyHint is an annotation that allows parallel calls with other read-only tools; it does not approve anything."
+    },
+    {
+     "id": "E",
+     "text": "Write .claude/skills/lookup-order/SKILL.md containing the function so the SDK registers it as a tool.",
+     "rationale": "Skills are instructions loaded on demand; the SDK has no API that turns a skill file into a callable tool."
+    }
+   ],
+   "correctOptionIds": [
+    "A",
+    "C"
+   ],
+   "explanation": "In the Agent SDK, custom tools are defined with tool() or @tool, wrapped in an in-process MCP server, and referenced as mcp__<server>__<tool>. Allow rules approve them; annotations such as readOnlyHint only describe behavior.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T271"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D1-008",
+   "tags": [
+    "agent-sdk",
+    "custom-tools",
+    "mcp"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D1-009",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D1",
+   "objective": "Agent Construction with Claude",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "An Agent SDK service produces export files, and each run serves one customer. Policy requires every file the agent creates with the Write tool to be placed in that customer's folder, exports/<customer-id>/, even when Claude chooses another location such as the project root. The write must go ahead at the corrected path in the same tool call without prompting anyone, and the rule must be enforced in code rather than in the prompt. Which implementation fits?",
+   "options": [
+    {
+     "id": "A",
+     "text": "A PreToolUse hook on Write that returns updatedInput with file_path in the customer folder and permissionDecision allow.",
+     "rationale": "Correct. PreToolUse runs before the tool; updatedInput replaces the arguments and allow approves the rewritten call without a prompt."
+    },
+    {
+     "id": "B",
+     "text": "A PostToolUse hook on Write that moves each new file into the customer folder as soon as the Write tool has completed.",
+     "rationale": "The file has already been written outside the customer folder by the time PostToolUse runs, which breaks the policy."
+    },
+    {
+     "id": "C",
+     "text": "A system prompt rule naming the customer folder for every write, checked afterward by an audit job that flags stray files.",
+     "rationale": "Prompt instructions are not deterministic enforcement, and an audit only detects violations after they happen."
+    },
+    {
+     "id": "D",
+     "text": "A PreToolUse hook on Write that changes file_path inside tool_input in place and returns an empty object afterward.",
+     "rationale": "Changes must be returned as updatedInput inside hookSpecificOutput; the docs say to return a new object rather than mutate tool_input."
+    }
+   ],
+   "correctOptionIds": [
+    "A"
+   ],
+   "explanation": "Hooks give deterministic control that does not depend on the model's choices. PreToolUse can deny, ask, allow or rewrite a call through updatedInput; pair updatedInput with allow to auto-approve the modified input.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T111"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D1-009",
+   "tags": [
+    "agent-sdk",
+    "hooks",
+    "pretooluse",
+    "deterministic-control"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D1-010",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D1",
+   "objective": "Agent Construction with Claude",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A team moves a CI lint-fixing job from claude -p to the Agent SDK and leaves the systemPrompt option unset. The new agent behaves differently from the CLI and lacks Claude Code's tool guidance and safety instructions. The team wants the CLI's behavior plus its own coding-standards paragraph. Which configuration fits?",
+   "options": [
+    {
+     "id": "A",
+     "text": "A custom systemPrompt string that contains only the coding-standards paragraph, keeping the agent focused.",
+     "rationale": "A custom string sends only what you write, so the Claude Code guidance and safety instructions stay missing."
+    },
+    {
+     "id": "B",
+     "text": "The claude_code preset, with the coding-standards paragraph added through its append field.",
+     "rationale": "Correct. The preset is the prompt the CLI uses, and append adds instructions after it without removing anything."
+    },
+    {
+     "id": "C",
+     "text": "Leave systemPrompt unset, since the SDK already uses the same Claude Code prompt as claude -p by default.",
+     "rationale": "When systemPrompt is unset, the SDK uses a minimal prompt that omits most of the claude_code preset, unlike claude -p."
+    },
+    {
+     "id": "D",
+     "text": "Leave systemPrompt unset and put the coding-standards paragraph in a custom output style instead.",
+     "rationale": "An output style does not restore the preset, so the session still runs on the minimal default prompt."
+    }
+   ],
+   "correctOptionIds": [
+    "B"
+   ],
+   "explanation": "The Agent SDK's default system prompt is minimal. Use the claude_code preset to match CLI behavior, add product rules with append, and write a fully custom prompt only for agents with a different surface, identity or permission model.",
+   "points": 1,
+   "difficulty": "foundational",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T272"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D1-010",
+   "tags": [
+    "agent-sdk",
+    "system-prompt",
+    "migration"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D1-011",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D1",
+   "objective": "Agent Patterns and Frameworks",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A nightly batch of Agent SDK tasks occasionally includes one that loops through tool calls far longer than expected. Finance requires a per-task spending cap in US dollars, and the pipeline must record which tasks stopped early so they can be resumed later. Which implementation fits?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Set maxTurns to a low value and read the result field of each ResultMessage to find tasks that ran out of turns.",
+     "rationale": "maxTurns limits tool-use turns rather than dollars, and the result field is present only on successful results."
+    },
+    {
+     "id": "B",
+     "text": "Set max_tokens on the model to bound spend, and treat a max_tokens stop reason as the early-stop signal.",
+     "rationale": "max_tokens caps one model response, not the total spend of a multi-turn task."
+    },
+    {
+     "id": "C",
+     "text": "Set maxBudgetUsd, and treat every ResultMessage that arrives without an exception as a completed task.",
+     "rationale": "Budget stops arrive as a normal ResultMessage with an error subtype, so this would record stopped tasks as finished."
+    },
+    {
+     "id": "D",
+     "text": "Set maxBudgetUsd, check the ResultMessage subtype for error_max_budget_usd, and store its session_id to resume.",
+     "rationale": "Correct. The budget limit ends the loop with that subtype, and every result carries session_id, usage and total cost."
+    }
+   ],
+   "correctOptionIds": [
+    "D"
+   ],
+   "explanation": "Agent loops need explicit stopping conditions. The SDK offers max turns and a USD budget; check ResultMessage.subtype before reading result, and keep the session ID to resume work that hit a limit. Caveat: the budget is checked against a client-side cost estimate and the response that crosses it still completes, so spend can slightly exceed the cap.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T178"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D1-011",
+   "tags": [
+    "agent-loop",
+    "stopping-conditions",
+    "cost-control"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D1-012",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D1",
+   "objective": "Agent Patterns and Frameworks",
+   "scenarioId": null,
+   "questionType": "multiple_response",
+   "selectCount": 2,
+   "stem": "An agent connects to several MCP servers that together expose about 200 tools. Tool definitions consume a large share of every request, and traces show Claude choosing the wrong tool more often as tools were added. Most tasks use only a handful of tools, and a few tools are used in almost every task. Which TWO changes best address this?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Shorten every tool description to one line, so all 200 definitions take less space in each request.",
+     "rationale": "Thin descriptions make selection harder, and all definitions would still load up front."
+    },
+    {
+     "id": "B",
+     "text": "Add a tool search tool and set defer_loading to true on the tools that should not load up front.",
+     "rationale": "Correct. Deferred tools stay out of the initial context, and Claude searches the catalog to load only the tools it needs."
+    },
+    {
+     "id": "C",
+     "text": "Put cache_control on each deferred tool definition so deferred tools are cached after discovery.",
+     "rationale": "A tool with defer_loading true cannot carry cache_control; the API returns a 400 error."
+    },
+    {
+     "id": "D",
+     "text": "Keep the three to five most frequently used tools non-deferred so Claude can call them without searching.",
+     "rationale": "Correct. The docs recommend keeping the most-used tools loaded so common calls need no search step."
+    },
+    {
+     "id": "E",
+     "text": "Rebuild the tools array each request with only the tools whose names match words in the user message.",
+     "rationale": "Keyword matching misses tools whose names differ from the user's wording, and changing the array breaks prompt caching."
+    }
+   ],
+   "correctOptionIds": [
+    "B",
+    "D"
+   ],
+   "explanation": "Large tool catalogs bloat context and degrade selection accuracy. Tool search with deferred loading keeps the initial context small and preserves prompt caching, while the most common tools stay immediately available.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T269"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D1-012",
+   "tags": [
+    "tool-search",
+    "context-window",
+    "mcp",
+    "tool-selection"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D1-013",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D1",
+   "objective": "Agent Patterns and Frameworks",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A customer success assistant runs long, multi-day chat threads through the Messages API. Threads eventually approach the context window, and older turns contain user decisions that later answers still need in condensed form. The team wants the API to manage this inside ordinary requests with minimal client code. Which approach fits? (Compaction is in beta as of October 2026.)",
+   "options": [
+    {
+     "id": "A",
+     "text": "Enable threshold compaction with the compact_20260112 edit, and append each response to the history as usual.",
+     "rationale": "Correct. The API summarizes older context into a compaction block when the trigger is reached and drops earlier content on later requests."
+    },
+    {
+     "id": "B",
+     "text": "Enable tool result clearing, so that older turns are replaced with placeholders once the context passes a threshold.",
+     "rationale": "Tool result clearing removes old tool results; it does not summarize the conversational decisions this thread needs."
+    },
+    {
+     "id": "C",
+     "text": "Drop the oldest turns in the client once a thread passes a fixed token count, keeping only recent turns.",
+     "rationale": "Truncation discards the older decisions instead of keeping them in condensed form."
+    },
+    {
+     "id": "D",
+     "text": "Rewrite the history on each request to remove any compaction block, keeping the original turns available.",
+     "rationale": "Removing the compaction block defeats compaction, so the thread again grows toward the context limit."
+    }
+   ],
+   "correctOptionIds": [
+    "A"
+   ],
+   "explanation": "Compaction replaces older turns with a model-written summary so long conversations stay within the context window and keep active context small. Context editing strategies, by contrast, clear specific content such as old tool results.",
+   "points": 1,
+   "difficulty": "intermediate",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T265",
+    "T261"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D1-013",
+   "tags": [
+    "compaction",
+    "context-management",
+    "memory"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D1-014",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D1",
+   "objective": "Agent Patterns and Frameworks",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A coding agent builds a large feature over many context windows. After each fresh window, it re-explores code it already understood, repeats finished work, and has twice deleted failing tests to make the suite pass. The team controls the prompts for the first window and for later windows. Which approach best follows Anthropic's guidance for multi-window work?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Use one identical prompt in every window and ask Claude to summarize its progress in the final message of each.",
+     "rationale": "A summary trapped in a final message is easy to lose, and the docs recommend a distinct first-window prompt that sets up a framework."
+    },
+    {
+     "id": "B",
+     "text": "Disable the tests until the feature is finished, so each window can focus on code without reverting changes.",
+     "rationale": "Removing verification makes long autonomous work less reliable; tests are the main way Claude checks correctness on its own."
+    },
+    {
+     "id": "C",
+     "text": "First window writes tests to tests.json and setup scripts; later windows read progress notes, tests.json and git log.",
+     "rationale": "Correct. Structured test state, progress notes and git let a fresh window rediscover state, and the prompt should forbid removing or editing tests."
+    },
+    {
+     "id": "D",
+     "text": "Paste each window's full transcript into the next window, so no detail from earlier work is ever lost.",
+     "rationale": "Full transcripts quickly exhaust the window and degrade recall; curated state files are more effective."
+    }
+   ],
+   "correctOptionIds": [
+    "C"
+   ],
+   "explanation": "For long-horizon tasks, keep state outside the context: JSON for structured test status, free-form progress notes and git history. Use a different prompt for the first window, and tell later windows exactly how to rediscover state.",
+   "points": 1,
+   "difficulty": "advanced",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T128"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D1-014",
+   "tags": [
+    "memory",
+    "long-horizon",
+    "state-management"
+   ]
+  },
+  {
+   "id": "CCDV-F-B2-D1-015",
+   "version": 1,
+   "examCode": "CCDV-F",
+   "locale": "en",
+   "domainId": "D1",
+   "objective": "Agent Patterns and Frameworks",
+   "scenarioId": null,
+   "questionType": "single_choice",
+   "selectCount": 1,
+   "stem": "A LangGraph workflow uses interrupt() to get human approval before issuing a refund. The approval node first posts a Slack message announcing the pending refund and then calls interrupt(). A checkpointer is configured, and the graph resumes with Command(resume=...) on the same thread_id. Reviewers see the Slack message posted twice for each refund. What is the cause, and what is the best fix?",
+   "options": [
+    {
+     "id": "A",
+     "text": "The checkpointer replays every node in the graph on resume; switch to an in-memory checkpointer to stop it.",
+     "rationale": "Resume reloads the saved checkpoint for that thread, and an in-memory checkpointer is not suited to production persistence."
+    },
+    {
+     "id": "B",
+     "text": "Resuming restarts the interrupted node from its beginning; move the Slack post into a separate, earlier node.",
+     "rationale": "Correct. Code before interrupt() runs again on resume, so side effects belong in another node or after the interrupt, or must be idempotent."
+    },
+    {
+     "id": "C",
+     "text": "Reusing the thread_id starts a fresh thread; generate a new thread_id on resume so the post is not repeated.",
+     "rationale": "Reusing the thread_id is what resumes the saved state; a new ID starts an empty thread."
+    },
+    {
+     "id": "D",
+     "text": "Wrap interrupt() in try/except so the resume exception is caught and the earlier part of the node is skipped.",
+     "rationale": "Catching the interrupt exception prevents the interrupt from reaching the graph, which breaks the pause."
+    }
+   ],
+   "correctOptionIds": [
+    "B"
+   ],
+   "explanation": "In LangGraph, interrupt() pauses execution and persists state through a checkpointer keyed by thread_id. On resume the whole node re-executes, so non-idempotent side effects placed before interrupt() repeat.",
+   "points": 1,
+   "difficulty": "advanced",
+   "difficultyBasis": "editorial_estimate_not_calibrated",
+   "sourceIds": [
+    "T274"
+   ],
+   "sourceCheckedAt": "2026-10-05",
+   "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+   "familyId": "CCDV-F-B2-D1-015",
+   "tags": [
+    "frameworks",
+    "langgraph",
+    "human-in-the-loop",
+    "idempotency"
+   ]
+  }
+ ],
+ "newSources": [
+  {
+   "id": "T260",
+   "url": "https://platform.claude.com/docs/en/build-with-claude/fast-mode",
+   "title": "Fast mode (research preview)",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "fast mode, speed parameter, OTPS vs TTFT, pricing, cache interaction"
+  },
+  {
+   "id": "T261",
+   "url": "https://platform.claude.com/docs/en/build-with-claude/context-windows",
+   "title": "Context windows",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "context window contents, thinking tokens, overflow behavior, model_context_window_exceeded"
+  },
+  {
+   "id": "T262",
+   "url": "https://platform.claude.com/docs/en/build-with-claude/thinking-steering-and-cost",
+   "title": "Steering thinking",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "adaptive thinking steering, effort and caching, thinking billing, output_tokens_details"
+  },
+  {
+   "id": "T263",
+   "url": "https://platform.claude.com/docs/en/build-with-claude/thinking-troubleshooting",
+   "title": "Troubleshooting thinking",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "per-model thinking types, rejected configurations"
+  },
+  {
+   "id": "T264",
+   "url": "https://platform.claude.com/docs/en/models/overview",
+   "title": "Models overview",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "model lineup, thinking support, default effort, limits, Models API"
+  },
+  {
+   "id": "T265",
+   "url": "https://platform.claude.com/docs/en/build-with-claude/compaction-threshold",
+   "title": "Compaction at a token threshold",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "compact_20260112, trigger, compaction block handling"
+  },
+  {
+   "id": "T266",
+   "url": "https://platform.claude.com/docs/en/api/overview",
+   "title": "API overview",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "endpoints, headers, request-id, pagination"
+  },
+  {
+   "id": "T267",
+   "url": "https://platform.claude.com/docs/en/api/rate-limits",
+   "title": "Rate limits",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "rate-limit headers, cache-aware ITPM, spend caps and enforced_spend_limit_reached"
+  },
+  {
+   "id": "T268",
+   "url": "https://platform.claude.com/docs/en/api/models/list",
+   "title": "List Models (API reference)",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "max_input_tokens, max_tokens, capabilities object"
+  },
+  {
+   "id": "T269",
+   "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool",
+   "title": "Tool search tool",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "defer_loading, tool search variants, best practices, caching"
+  },
+  {
+   "id": "T270",
+   "url": "https://code.claude.com/docs/en/agent-sdk/claude-code-features",
+   "title": "Use Claude Code features in the SDK",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "settingSources defaults, multi-tenant isolation, CLAUDE.md loading"
+  },
+  {
+   "id": "T271",
+   "url": "https://code.claude.com/docs/en/agent-sdk/custom-tools",
+   "title": "Give Claude custom tools (Agent SDK)",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "in-process SDK MCP server, tool naming, readOnlyHint, isError"
+  },
+  {
+   "id": "T272",
+   "url": "https://code.claude.com/docs/en/agent-sdk/modifying-system-prompts",
+   "title": "Modifying system prompts (Agent SDK)",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "minimal default, claude_code preset, append"
+  },
+  {
+   "id": "T273",
+   "url": "https://code.claude.com/docs/en/agent-sdk/user-input",
+   "title": "Handle approvals and user input (Agent SDK)",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "canUseTool callback, auto-approved tools skip callback"
+  },
+  {
+   "id": "T274",
+   "url": "https://docs.langchain.com/oss/python/langgraph/interrupts",
+   "title": "LangGraph interrupts",
+   "publisher": "LangChain",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "interrupt(), checkpointer, thread_id, node re-execution on resume"
+  },
+  {
+   "id": "T275",
+   "url": "https://platform.claude.com/docs/en/api/messages",
+   "title": "Messages API reference",
+   "publisher": "Anthropic",
+   "kind": "technical_doc",
+   "confidence": "high",
+   "checkedAt": "2026-10-05",
+   "status": "reachable",
+   "topic": "temperature deprecation and non-determinism note"
+  }
+ ]
+}

@@ -22,11 +22,12 @@ Each entry: decision, reason, status. "Official" means supported by the official
 ## Content and evidence
 - Exam profiles were checked against the official exam guides v1.0 (P04 CCDV-F, P05 CCAR-F) and the Partner Academy FAQ (P06): counts, 120-minute exam time, domains and weights, question types, 720/1000 scaled score. Status `confirmed_official_exam_guide`.
 - Language: the FAQ (P06) states "The exam and prep content are available in English only". English is verified for both exams with that evidence. No other language is enabled.
-- CCAR-F official structure (4 of 6 scenarios per exam) is recorded in the profile notes; the assembler does not yet sample scenarios that way (pending item).
+- CCAR-F official structure (4 of 6 scenarios per exam) is implemented: profile field `ScenariosPerForm = 4` (profile v2). The assembler tries the 15 four-scenario subsets in random order, prefers one that meets every domain target exactly, then one that needs redistribution, and only then uses all scenarios; the chosen scenarios and any fallback note are stored in the attempt snapshot.
+- Profile changes in `content/catalog.json` are applied as a new profile version at startup, never in place.
 - `fuentes.json`, `perfiles_examen.json` and `validacion_semillas.json` were not provided. Sources were rebuilt from verifiable URLs; the T-id mapping for the original seeds is a reconstruction noted on each source.
 - The guide sample questions are not copied. The six scenario archetypes are public in the guide; their case texts here are original.
 - Validation allows XML-style tags in text (prompt-engineering content such as `<example>` tags) but rejects active HTML (script, img, event handlers, javascript: URLs); the UI renders all content as escaped text.
 
-## Not implemented (designed only)
-- PDF and DOCX import: the importer rejects them with a clear "not implemented" message. Extension point: add a parser producing `BankFile` in `ContentImporter.Parse`.
-- URL import: not offered, so no server-side fetching (no SSRF surface).
+## Importers
+- JSON, Markdown, Word (.docx) and PDF are supported. Word and PDF are converted line by line into the Markdown bank format and keep paragraph/page locations for provenance.
+- URL import is not offered, so there is no server-side fetching (no SSRF surface).

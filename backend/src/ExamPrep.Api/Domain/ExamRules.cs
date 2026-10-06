@@ -49,7 +49,11 @@ public static class Allocation
 
 public record Candidate(Guid VersionId, string DomainCode, string FamilyId, string? ScenarioId, string ExternalId);
 
-public record AssemblyResult(bool Ok, List<Candidate> Items, Dictionary<string, int> Target, Dictionary<string, int> Actual, Dictionary<string, int> Available, string? Error);
+public record AssemblyResult(bool Ok, List<Candidate> Items, Dictionary<string, int> Target, Dictionary<string, int> Actual, Dictionary<string, int> Available, string? Error)
+{
+    public List<string>? Scenarios { get; init; }
+    public string? ScenarioNote { get; init; }
+}
 
 public static class ExamAssembler
 {
@@ -81,6 +85,37 @@ public static class ExamAssembler
             chosen.AddRange(byFamily.Where(c => c.DomainCode == w.Code).OrderBy(_ => rng.Next()).Take(actual[w.Code]));
 
         return new AssemblyResult(true, Order(chosen, rng), target, actual, available, null);
+    }
+
+    /// <summary>Official CCAR-F structure: draw the form from <paramref name="scenariosPerForm"/> randomly chosen scenarios.
+    /// Prefers subsets that meet every domain target exactly, then subsets that need redistribution; if no subset can
+    /// supply the form, falls back to the whole pool and says so (never duplicates, never silently shrinks).</summary>
+    public static AssemblyResult AssembleWithScenarios(IReadOnlyList<Candidate> pool, IReadOnlyList<DomainWeight> weights, int total, int scenariosPerForm, Random rng)
+    {
+        var scenarios = pool.Where(c => c.ScenarioId != null).Select(c => c.ScenarioId!).Distinct().OrderBy(x => x, StringComparer.Ordinal).ToList();
+        if (scenarios.Count <= scenariosPerForm)
+            return Assemble(pool, weights, total, rng) with { ScenarioNote = $"Only {scenarios.Count} scenarios available; all were used." };
+        var subsets = Combinations(scenarios, scenariosPerForm).OrderBy(_ => rng.Next()).ToList();
+        AssemblyResult? redistributed = null;
+        foreach (var subset in subsets)
+        {
+            var set = subset.ToHashSet();
+            var r = Assemble(pool.Where(c => c.ScenarioId != null && set.Contains(c.ScenarioId)).ToList(), weights, total, rng);
+            if (!r.Ok) continue;
+            var exact = r.Target.All(kv => r.Actual[kv.Key] == kv.Value);
+            if (exact) return r with { Scenarios = subset.ToList() };
+            redistributed ??= r with { Scenarios = subset.ToList(), ScenarioNote = "Domain targets were redistributed within the chosen scenarios." };
+        }
+        if (redistributed is not null) return redistributed;
+        return Assemble(pool, weights, total, rng) with { ScenarioNote = $"No set of {scenariosPerForm} scenarios has enough items yet; the form uses all scenarios." };
+    }
+
+    private static IEnumerable<IReadOnlyList<string>> Combinations(IReadOnlyList<string> items, int k)
+    {
+        if (k == 0) { yield return Array.Empty<string>(); yield break; }
+        for (var i = 0; i <= items.Count - k; i++)
+            foreach (var rest in Combinations(items.Skip(i + 1).ToList(), k - 1))
+                yield return new[] { items[i] }.Concat(rest).ToList();
     }
 
     /// <summary>Random order, but items sharing a scenario stay contiguous in a stable order (by external id).</summary>

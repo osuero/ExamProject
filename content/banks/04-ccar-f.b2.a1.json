@@ -1,0 +1,1468 @@
+{
+  "schemaVersion": "1.0",
+  "examCode": "CCAR-F",
+  "cases": [],
+  "questions": [
+    {
+      "id": "CCAR-F-B2-A1-001",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A1",
+      "objective": "1.1 Design and implement agentic loops for autonomous task execution",
+      "scenarioId": "ARCH-CASE-05",
+      "questionType": "multiple_response",
+      "selectCount": 2,
+      "stem": "The review pipeline runs each pull request through the Agent SDK with maxTurns set to 6, the number of turns a typical review takes. On large pull requests the loop stops early, and the pipeline then posts the last assistant text, such as \"Next I will check the migration files\", as a review with no findings. Reports must distinguish findings from execution failures. Which TWO changes should the team make?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Read the subtype of the ResultMessage, publish only a success result, and report error_max_turns as a failed review run.",
+          "rationale": "Correct. The ResultMessage subtype is the documented way to tell a finished run (success) from one that hit a limit; error_max_turns has no result text and must not be published as a clean review."
+        },
+        {
+          "id": "B",
+          "text": "Instruct Claude to end every finished review with the line REVIEW COMPLETE, and publish a report only when that line is present.",
+          "rationale": "Parsing a phrase in the model's text is a fragile completion signal; the SDK already reports how the loop ended through the result subtype."
+        },
+        {
+          "id": "C",
+          "text": "Keep maxTurns at 6, and when the last text does not look like a final report, start a new run of the review with a shorter prompt.",
+          "rationale": "Judging completion from how the text looks is a heuristic, and keeping the cap as the expected stopping point leaves large reviews truncated."
+        },
+        {
+          "id": "D",
+          "text": "Let the loop end when Claude replies without tool calls, keeping a generous maxTurns or maxBudgetUsd only as a safety limit.",
+          "rationale": "Correct. The loop is meant to finish when Claude produces a response with no tool calls; turn and budget caps are backstops against runaway sessions, not the primary stop."
+        },
+        {
+          "id": "E",
+          "text": "Lower the effort setting so that each turn does less reasoning and the review fits within the existing six-turn limit.",
+          "rationale": "maxTurns counts tool-use turns, not reasoning depth; lower effort does not reduce the number of files a large review must inspect and may lower review quality."
+        }
+      ],
+      "correctOptionIds": [
+        "A",
+        "D"
+      ],
+      "explanation": "In the Agent SDK the loop ends when Claude responds without tool calls; maxTurns and maxBudgetUsd are safety caps that end the run with error_max_turns or error_max_budget_usd. Check the ResultMessage subtype before using the result field, which exists only on success. A capped run can be resumed by session ID with a higher limit.",
+      "points": 1,
+      "difficulty": "advanced",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T178"
+      ],
+      "sourceCheckedAt": "2026-10-05",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-B2-A1-001",
+      "tags": [
+        "agentic-loop",
+        "max-turns",
+        "result-subtype",
+        "execution-failure"
+      ]
+    },
+    {
+      "id": "CCAR-F-B2-A1-002",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A1",
+      "objective": "1.1 Design and implement agentic loops for autonomous task execution",
+      "scenarioId": "ARCH-CASE-01",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "To reduce tokens, the support agent's custom Messages API loop builds each request from the system prompt, the customer's first message, the latest assistant tool_use turn, and its tool_result. Earlier tool results are dropped. Logs show Claude calling get_customer again after lookup_order returns, and one refund cited an amount from the wrong order. What should the loop do instead?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Keep only the latest tool exchange, but have the application write the dropped results into the system prompt as a short running summary.",
+          "rationale": "An application-written summary is lossy and moves tool data out of the conversation structure Claude reasons over; details such as amounts per order can still be lost."
+        },
+        {
+          "id": "B",
+          "text": "Cache every tool result in the application, and return the cached result whenever Claude requests the same tool again with the same input.",
+          "rationale": "Caching treats the repeated calls but not the cause: Claude still cannot see earlier results when it reasons about which order and amount apply."
+        },
+        {
+          "id": "C",
+          "text": "Send the full history each time: prior messages, each assistant response unchanged, and a user message with its tool_result blocks.",
+          "rationale": "Correct. Each iteration sends the original messages, the assistant's response, and the tool results, so Claude can reason over everything it has learned so far."
+        },
+        {
+          "id": "D",
+          "text": "Keep only the latest tool exchange, and raise max_tokens so that Claude can restate the earlier results in its own response text.",
+          "rationale": "max_tokens limits output length; asking Claude to restate data it can no longer see does not restore the dropped results."
+        }
+      ],
+      "correctOptionIds": [
+        "C"
+      ],
+      "explanation": "In a client-side agentic loop, each request carries the original messages, the assistant's response (including its tool_use blocks), and a user message with the matching tool_result blocks, so tool results accumulate in context. Use prompt caching or context-management features to control cost rather than silently dropping results the model still needs.",
+      "points": 1,
+      "difficulty": "foundational",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T03",
+        "T175"
+      ],
+      "sourceCheckedAt": "2026-10-05",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-B2-A1-002",
+      "tags": [
+        "agentic-loop",
+        "conversation-history",
+        "tool-result"
+      ]
+    },
+    {
+      "id": "CCAR-F-B2-A1-003",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A1",
+      "objective": "1.1 Design and implement agentic loops for autonomous task execution",
+      "scenarioId": "ARCH-CASE-04",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "The internal assistant answers developer questions with a fixed sequence in application code: call get_ticket, call search_policies with the ticket's category, then ask Claude to draft an answer from both results. When a ticket links to a parent incident or carries the wrong category, the answer misses the relevant policy, because Claude never gets to request another lookup. What design change addresses this?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Run the tools in a loop where Claude sees each result and chooses the next call, continuing while stop_reason is tool_use.",
+          "rationale": "Correct. A model-driven loop lets Claude follow a linked incident or refine the policy query based on what each result reveals, which a fixed sequence cannot anticipate."
+        },
+        {
+          "id": "B",
+          "text": "Add more branches to the application sequence, such as fetching the parent ticket whenever a linked-ticket field is present.",
+          "rationale": "This patches one case but keeps a pre-configured decision tree; the next unanticipated situation, such as a wrong category, still has no follow-up path."
+        },
+        {
+          "id": "C",
+          "text": "Call get_ticket and search_policies for every category in parallel, and pass all of the results to Claude for the drafting step.",
+          "rationale": "Fetching everything up front floods the context with irrelevant policies and still gives Claude no way to request a follow-up lookup it needs."
+        },
+        {
+          "id": "D",
+          "text": "Train a classifier that predicts the right policy category from the ticket text, and pass its prediction to search_policies.",
+          "rationale": "A better category guess still runs inside the same fixed sequence; it does not let the assistant investigate linked tickets or adjust after seeing results."
+        }
+      ],
+      "correctOptionIds": [
+        "A"
+      ],
+      "explanation": "Model-driven loops let Claude decide the next tool call from accumulated results, which suits tasks whose steps depend on what is found. Fixed sequences work when the path is predictable; here the needed lookups vary per ticket. Keep deterministic controls (permissions, hooks) for rules that must never be violated.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T03",
+        "T01"
+      ],
+      "sourceCheckedAt": "2026-10-05",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-B2-A1-003",
+      "tags": [
+        "agentic-loop",
+        "model-driven",
+        "decision-tree"
+      ]
+    },
+    {
+      "id": "CCAR-F-B2-A1-004",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A1",
+      "objective": "1.1 Design and implement agentic loops for autonomous task execution",
+      "scenarioId": "ARCH-CASE-01",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "The support application closes the customer's case whenever its agent loop ends with stop_reason end_turn. Some cases are closed while Claude is still waiting for an answer, for example after it asks the customer which of two orders they mean. The team wants case closure to reflect what Claude decided, without guessing from its wording. Which design fits?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Close the case only when the final text contains no question mark, and otherwise keep the case open until the customer replies.",
+          "rationale": "This infers a decision by parsing free text; a resolved reply can contain a question and an open one may not."
+        },
+        {
+          "id": "B",
+          "text": "Keep each case open for 24 hours after an end_turn, then close it automatically if the customer has not written again.",
+          "rationale": "A timer does not reflect whether Claude resolved the case; resolved cases stay open and abandoned questions are closed as if resolved."
+        },
+        {
+          "id": "C",
+          "text": "Ask Claude to begin every final answer with RESOLVED or PENDING, and close the case when the first word is RESOLVED.",
+          "rationale": "A text marker is still parsing natural language to recover a decision; a missing or misplaced marker misclassifies the case."
+        },
+        {
+          "id": "D",
+          "text": "Add a close_case tool that Claude calls when the case is resolved, and treat end_turn as waiting for the customer's next message.",
+          "rationale": "Correct. end_turn only means Claude finished its turn; an explicit tool call carries the business decision in structured form, and the next customer message is appended to the same history."
+        }
+      ],
+      "correctOptionIds": [
+        "D"
+      ],
+      "explanation": "stop_reason end_turn ends a loop iteration, not necessarily the business process. When an application needs a decision from the model, such as closing a case, that decision belongs in a tool call rather than in text the application must parse.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T03",
+        "T04"
+      ],
+      "sourceCheckedAt": "2026-10-05",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-B2-A1-004",
+      "tags": [
+        "agentic-loop",
+        "stop-reason",
+        "termination",
+        "structured-decision"
+      ]
+    },
+    {
+      "id": "CCAR-F-B2-A1-005",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A1",
+      "objective": "1.2 Orchestrate multi-agent systems with coordinator-subagent patterns",
+      "scenarioId": "ARCH-CASE-03",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "The coordinator sends the same brief, \"research battery recycling regulations\", to three web-search specialists. Their results overlap by about 60%, and none of them covers Asian jurisdictions in depth. The coordinator must keep explicit task boundaries. What should change?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Have the synthesis specialist remove duplicate sources after all three searches finish, and flag any region left without coverage.",
+          "rationale": "Deduplicating afterwards wastes the duplicated searches and only reports the gap instead of assigning anyone to cover it."
+        },
+        {
+          "id": "B",
+          "text": "Give the three specialists a shared list of visited URLs, so that each one skips the pages another specialist has already read.",
+          "rationale": "Skipping visited pages reduces exact duplicates but still leaves scope undefined, so coverage gaps such as Asian jurisdictions remain."
+        },
+        {
+          "id": "C",
+          "text": "Assign each specialist a distinct partition, such as one region or source type, with its objective, boundaries, and output format.",
+          "rationale": "Correct. Partitioning scope with clear boundaries prevents redundant searches and makes coverage explicit, which addresses both the overlap and the gap."
+        },
+        {
+          "id": "D",
+          "text": "Replace the three specialists with one specialist that runs three times as many searches, so that one agent tracks its coverage.",
+          "rationale": "This removes duplication by giving up parallelism and context isolation, and a single vague brief can still leave regions uncovered."
+        }
+      ],
+      "correctOptionIds": [
+        "C"
+      ],
+      "explanation": "Vague, identical briefs lead subagents to duplicate work and leave gaps. The coordinator should partition the scope (by subtopic, region or source type) and give each subagent an objective, output format, source guidance and clear boundaries.",
+      "points": 1,
+      "difficulty": "foundational",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T110"
+      ],
+      "sourceCheckedAt": "2026-10-05",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-B2-A1-005",
+      "tags": [
+        "coordinator",
+        "scope-partitioning",
+        "duplication"
+      ]
+    },
+    {
+      "id": "CCAR-F-B2-A1-006",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A1",
+      "objective": "1.2 Orchestrate multi-agent systems with coordinator-subagent patterns",
+      "scenarioId": "ARCH-CASE-04",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "The assistant's coordinator can delegate to ticket-search and policy-search subagents. For one-line questions such as \"what is the status of ticket 4411?\" it often spawns five or more subagents, which adds cost and latency. For cross-team audits that span many tickets and policies, broad delegation works well. What is the best first change?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Set CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS to 2, so that no question can run more than two subagents at the same time.",
+          "rationale": "A hard concurrency cap limits every query, including the audits that benefit from broad delegation, and does not teach the coordinator to answer simple questions directly."
+        },
+        {
+          "id": "B",
+          "text": "Add effort-scaling guidance to the coordinator prompt: answer simple lookups directly and match subagent count to the question's scope.",
+          "rationale": "Correct. Coordinators judge effort poorly without guidance; explicit scaling rules in the prompt keep simple lookups cheap while preserving broad delegation for complex audits."
+        },
+        {
+          "id": "C",
+          "text": "Set maxBudgetUsd low enough that any query spawning too many subagents is stopped before it becomes expensive.",
+          "rationale": "A low budget ends expensive queries with an error, which would cut off the legitimate audits rather than right-size simple questions."
+        },
+        {
+          "id": "D",
+          "text": "Remove the ticket-search subagent, so that the coordinator handles all ticket queries itself and delegates only the policy questions to subagents.",
+          "rationale": "This helps simple ticket lookups but removes parallel ticket research from large audits, trading one problem for another."
+        }
+      ],
+      "correctOptionIds": [
+        "B"
+      ],
+      "explanation": "A coordinator should scale delegation to query complexity: a simple fact lookup needs one agent and a few tool calls, while broad research justifies many subagents. Embedding explicit scaling guidance in the coordinator prompt is the proportionate first step; hard caps remain useful as safety limits.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T110",
+        "T170"
+      ],
+      "sourceCheckedAt": "2026-10-05",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-B2-A1-006",
+      "tags": [
+        "coordinator",
+        "effort-scaling",
+        "dynamic-delegation"
+      ]
+    },
+    {
+      "id": "CCAR-F-B2-A1-007",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A1",
+      "objective": "1.2 Orchestrate multi-agent systems with coordinator-subagent patterns",
+      "scenarioId": "ARCH-CASE-03",
+      "questionType": "multiple_response",
+      "selectCount": 2,
+      "stem": "Each research specialist returns its full working transcript, including fetched page text, to the coordinator, often 30,000 tokens or more per specialist. Midway through the session, the coordinator loses track of which sources support which claims and which disagreements are still open. Which TWO changes best address this while keeping communication routed through the coordinator?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Have the specialists send their transcripts directly to the synthesis specialist, so that the coordinator receives only the final draft.",
+          "rationale": "This bypasses the coordinator, losing observability and control over information flow, and the synthesis specialist inherits the same overload."
+        },
+        {
+          "id": "B",
+          "text": "Keep the full transcripts, but cut each specialist's return to its first 2,000 tokens before the coordinator reads it.",
+          "rationale": "Arbitrary truncation drops whatever comes later, including sources and conflicts, instead of selecting what matters."
+        },
+        {
+          "id": "C",
+          "text": "Have each specialist return condensed findings: each claim with its source metadata, plus the conflicts and gaps it found.",
+          "rationale": "Correct. Subagents should compress their exploration into the most important content, keeping claim-source links and open disagreements explicit for the coordinator."
+        },
+        {
+          "id": "D",
+          "text": "Switch the coordinator to a model with a larger context window, so that the complete transcripts from all specialists fit together.",
+          "rationale": "More room postpones the overflow but does not make claim-source links or open conflicts easier to track in tens of thousands of raw tokens."
+        },
+        {
+          "id": "E",
+          "text": "Store fetched documents in an artifact store and have specialists return references, so that details can be re-read when needed.",
+          "rationale": "Correct. Persisting large outputs outside the conversation and passing lightweight references avoids copying them through the coordinator's context while keeping them retrievable."
+        }
+      ],
+      "correctOptionIds": [
+        "C",
+        "E"
+      ],
+      "explanation": "Subagents run in their own context windows and should condense what they found before returning it, keeping claims tied to source metadata and conflicts explicit. Large raw material can be persisted as artifacts and referenced, so the coordinator's context holds decisions and pointers rather than transcripts.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T110",
+        "T170"
+      ],
+      "sourceCheckedAt": "2026-10-05",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-B2-A1-007",
+      "tags": [
+        "coordinator",
+        "subagent-output",
+        "context-isolation",
+        "attribution"
+      ]
+    },
+    {
+      "id": "CCAR-F-B2-A1-008",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A1",
+      "objective": "1.2 Orchestrate multi-agent systems with coordinator-subagent patterns",
+      "scenarioId": "ARCH-CASE-05",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "The review coordinator splits each pull request review into security, performance, and style subagents. The team's checklist has seven explicit review criteria, and audits show that two of them, migration backward compatibility and feature-flag cleanup, are never evaluated, although every subagent completes successfully. How should the coordinator decompose the review?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Add a general reviewer subagent instructed to catch anything that the security, performance, and style subagents might miss.",
+          "rationale": "An open-ended catch-all does not guarantee that the two specific criteria are evaluated, and its findings cannot be tied to explicit criteria."
+        },
+        {
+          "id": "B",
+          "text": "Have every subagent check all seven criteria, so that each criterion is covered three times and nothing can fall through.",
+          "rationale": "This guarantees coverage by tripling the work and diluting each reviewer's focus, instead of partitioning the criteria among them."
+        },
+        {
+          "id": "C",
+          "text": "Have the report step mark any criterion without findings as passed, so that every criterion appears in each report.",
+          "rationale": "This hides the gap: a criterion that was never evaluated would be reported as passed, mixing missing coverage with clean results."
+        },
+        {
+          "id": "D",
+          "text": "Map each of the seven criteria to a subagent assignment, and have the report list any criterion that was not evaluated.",
+          "rationale": "Correct. Deriving subtasks from the full criteria list prevents overly narrow decomposition, and reporting unevaluated criteria keeps coverage gaps visible."
+        }
+      ],
+      "correctOptionIds": [
+        "D"
+      ],
+      "explanation": "Incomplete coverage often comes from the coordinator's decomposition rather than from subagents, which faithfully execute what they are assigned. Decompose from the explicit criteria, assign each one without duplication, and surface any criterion that was not covered.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T110"
+      ],
+      "sourceCheckedAt": "2026-10-05",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-B2-A1-008",
+      "tags": [
+        "coordinator",
+        "task-decomposition",
+        "coverage",
+        "review-criteria"
+      ]
+    },
+    {
+      "id": "CCAR-F-B2-A1-009",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A1",
+      "objective": "1.3 Configure subagent invocation, context passing, and spawning",
+      "scenarioId": "ARCH-CASE-03",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "The coordinator's system prompt requires every claim to carry a source URL and an access date, and requires disagreements between sources to stay unresolved rather than merged. The specialists, defined as AgentDefinitions with their own prompts, return claims without access dates and sometimes merge conflicting figures. Why does this happen, and what is the fix?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Subagents do not receive the parent's system prompt; add the citation and conflict rules to each specialist's AgentDefinition prompt.",
+          "rationale": "Correct. A subagent's context holds its own AgentDefinition prompt and the Agent tool's prompt, not the parent's system prompt, so rules every specialist must follow belong in its definition."
+        },
+        {
+          "id": "B",
+          "text": "Specialists read the coordinator's rules but rank them below their own prompts; move the rules to the end of the coordinator's prompt.",
+          "rationale": "Specialists never see the coordinator's system prompt, so its position or emphasis there does not reach them."
+        },
+        {
+          "id": "C",
+          "text": "The specialists lack the coordinator's tools; give each one the coordinator's full tool list so that it can follow the citation rules.",
+          "rationale": "Tool access is unrelated to the missing instructions, and widening every specialist's tool set weakens role separation."
+        },
+        {
+          "id": "D",
+          "text": "Specialists inherit only the model from the parent; set each AgentDefinition's model to inherit so that the rules come along too.",
+          "rationale": "The model field selects which model runs the subagent; inherit reuses the main model but carries no instructions."
+        }
+      ],
+      "correctOptionIds": [
+        "A"
+      ],
+      "explanation": "A non-fork subagent starts with a fresh context containing its own system prompt (AgentDefinition prompt), the Agent tool's prompt, and project context such as CLAUDE.md when loaded, but not the parent's system prompt or history. Put stable role rules in the AgentDefinition and task-specific details in the delegation prompt.",
+      "points": 1,
+      "difficulty": "foundational",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T170"
+      ],
+      "sourceCheckedAt": "2026-10-05",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-B2-A1-009",
+      "tags": [
+        "subagents",
+        "agent-definition",
+        "context-inheritance"
+      ]
+    },
+    {
+      "id": "CCAR-F-B2-A1-010",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A1",
+      "objective": "1.3 Configure subagent invocation, context passing, and spawning",
+      "scenarioId": "ARCH-CASE-03",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "For a market study, the coordinator delegates four independent subtopics to specialists. Logs show it issues one Agent tool call per response and waits for each specialist's result before delegating the next subtopic, so the run takes the sum of all four research times. No subtopic depends on another. What should change?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Have each specialist delegate the next subtopic to another specialist when it finishes, so that the coordinator stays out of the chain.",
+          "rationale": "Chaining keeps the work sequential and moves routing away from the coordinator, losing observability and consistent error handling."
+        },
+        {
+          "id": "B",
+          "text": "Delegate all four subtopics to one general-purpose subagent, so that a single Agent call covers the work and the coordinator waits once.",
+          "rationale": "One subagent researches the subtopics one after another in a single context, so nothing runs in parallel and the context gets crowded."
+        },
+        {
+          "id": "C",
+          "text": "Lower each specialist's maxTurns, so that every specialist finishes sooner and the four sequential delegations complete faster.",
+          "rationale": "Cutting turns shortens research by truncating it, which lowers quality while the delegations remain sequential."
+        },
+        {
+          "id": "D",
+          "text": "Have the coordinator emit all four Agent tool calls in a single response, so that the four specialists run at the same time.",
+          "rationale": "Correct. Independent delegations issued together in one response run concurrently, so the run takes about as long as the slowest specialist."
+        }
+      ],
+      "correctOptionIds": [
+        "D"
+      ],
+      "explanation": "Claude can emit several tool calls in one response, and subagents spawned together run concurrently; independent subtasks then finish in the time of the slowest one. Prompt the coordinator to delegate independent work in parallel and reserve sequential delegation for real dependencies.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T170",
+        "T110",
+        "T112"
+      ],
+      "sourceCheckedAt": "2026-10-05",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-B2-A1-010",
+      "tags": [
+        "subagents",
+        "parallel-spawning",
+        "latency"
+      ]
+    },
+    {
+      "id": "CCAR-F-B2-A1-011",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A1",
+      "objective": "1.3 Configure subagent invocation, context passing, and spawning",
+      "scenarioId": "ARCH-CASE-04",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "The assistant defines a policy-reader subagent with the description \"Policy helper\" and a detailed system prompt on how to quote policy clauses. When developers ask questions such as \"may I share this log file with a vendor?\", Claude rarely delegates to policy-reader and instead answers from ticket searches. What change most directly improves delegation?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Extend the subagent's system prompt with more guidance on policy interpretation, so that it gets better at answering such questions.",
+          "rationale": "The system prompt shapes behavior after the subagent is invoked; it does not help Claude decide when to invoke it."
+        },
+        {
+          "id": "B",
+          "text": "Override the subagent's model with a more capable one, so that the coordinator trusts its answers and routes more policy work to it.",
+          "rationale": "The model choice does not affect selection; Claude matches tasks to subagents by their descriptions."
+        },
+        {
+          "id": "C",
+          "text": "Rewrite the description to say when to use the subagent, such as questions about permitted data handling, and what it returns.",
+          "rationale": "Correct. Claude decides automatically when to invoke a subagent based on the task and its description, so a specific description directly improves matching."
+        },
+        {
+          "id": "D",
+          "text": "Give the subagent the ticket-search tools as well, so that it matches more of the questions that developers usually ask.",
+          "rationale": "Tool lists restrict what a subagent can do once running; they do not drive delegation and would blur its read-only policy role."
+        }
+      ],
+      "correctOptionIds": [
+        "C"
+      ],
+      "explanation": "In an AgentDefinition, description tells Claude when to use the subagent, prompt defines its behavior, and tools restricts its capabilities. Vague descriptions lead Claude to handle work itself; mentioning a subagent by name forces explicit invocation when needed.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T170"
+      ],
+      "sourceCheckedAt": "2026-10-05",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-B2-A1-011",
+      "tags": [
+        "subagents",
+        "agent-definition",
+        "description",
+        "delegation"
+      ]
+    },
+    {
+      "id": "CCAR-F-B2-A1-012",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A1",
+      "objective": "1.3 Configure subagent invocation, context passing, and spawning",
+      "scenarioId": "ARCH-CASE-05",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "The review coordinator spawns four reviewer subagents per pull request: style, documentation, security, and concurrency. All of them run on the session's most capable model, and review cost has tripled. Style and documentation checks are pattern-level, while security and concurrency findings need deep reasoning. What is the most targeted change?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Switch the whole session to a smaller model, and rely on the explicit criteria to keep security and concurrency reviews at the same quality.",
+          "rationale": "This lowers cost for every reviewer, including the two that need deep reasoning, putting the most important findings at risk."
+        },
+        {
+          "id": "B",
+          "text": "Set the model field in the style and documentation AgentDefinitions to a smaller alias such as haiku, and leave the other two unchanged.",
+          "rationale": "Correct. AgentDefinition accepts a per-subagent model override, so simple reviewers can run on a cheaper model while complex ones keep the stronger one."
+        },
+        {
+          "id": "C",
+          "text": "Merge the four reviewers into one subagent that applies all criteria, so that the pull request is read once instead of four times.",
+          "rationale": "A single reviewer for every criterion dilutes attention and gives up the specialized prompts and parallelism of separate reviewers."
+        },
+        {
+          "id": "D",
+          "text": "Lower maxTurns for all four reviewer subagents, so that each review stops sooner and uses fewer tokens on every pull request.",
+          "rationale": "Capping turns truncates reviews regardless of difficulty, risking incomplete security and concurrency analysis."
+        }
+      ],
+      "correctOptionIds": [
+        "B"
+      ],
+      "explanation": "Each AgentDefinition can override the model (and effort) for that subagent, letting the coordinator match capability and cost to each subtask. Omit the field or use inherit where the main model is needed.",
+      "points": 1,
+      "difficulty": "foundational",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T170"
+      ],
+      "sourceCheckedAt": "2026-10-05",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-B2-A1-012",
+      "tags": [
+        "subagents",
+        "agent-definition",
+        "model-selection",
+        "cost"
+      ]
+    },
+    {
+      "id": "CCAR-F-B2-A1-013",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A1",
+      "objective": "1.4 Implement multi-step workflows with enforcement and handoff patterns",
+      "scenarioId": "ARCH-CASE-01",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "A customer writes that they were charged twice for order A, that order B arrived damaged, and that they want the delivery address changed for open order C. The agent resolves the duplicate charge, replies, and ends its turn; the other two concerns are picked up only when the customer complains again. How should the workflow handle messages like this?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Escalate any message that raises more than one concern to a human agent, since multi-issue cases are too complex to automate.",
+          "rationale": "Escalating every multi-issue message sends routine, resolvable requests to humans and works against the first-contact resolution goal."
+        },
+        {
+          "id": "B",
+          "text": "Resolve the first concern, then ask the customer to open a separate request for each remaining concern so each is tracked on its own.",
+          "rationale": "Pushing work back to the customer delays resolution of concerns the agent could have handled in the same conversation."
+        },
+        {
+          "id": "C",
+          "text": "List the distinct concerns first, investigate each with its own lookups using the shared customer context, then send one combined reply.",
+          "rationale": "Correct. Decomposing the request into items, investigating them (in parallel where independent) with shared context, and synthesizing one reply resolves every concern."
+        },
+        {
+          "id": "D",
+          "text": "Start three separate agent sessions, one per concern, and let each session reply to the customer independently when it finishes.",
+          "rationale": "Separate sessions lose the shared customer context and send three uncoordinated replies, so related issues cannot be reconciled."
+        }
+      ],
+      "correctOptionIds": [
+        "C"
+      ],
+      "explanation": "Multi-concern requests should be decomposed into distinct items, investigated with shared context (independent lookups can run as parallel tool calls), and synthesized into a unified resolution. Escalate only the items that meet escalation criteria, such as refunds above the approval threshold.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T112",
+        "T03"
+      ],
+      "sourceCheckedAt": "2026-10-05",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-B2-A1-013",
+      "tags": [
+        "workflow",
+        "request-decomposition",
+        "parallel-tool-calls"
+      ]
+    },
+    {
+      "id": "CCAR-F-B2-A1-014",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A1",
+      "objective": "1.4 Implement multi-step workflows with enforcement and handoff patterns",
+      "scenarioId": "ARCH-CASE-01",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "A PreToolUse hook blocks process_refund unless get_customer has succeeded earlier in the session. In one incident, the caller was verified as customer 1182, then mentioned a relative's order number, and the agent refunded that order, which belongs to customer 2045. The hook allowed the call. What change closes this gap?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Have the hook compare the order's owner, as recorded by the application from lookup_order, with the verified customer ID.",
+          "rationale": "Correct. The prerequisite must check the relationship that matters, that the refunded order belongs to the verified customer, using state the application captured from tool results."
+        },
+        {
+          "id": "B",
+          "text": "Have the hook require that get_customer was called immediately before each process_refund call, with no tool calls in between.",
+          "rationale": "This checks ordering, not ownership; the agent could still refund an order belonging to someone other than the verified caller."
+        },
+        {
+          "id": "C",
+          "text": "Add a system prompt rule that refunds may only be issued for orders belonging to the customer who was verified at the start.",
+          "rationale": "A prompt rule is probabilistic, and the existing failure shows that financial actions need a deterministic check."
+        },
+        {
+          "id": "D",
+          "text": "Add a PostToolUse hook on process_refund that compares the order owner with the verified customer and flags mismatches for reversal.",
+          "rationale": "PostToolUse runs after the refund has been issued, so it detects the problem instead of preventing it."
+        }
+      ],
+      "correctOptionIds": [
+        "A"
+      ],
+      "explanation": "A programmatic prerequisite is only as strong as the condition it checks. Gate financial actions on application-recorded facts from tool results (verified customer ID, order owner), not merely on whether a tool was called, and deny with a reason the model can act on.",
+      "points": 1,
+      "difficulty": "advanced",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T171"
+      ],
+      "sourceCheckedAt": "2026-10-05",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-B2-A1-014",
+      "tags": [
+        "prerequisite-gate",
+        "pretooluse",
+        "identity-verification"
+      ]
+    },
+    {
+      "id": "CCAR-F-B2-A1-015",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A1",
+      "objective": "1.4 Implement multi-step workflows with enforcement and handoff patterns",
+      "scenarioId": "ARCH-CASE-02",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "services/billing/CLAUDE.md tells Claude to run make billing-verify before any commit that touches billing files. In about one session in twenty Claude commits without running it, and broken migrations reach review. The team wants a guarantee for billing commits only, configured in a file that is reviewed in version control. What should they add?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Restate the rule at the top of the root CLAUDE.md in capital letters, so that it loads in every session and not only in billing work.",
+          "rationale": "Stronger wording is still prompt guidance with a non-zero failure rate, and moving it to the root widens the scope beyond billing."
+        },
+        {
+          "id": "B",
+          "text": "A /billing-verify skill in .claude/skills that runs the check, so that developers can invoke it before asking Claude to commit.",
+          "rationale": "A skill must be invoked by someone; it makes the check convenient but does not block a commit when it is skipped."
+        },
+        {
+          "id": "C",
+          "text": "A PostToolUse hook on Bash that runs the check after each git commit and reverts the commit when the check fails.",
+          "rationale": "PostToolUse runs after the commit already exists; reverting afterwards is cleanup, not a prerequisite gate, and leaves room for the commit to be used first."
+        },
+        {
+          "id": "D",
+          "text": "A PreToolUse hook in .claude/settings.json that runs the check before git commits of billing files and exits 2 on failure.",
+          "rationale": "Correct. A PreToolUse hook blocks the tool call deterministically when it exits with code 2, its stderr tells Claude why, and .claude/settings.json is shared through version control."
+        }
+      ],
+      "correctOptionIds": [
+        "D"
+      ],
+      "explanation": "When an ordering rule must hold every time, enforce it programmatically: a PreToolUse hook can block the git commit until the prerequisite check passes. Scope the hook's logic to billing changes so other work is unaffected, and keep the CLAUDE.md note as guidance.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T13",
+        "T15"
+      ],
+      "sourceCheckedAt": "2026-10-05",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-B2-A1-015",
+      "tags": [
+        "prerequisite-gate",
+        "pretooluse",
+        "claude-code-hooks",
+        "monorepo"
+      ]
+    },
+    {
+      "id": "CCAR-F-B2-A1-016",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A1",
+      "objective": "1.4 Implement multi-step workflows with enforcement and handoff patterns",
+      "scenarioId": "ARCH-CASE-06",
+      "questionType": "multiple_response",
+      "selectCount": 2,
+      "stem": "The extraction agent's system prompt lists five rules, and audits show that each rule is followed in roughly 97% of runs. Records are consumed downstream as soon as submit_record writes them. Which TWO rules should be moved into programmatic enforcement rather than left to prompt instructions?",
+      "options": [
+        {
+          "id": "A",
+          "text": "When an invoice shows two dates, use the one labelled invoice date and record the other date in the notes field.",
+          "rationale": "This is an extraction judgment that benefits from instructions and examples; occasional misses are caught by validation rather than requiring a hard gate."
+        },
+        {
+          "id": "B",
+          "text": "Never call submit_record for a vendor whose lookup returned an on-hold status until the hold has been cleared.",
+          "rationale": "Correct. Records are consumed immediately, so a 3% violation rate reaches downstream systems; a pre-execution check can deny the call deterministically."
+        },
+        {
+          "id": "C",
+          "text": "Describe any ambiguity in the source document in one or two sentences in the notes field of the record.",
+          "rationale": "This is a style and content guideline; occasional deviations do not violate a business rule that needs a guarantee."
+        },
+        {
+          "id": "D",
+          "text": "Mask bank account numbers in every record before submit_record writes it to the shared downstream store.",
+          "rationale": "Correct. A data-protection rule needs a guarantee; a hook can inspect or rewrite the submit_record input before it executes."
+        },
+        {
+          "id": "E",
+          "text": "Call the lookup tool only for vendors that are not already in this run's cache, to keep lookup costs down.",
+          "rationale": "This is an efficiency preference; an extra lookup costs a little but does not create a compliance failure."
+        }
+      ],
+      "correctOptionIds": [
+        "B",
+        "D"
+      ],
+      "explanation": "Prompt instructions have a non-zero failure rate, which is acceptable for judgment and style but not for rules whose violation has immediate compliance or financial impact. Enforce those with hooks or prerequisite gates and keep the rest as guidance.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T171",
+        "T13"
+      ],
+      "sourceCheckedAt": "2026-10-05",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-B2-A1-016",
+      "tags": [
+        "programmatic-enforcement",
+        "prompt-guidance",
+        "compliance"
+      ]
+    },
+    {
+      "id": "CCAR-F-B2-A1-017",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A1",
+      "objective": "1.5 Apply Agent SDK hooks for tool call interception and data normalization",
+      "scenarioId": "ARCH-CASE-01",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "The support agent runs without a human in the session. A PreToolUse hook denies process_refund above the approval threshold and returns the reason \"Denied.\" Customers with large refunds are now told that the refund failed and that they should try again later, and no escalation is created. What is the best change?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Keep the deny, and make its reason state the threshold and tell Claude to call escalate_to_human with a structured case summary.",
+          "rationale": "Correct. For a deny, permissionDecisionReason is shown to Claude, so an actionable reason redirects the agent to the approval workflow instead of a dead end."
+        },
+        {
+          "id": "B",
+          "text": "Return ask instead of deny, so that refunds above the threshold wait for approval rather than being rejected outright.",
+          "rationale": "ask routes the decision to an approver inside the session, but this agent has no one in the session to answer; the approval path is the escalation queue."
+        },
+        {
+          "id": "C",
+          "text": "Replace the hook with a PostToolUse hook on process_refund that opens an escalation when an executed refund exceeds the threshold.",
+          "rationale": "PostToolUse fires after the refund has executed, so the threshold is no longer enforced before money moves."
+        },
+        {
+          "id": "D",
+          "text": "Remove the hook and describe the threshold and the escalation path in the system prompt, so that Claude escalates on its own.",
+          "rationale": "This trades a deterministic guarantee for probabilistic compliance on a financial rule."
+        }
+      ],
+      "correctOptionIds": [
+        "A"
+      ],
+      "explanation": "A PreToolUse deny blocks the call and its reason is returned to Claude, which typically tries a different approach. Write the reason so that it names the rule and the alternative workflow, here escalation with a handoff summary, so that enforcement and recovery work together.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T171",
+        "T13"
+      ],
+      "sourceCheckedAt": "2026-10-05",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-B2-A1-017",
+      "tags": [
+        "pretooluse",
+        "deny-reason",
+        "escalation",
+        "compliance"
+      ]
+    },
+    {
+      "id": "CCAR-F-B2-A1-018",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A1",
+      "objective": "1.5 Apply Agent SDK hooks for tool call interception and data normalization",
+      "scenarioId": "ARCH-CASE-06",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "The extraction service connects an MCP server under the key vendors in its Agent SDK mcpServers configuration. A PreToolUse hook registered with the matcher lookup_vendor should log every vendor lookup, but it never fires, although the logs show the lookup tool being called. What fixes the matcher?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Use the matcher mcp__vendors, the server prefix, so that the hook covers every tool the vendors server exposes.",
+          "rationale": "A matcher containing only letters, digits and underscores is compared as an exact string, so mcp__vendors matches no tool; a server-wide match needs mcp__vendors__.* instead."
+        },
+        {
+          "id": "B",
+          "text": "Rename the server key in mcpServers to lookup_vendor, so that the tool's full name and the existing matcher line up.",
+          "rationale": "The tool would then be named mcp__lookup_vendor__lookup_vendor, which still does not equal the exact matcher lookup_vendor."
+        },
+        {
+          "id": "C",
+          "text": "Use the matcher mcp__vendors__lookup_vendor, the full name the tool receives because it comes from the vendors server.",
+          "rationale": "Correct. MCP tools are named mcp__<server>__<tool>, where the server segment is the mcpServers key, and tool hooks match against that name."
+        },
+        {
+          "id": "D",
+          "text": "Register the same matcher under PermissionRequest instead, since calls to MCP tools pass through the permission flow first.",
+          "rationale": "PermissionRequest also matches on the tool name, so the same mismatch remains, and it fires only when a permission decision is needed."
+        }
+      ],
+      "correctOptionIds": [
+        "C"
+      ],
+      "explanation": "Tool-event matchers are tested against the tool name. MCP tools appear as mcp__<server>__<tool>; an exact-string matcher must use that full name, and a regular expression such as mcp__vendors__.* covers every tool from one server.",
+      "points": 1,
+      "difficulty": "foundational",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T171",
+        "T13"
+      ],
+      "sourceCheckedAt": "2026-10-05",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-B2-A1-018",
+      "tags": [
+        "hooks",
+        "matcher",
+        "mcp-tool-naming"
+      ]
+    },
+    {
+      "id": "CCAR-F-B2-A1-019",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A1",
+      "objective": "1.5 Apply Agent SDK hooks for tool call interception and data normalization",
+      "scenarioId": "ARCH-CASE-04",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "Contractors use a variant of the internal assistant. The ticketing MCP tool search_tickets accepts include_internal_notes, and the ticketing system records every fetch of internal notes as an access event, which contractors must never trigger. Claude occasionally sets the flag to true. The team wants the search to proceed in the same call with the flag forced off. Which hook design meets this?",
+      "options": [
+        {
+          "id": "A",
+          "text": "A PreToolUse hook on the search_tickets tool that returns updatedInput with include_internal_notes false and permissionDecision allow.",
+          "rationale": "Correct. updatedInput rewrites the arguments before execution, and pairing it with allow runs the corrected call without an extra turn."
+        },
+        {
+          "id": "B",
+          "text": "A PostToolUse hook on the search_tickets tool that strips internal notes from the result with updatedToolOutput before Claude sees it.",
+          "rationale": "The notes would already have been fetched, so the access event is recorded; PostToolUse can hide data from the model but cannot prevent the fetch."
+        },
+        {
+          "id": "C",
+          "text": "A PreToolUse hook on the search_tickets tool that returns deny with a reason whenever include_internal_notes is true in the call.",
+          "rationale": "Denying enforces the rule but the search does not proceed; Claude must retry in another turn, which the team wanted to avoid."
+        },
+        {
+          "id": "D",
+          "text": "A UserPromptSubmit hook that appends a reminder never to request internal notes to every prompt that a contractor submits.",
+          "rationale": "Adding context to prompts is still probabilistic guidance; Claude can continue to set the flag occasionally."
+        }
+      ],
+      "correctOptionIds": [
+        "A"
+      ],
+      "explanation": "PreToolUse hooks can block, allow or modify a call before it runs. Returning updatedInput (inside hookSpecificOutput, as a new object) with permissionDecision allow enforces a safe argument value deterministically while letting the call go ahead; PostToolUse transformations act only after execution.",
+      "points": 1,
+      "difficulty": "advanced",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T171"
+      ],
+      "sourceCheckedAt": "2026-10-05",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-B2-A1-019",
+      "tags": [
+        "pretooluse",
+        "updated-input",
+        "data-protection"
+      ]
+    },
+    {
+      "id": "CCAR-F-B2-A1-020",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A1",
+      "objective": "1.5 Apply Agent SDK hooks for tool call interception and data normalization",
+      "scenarioId": "ARCH-CASE-05",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "The CI review job runs claude -p with the project's hooks loaded. Each report must address criteria R1 to R6, with findings or with an explicit no-issues line per criterion. In some runs Claude stops after covering four criteria, and the report is incomplete. The team wants the same run to continue until every criterion is addressed. Which hook fits?",
+      "options": [
+        {
+          "id": "A",
+          "text": "A Stop hook that exits 0 and prints the missing criterion IDs to stderr, so that Claude sees them before the session ends.",
+          "rationale": "Stderr from a hook that exits 0 goes to the debug log only, so Claude never sees it and the run ends anyway."
+        },
+        {
+          "id": "B",
+          "text": "A Stop hook that checks last_assistant_message for each criterion ID and returns decision block with a reason naming the missing ones.",
+          "rationale": "Correct. A Stop hook returning decision block prevents Claude from stopping and gives the reason as the instruction to continue with the missing criteria."
+        },
+        {
+          "id": "C",
+          "text": "A UserPromptSubmit hook that adds the list of criteria R1 to R6 to the prompt, so that Claude keeps all six in mind during the review.",
+          "rationale": "Extra context improves the odds but does not check the finished report or keep the run going when criteria are missing."
+        },
+        {
+          "id": "D",
+          "text": "A SubagentStart hook that injects the criteria into every subagent that the review agent spawns while it works through the diff.",
+          "rationale": "This only affects subagents, if any are spawned, and does not stop the main agent from finishing with an incomplete report."
+        }
+      ],
+      "correctOptionIds": [
+        "B"
+      ],
+      "explanation": "Stop hooks run when the main agent finishes responding; returning decision block with a reason (or exiting 2) keeps the conversation going. Guard against endless loops by checking stop_hook_active, and note that Claude Code caps consecutive stop-hook continuations.",
+      "points": 1,
+      "difficulty": "advanced",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T13"
+      ],
+      "sourceCheckedAt": "2026-10-05",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-B2-A1-020",
+      "tags": [
+        "hooks",
+        "stop-hook",
+        "completion-check",
+        "ci-review"
+      ]
+    },
+    {
+      "id": "CCAR-F-B2-A1-021",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A1",
+      "objective": "1.6 Design task decomposition strategies for complex workflows",
+      "scenarioId": "ARCH-CASE-06",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "A single prompt currently classifies each document, extracts its fields, converts currencies, and checks totals. When output is wrong, the team cannot tell which step failed, and misclassified contracts are extracted with the invoice schema. The steps are the same for every document. Which decomposition fits?",
+      "options": [
+        {
+          "id": "A",
+          "text": "An orchestrator agent that plans a fresh sequence of steps for each document, based on what it notices while reading it.",
+          "rationale": "Dynamic planning suits tasks whose subtasks cannot be predicted; here the steps are fixed, so it adds cost and variability without benefit."
+        },
+        {
+          "id": "B",
+          "text": "Keep the single prompt, and add several worked examples of each document type so that the model misclassifies fewer documents.",
+          "rationale": "Examples may improve accuracy, but the combined prompt still hides which step failed and lets a wrong class flow into extraction."
+        },
+        {
+          "id": "C",
+          "text": "Run the single prompt three times per document and keep the majority answer for each field, so that random errors cancel out.",
+          "rationale": "Voting can reduce random errors but does not localize failures or stop a systematic misclassification from choosing the wrong schema."
+        },
+        {
+          "id": "D",
+          "text": "A prompt chain: classify, then type-specific extraction, then normalization, with programmatic checks between the steps.",
+          "rationale": "Correct. Prompt chaining fits fixed, separable steps; gates between steps catch a bad classification before extraction and show where errors arise."
+        }
+      ],
+      "correctOptionIds": [
+        "D"
+      ],
+      "explanation": "Prompt chaining breaks a predictable task into sequential calls, each processing the previous output, with programmatic gates on intermediate results. It trades some latency for accuracy and debuggability; reserve dynamic decomposition for open-ended work.",
+      "points": 1,
+      "difficulty": "foundational",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T01"
+      ],
+      "sourceCheckedAt": "2026-10-05",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-B2-A1-021",
+      "tags": [
+        "task-decomposition",
+        "prompt-chaining",
+        "gates"
+      ]
+    },
+    {
+      "id": "CCAR-F-B2-A1-022",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A1",
+      "objective": "1.6 Design task decomposition strategies for complex workflows",
+      "scenarioId": "ARCH-CASE-03",
+      "questionType": "multiple_response",
+      "selectCount": 2,
+      "stem": "The research system runs several kinds of jobs. Which TWO of them are best served by a fixed sequence of steps defined in advance, rather than by a decomposition that the coordinator adapts as findings come in?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Identifying emerging risks in a market the team has not studied before, where the relevant sources are not yet known.",
+          "rationale": "The subtasks depend on what early searches reveal, so an adaptive investigation plan fits better."
+        },
+        {
+          "id": "B",
+          "text": "A monthly refresh of the same six metrics for a fixed list of competitors, drawn from the same set of filings.",
+          "rationale": "Correct. The inputs, sources and steps are known in advance and repeat every month, which suits a fixed pipeline."
+        },
+        {
+          "id": "C",
+          "text": "Tracing why two credible sources report different figures for the same quantity, and resolving it if possible.",
+          "rationale": "Each step depends on what the previous one finds, such as differing definitions or dates, so the plan must adapt."
+        },
+        {
+          "id": "D",
+          "text": "Mapping which regulators oversee a new product category when the relevant jurisdictions are still unclear.",
+          "rationale": "The scope emerges during the work, so subtasks must be generated from intermediate findings."
+        },
+        {
+          "id": "E",
+          "text": "Fact-checking a finished draft: extract each claim, check it against its cited source, then compile a results table.",
+          "rationale": "Correct. The steps are predictable and identical for every claim, so prompt chaining gives consistent, checkable results."
+        }
+      ],
+      "correctOptionIds": [
+        "B",
+        "E"
+      ],
+      "explanation": "Use fixed sequential pipelines when the steps are known and repeatable, and dynamic, adaptive decomposition when subtasks depend on what is discovered. Mixed systems are common: a fixed pipeline can still call an adaptive step where needed.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T01"
+      ],
+      "sourceCheckedAt": "2026-10-05",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-B2-A1-022",
+      "tags": [
+        "task-decomposition",
+        "prompt-chaining",
+        "adaptive-decomposition"
+      ]
+    },
+    {
+      "id": "CCAR-F-B2-A1-023",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A1",
+      "objective": "1.6 Design task decomposition strategies for complex workflows",
+      "scenarioId": "ARCH-CASE-05",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "For a 25-file pull request, the pipeline runs a per-file pass for local criteria and then a cross-file integration pass. The integration pass receives the full diff of all 25 files again, and it still misses that a changed function signature in one file breaks two callers in other files. What should the integration pass receive?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Only the per-file findings lists, so that it combines the local results without reading the diff a second time.",
+          "rationale": "A file with no local findings can still change a contract that other files rely on, so findings alone miss interface changes."
+        },
+        {
+          "id": "B",
+          "text": "A structured summary from each per-file pass: changed interfaces and signatures, new assumptions, and cross-file references.",
+          "rationale": "Correct. Passing focused, structured outputs from the local passes lets the integration pass concentrate on how the changes interact, with files re-read only where needed."
+        },
+        {
+          "id": "C",
+          "text": "The full diff as before, but with the integration pass run before the per-file passes so that it reads the diff with full attention.",
+          "rationale": "Order does not change the problem: one pass over the whole diff still dilutes attention across 25 files."
+        },
+        {
+          "id": "D",
+          "text": "The full diff split into five batches of five files, each checked for cross-file issues within its own batch only.",
+          "rationale": "Batching misses interactions across batches, such as callers of the changed function that sit in another batch."
+        }
+      ],
+      "correctOptionIds": [
+        "B"
+      ],
+      "explanation": "Splitting a large review into per-file passes plus an integration pass avoids attention dilution only if each step receives the right input. In a prompt chain, design intermediate outputs so that the next step gets the information it needs, here interface changes and cross-file dependencies.",
+      "points": 1,
+      "difficulty": "advanced",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T01"
+      ],
+      "sourceCheckedAt": "2026-10-05",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-B2-A1-023",
+      "tags": [
+        "task-decomposition",
+        "prompt-chaining",
+        "code-review",
+        "attention-dilution"
+      ]
+    },
+    {
+      "id": "CCAR-F-B2-A1-024",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A1",
+      "objective": "1.7 Manage session state, resumption, and forking",
+      "scenarioId": "ARCH-CASE-02",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "Two weeks ago a developer ran a long Claude Code session named billing-tax that mapped how tax is computed in the billing service. Since then, a refactor has rewritten or moved 30 of the 34 files that the session read. The developer wants to continue the analysis. What is the most reliable way to proceed?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Resume billing-tax and list all 30 changed files, asking Claude to re-read each of them before it continues the analysis.",
+          "rationale": "Targeted re-reads suit a few changed files; with almost everything changed, the resumed context is dominated by stale results that conflict with the new reads."
+        },
+        {
+          "id": "B",
+          "text": "Resume billing-tax with --fork-session, so that the new branch keeps the old conclusions but reads the current versions of the files.",
+          "rationale": "--fork-session only creates a new session ID with a copy of the history; the stale tool results come along unchanged."
+        },
+        {
+          "id": "C",
+          "text": "Start a new session with a structured summary of the still-valid conclusions and open questions, and let Claude re-explore the code.",
+          "rationale": "Correct. When most prior tool results are stale, a fresh session seeded with a curated summary is more reliable than resuming outdated context."
+        },
+        {
+          "id": "D",
+          "text": "Resume billing-tax and run /compact first, so that the outdated tool results are replaced by a summary before the work continues.",
+          "rationale": "Compaction summarizes the stale history itself, so outdated conclusions survive in the summary without being marked as invalid."
+        }
+      ],
+      "correctOptionIds": [
+        "C"
+      ],
+      "explanation": "Resume when prior context is mostly valid, and tell Claude which files changed. When most tool results are stale, start fresh with an injected structured summary of decisions and open questions so Claude rebuilds its view from the current code.",
+      "points": 1,
+      "difficulty": "intermediate",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T179",
+        "T176"
+      ],
+      "sourceCheckedAt": "2026-10-05",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-B2-A1-024",
+      "tags": [
+        "sessions",
+        "resume",
+        "stale-context",
+        "structured-summary"
+      ]
+    },
+    {
+      "id": "CCAR-F-B2-A1-025",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A1",
+      "objective": "1.7 Manage session state, resumption, and forking",
+      "scenarioId": "ARCH-CASE-02",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "On Monday a developer spent two hours in Claude Code investigating invoice rounding from the repository root, then started a short session in the same directory to fix a CSS issue in the web application. On Tuesday, claude --continue opened the CSS session. How should the developer return to the rounding investigation, now and in future?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Run claude --continue --fork-session, so that Claude Code opens a copy of the earlier session instead of the latest one.",
+          "rationale": "--continue still selects the most recent conversation in the directory; --fork-session only gives that session a new ID."
+        },
+        {
+          "id": "B",
+          "text": "Open it from the claude --resume picker, name it with /rename, and return to named sessions with claude --resume <name>.",
+          "rationale": "Correct. --continue picks the most recent session; naming sessions (with --name or /rename) lets the developer resume a specific one by name."
+        },
+        {
+          "id": "C",
+          "text": "Run claude --continue from the services/billing directory, so that Claude Code selects the session that worked on billing files.",
+          "rationale": "Sessions are grouped by the directory they ran in, not by the files they touched; the rounding session belongs to the repository root."
+        },
+        {
+          "id": "D",
+          "text": "Record the investigation's findings in the root CLAUDE.md, so that any new session in the repository starts with that context.",
+          "rationale": "This loses most of the session context and adds personal, temporary notes to a shared, reviewed file loaded in every session."
+        }
+      ],
+      "correctOptionIds": [
+        "B"
+      ],
+      "explanation": "claude --continue loads the most recent conversation in the current directory, while claude --resume takes a session ID or name, or opens a picker. Name long-running investigations so that they can be resumed directly across work sessions.",
+      "points": 1,
+      "difficulty": "foundational",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T176",
+        "T179"
+      ],
+      "sourceCheckedAt": "2026-10-05",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-B2-A1-025",
+      "tags": [
+        "sessions",
+        "resume",
+        "named-sessions"
+      ]
+    },
+    {
+      "id": "CCAR-F-B2-A1-026",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A1",
+      "objective": "1.7 Manage session state, resumption, and forking",
+      "scenarioId": "ARCH-CASE-06",
+      "questionType": "multiple_response",
+      "selectCount": 2,
+      "stem": "Extraction jobs run on the Agent SDK in short-lived containers. When a job fails midway, a retry is scheduled on whichever container is free and passes the saved session ID as resume, but the retries fail because the session cannot be found. Which TWO approaches make the retries work?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Attach a SessionStore adapter that mirrors transcripts to shared storage, and resume from a cwd that matches the original run.",
+          "rationale": "Correct. A session store lets another host resume a session; its lookup key derives from the working directory, so the cwd must match."
+        },
+        {
+          "id": "B",
+          "text": "Use continue instead of resume on the retry container, so that the SDK picks up the most recent session without needing the ID.",
+          "rationale": "continue looks for the most recent session on the local disk, which the new container does not have."
+        },
+        {
+          "id": "C",
+          "text": "Save the job's intermediate results as application state, and pass them into a fresh session's prompt when retrying.",
+          "rationale": "Correct. Capturing the needed results and starting a fresh session avoids depending on transcript files and is often the more robust option."
+        },
+        {
+          "id": "D",
+          "text": "Set forkSession to true on the retry, so that the SDK creates a copy of the original session on the new container.",
+          "rationale": "Forking copies an existing local session; it cannot copy a session that is not present on the machine."
+        },
+        {
+          "id": "E",
+          "text": "Set persistSession to false on the first run, so that the session stays in memory and can be shared with other containers.",
+          "rationale": "With persistSession false the session exists only in memory for that call, so nothing is available to any later retry."
+        }
+      ],
+      "correctOptionIds": [
+        "A",
+        "C"
+      ],
+      "explanation": "Session files are local to the machine that created them. To resume elsewhere, mirror transcripts with a session store (or move the session file), or skip resume and pass captured application state into a new session.",
+      "points": 1,
+      "difficulty": "advanced",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T172"
+      ],
+      "sourceCheckedAt": "2026-10-05",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-B2-A1-026",
+      "tags": [
+        "sessions",
+        "resume",
+        "stateless-hosts",
+        "session-store"
+      ]
+    },
+    {
+      "id": "CCAR-F-B2-A1-027",
+      "version": 1,
+      "examCode": "CCAR-F",
+      "locale": "en",
+      "domainId": "A1",
+      "objective": "1.7 Manage session state, resumption, and forking",
+      "scenarioId": "ARCH-CASE-02",
+      "questionType": "single_choice",
+      "selectCount": 1,
+      "stem": "A platform engineer scripts Claude with the Agent SDK against the monorepo. After an analysis session of the billing ledger, she resumes it twice with forkSession to try two refactoring approaches at the same time, with both forks running in the same checkout. The resulting diffs mix edits from both approaches. What should she change?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Give each fork its own git worktree as its working directory, because forking branches the conversation, not the files.",
+          "rationale": "Correct. Forks share no conversation after the branch point, but file edits are real and visible to any session in the same directory, so each needs its own checkout."
+        },
+        {
+          "id": "B",
+          "text": "Fork once instead of twice, and resume the original session for the second approach, so that only one of the sessions is a fork.",
+          "rationale": "Whether a session is a fork or the original, both still edit the same working tree, so the edits keep colliding."
+        },
+        {
+          "id": "C",
+          "text": "Enable file checkpointing in both forks, so that each fork's edits stay invisible to the other fork until it is resumed.",
+          "rationale": "Checkpointing snapshots and reverts changes; it does not hide one session's edits from another session working in the same directory."
+        },
+        {
+          "id": "D",
+          "text": "Pass a different session ID to each fork, so that the SDK stores each fork's file changes in a separate session directory.",
+          "rationale": "Each fork already gets its own session ID; sessions store conversation history, not the files the agent edits."
+        }
+      ],
+      "correctOptionIds": [
+        "A"
+      ],
+      "explanation": "fork_session creates an independent conversation branch from a shared baseline, which suits comparing approaches. Sessions persist conversation history, not the filesystem, so parallel forks that edit files need isolated working directories such as git worktrees.",
+      "points": 1,
+      "difficulty": "advanced",
+      "difficultyBasis": "editorial_estimate_not_calibrated",
+      "sourceIds": [
+        "T172"
+      ],
+      "sourceCheckedAt": "2026-10-05",
+      "originality": "newly_authored_for_this_project_not_reproduced_exam_content",
+      "familyId": "CCAR-F-B2-A1-027",
+      "tags": [
+        "sessions",
+        "fork-session",
+        "worktrees"
+      ]
+    }
+  ],
+  "newSources": []
+}

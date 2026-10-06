@@ -60,5 +60,13 @@ General explanation.
 ```
 A record advances an item through every lifecycle step (each gate still applies) only if the latest version's content hash equals the reviewed hash, the verdict is `pass` and the blind answer matched the key. Evidence files are in `content/reviews/evidence/`.
 
-## PDF / DOCX
-Not implemented. The importer answers with a clear message. To add them, convert the document to the `BankFile` model in `ContentImporter.Parse` and keep a reference to the file, section and page analysed in `Provenance`.
+## Word (.docx) and PDF
+Write the bank with the same layout as the Markdown format, one element per paragraph (Word) or line (PDF):
+front matter (`---`, `examCode: …`, `---`), `## Case ID | Title`, `## Question ID`, metadata lines (`- domain: …`), stem,
+`### Options` with `- [x] B: text | rationale: …`, and `### Explanation`.
+Word bullets (•, –) become `- `, and the checkbox glyphs ☒/☑/✔ and ☐ become `[x]` and `[ ]`.
+
+- **Word**: only `word/document.xml` is read; DTDs are prohibited and uncompressed size and compression ratio are limited.
+- **PDF**: text is extracted page by page (PdfPig, Apache-2.0), at most 300 pages. Scanned PDFs without a text layer cannot be imported.
+- Each question records where it starts (`line N`, `paragraph N` or `page N`). The preview shows it and the stored version keeps it in `Provenance` (`at=…`).
+- Validation, duplicates, keys and all-or-nothing commit are identical to the other formats.

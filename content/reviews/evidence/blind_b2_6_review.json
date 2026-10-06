@@ -1,0 +1,663 @@
+[
+ {
+  "id": "CCAR-F-B2-A3-010",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Plan mode separates exploration from execution; planning is most useful when uncertain about approach or the change touches multiple files",
+    "url": "https://code.claude.com/docs/en/best-practices",
+    "supported": true
+   },
+   {
+    "claim": "Explore is a built-in read-only research subagent (cannot implement a design)",
+    "url": "https://code.claude.com/docs/en/sub-agents",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D1-014",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Use a different prompt for the first context window to write tests and create setup scripts; track tests in structured tests.json; later windows review progress.txt, tests.json and git logs",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "supported": true
+   },
+   {
+    "claim": "Guidance includes reminding Claude it is unacceptable to remove or edit tests",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Minor: the stem highlights test deletion, but option C does not include the documented 'do not remove or edit tests' instruction; still clearly the best option."
+  ],
+  "suggestedFix": "Optional: append to C '...and are told that removing or editing tests is unacceptable' (keep length parity with distractors)."
+ },
+ {
+  "id": "CCDV-F-B2-D7-006",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "MCP tools are named mcp__<server>__<tool>; matcher mcp__memory__.* matches every tool of a server",
+    "url": "https://code.claude.com/docs/en/hooks",
+    "supported": true
+   },
+   {
+    "claim": "The hook 'if' field uses permission-rule syntax for a single tool (Bash(...)) and cannot extend a Bash matcher to MCP tools",
+    "url": "https://code.claude.com/docs/en/hooks",
+    "supported": true
+   },
+   {
+    "claim": "PreToolUse hooks can deny a tool call before execution; PostToolUse runs after the call",
+    "url": "https://code.claude.com/docs/en/hooks",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A3-012",
+  "chosen": [
+   "B",
+   "E"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Skip planning for small, clear-scope changes such as fixing a typo, adding a log line or renaming a variable; plan when uncertain about the approach or changing multiple files",
+    "url": "https://code.claude.com/docs/en/best-practices",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A3-018",
+  "chosen": [
+   "C",
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "-p and SDK sessions never show the trust dialog; project hooks run and .mcp.json servers connect without asking",
+    "url": "https://code.claude.com/docs/en/permissions#what-runs-before-you-trust-a-folder",
+    "supported": true
+   },
+   {
+    "claim": "--setting-sources user makes Claude Code read neither project settings files nor .mcp.json",
+    "url": "https://code.claude.com/docs/en/permissions#what-runs-before-you-trust-a-folder",
+    "supported": true
+   },
+   {
+    "claim": "--bare skips auto-discovery of hooks, skills, commands, subagents, plugins, MCP servers, auto memory and CLAUDE.md",
+    "url": "https://code.claude.com/docs/en/headless",
+    "supported": true
+   },
+   {
+    "claim": "disableAllHooks in user settings alone is insufficient: project settings take precedence and can set it back to false",
+    "url": "https://code.claude.com/docs/en/hooks",
+    "supported": true
+   },
+   {
+    "claim": "In -p mode .mcp.json servers connect 'approved or not', so a committed enableAllProjectMcpServers:false does not stop them (and the PR can change it)",
+    "url": "https://code.claude.com/docs/en/permissions#what-runs-before-you-trust-a-folder",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A5-008",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "A subagent that is not a fork starts fresh and must gather context; only forks inherit the conversation",
+    "url": "https://code.claude.com/docs/en/sub-agents",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A3-002",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "User-level rules load before project rules; neither set overrides the other; on conflict Claude may follow either, so keep them consistent",
+    "url": "https://code.claude.com/docs/en/memory#user-level-rules",
+    "supported": true
+   },
+   {
+    "claim": "Rules without paths frontmatter load at launch",
+    "url": "https://code.claude.com/docs/en/memory",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A2-011",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "tool_choice any requires use of one of the provided tools without forcing a particular one",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools",
+    "supported": true
+   },
+   {
+    "claim": "Some models (Opus 5.5, Sonnet 5.5, Fable 5.1, Mythos 5.1) reject forced tool use; the stem correctly stipulates a model/config that supports it",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D1-004",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Early agents spawned 50 subagents for simple queries; agents struggle to judge effort, so scaling rules were embedded in prompts (simple fact-finding: 1 agent, 3-10 tool calls)",
+    "url": "https://www.anthropic.com/engineering/multi-agent-research-system",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A4-010",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "tool_choice {type: tool, name} forces a specific tool; Haiku 4.5 is not among the models that reject forced tool use",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools",
+    "supported": true
+   },
+   {
+    "claim": "Strict tool use / structured outputs supported on claude-haiku-4-5-20251001",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D2-019",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "TypeScript SDK maps 400 to BadRequestError; only connection errors, 408, 409, 429 and >=500 are retried by default (400 is not)",
+    "url": "https://platform.claude.com/docs/en/api/sdks/typescript",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A1-027",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Forking branches the conversation history, not the filesystem; a fork's file edits are visible to any session in the same directory",
+    "url": "https://code.claude.com/docs/en/agent-sdk/sessions",
+    "supported": true
+   },
+   {
+    "claim": "Docs say 'to branch and revert file changes, use file checkpointing' - checkpointing reverts, it does not isolate concurrent edits",
+    "url": "https://code.claude.com/docs/en/agent-sdk/sessions",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Minor: the sessions doc points to file checkpointing for branching file changes, which makes C look doc-endorsed; C's claim that edits stay 'invisible to the other fork' is false, so the key holds, but the item relies on candidates reading C's mechanism carefully. Worktree remedy (A) is reasonable but not stated on the SDK sessions page."
+  ],
+  "suggestedFix": "Optional: keep as is; if desired, sharpen C to say checkpointing 'isolates each fork's edits in its own copy of the files' so the false mechanism is explicit."
+ },
+ {
+  "id": "CCAR-F-B2-A5-007",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [
+   "Slight length cue: C (141 chars) is noticeably longer than the others (106-125). Not verifiable against a single official page (design-pattern item consistent with the exam guide's state-export/manifest recovery pattern)."
+  ],
+  "suggestedFix": "Optional: shorten C, e.g. 'Have each agent save its state to a known location after each step; on restart the coordinator loads a manifest and hands each agent its state.' or lengthen D."
+ },
+ {
+  "id": "CCAR-F-B2-A3-014",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Claude Code best practices recommend giving Claude tests/verification and having tests written first, then iterating on code to pass them",
+    "url": "https://code.claude.com/docs/en/best-practices",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A2-003",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "In a remote server's url and headers, certain credential variables (including NPM_TOKEN) read as empty; a :-default fallback is ignored",
+    "url": "https://code.claude.com/docs/en/mcp#credential-variables-that-read-as-empty",
+    "supported": true
+   },
+   {
+    "claim": "Remedy: copy the credential into a variable with your own name and reference that name; debug log line 'never expanded toward a remote server'",
+    "url": "https://code.claude.com/docs/en/mcp#credential-variables-that-read-as-empty",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A2-004",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Grep output_mode count returns match count per file followed by a total across all matching files; files_with_matches is the default",
+    "url": "https://code.claude.com/docs/en/tools-reference",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D5-007",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Models API returns max_input_tokens, max_tokens and a capabilities object (including thinking support)",
+    "url": "https://platform.claude.com/docs/en/api/models/list",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D2-026",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Structured outputs support type arrays like [\"string\",\"null\"] (union types) and guarantee required fields",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+    "supported": true
+   },
+   {
+    "claim": "minLength is not supported by the API schema subset; date format is supported but does not prevent invented dates",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D7-005",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Clients MUST consider tool annotations untrusted unless they come from trusted servers",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/server/tools",
+    "supported": true
+   },
+   {
+    "claim": "Annotations are returned in tool definitions (tools/list), not only after calls; they are not deprecated in favor of outputSchema",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/server/tools",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D2-027",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Checkpointing does not track files modified by Bash commands; Restore code reverts file changes made through Claude's edit tools",
+    "url": "https://code.claude.com/docs/en/checkpointing",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A1-025",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "--continue loads the most recent conversation in the current directory; --resume shows a picker or resumes by name; /rename names a session",
+    "url": "https://code.claude.com/docs/en/cli-reference",
+    "supported": true
+   },
+   {
+    "claim": "--fork-session only creates a new session ID when resuming",
+    "url": "https://code.claude.com/docs/en/cli-reference",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D2-028",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "strictKnownMarketplaces is managed-only, cannot be overridden; extraKnownMarketplaces registers marketplaces; set both in managed settings to restrict and pre-register",
+    "url": "https://code.claude.com/docs/en/settings-reference#strictknownmarketplaces",
+    "supported": true
+   },
+   {
+    "claim": "An empty strictKnownMarketplaces array blocks every source, including the official Anthropic marketplace",
+    "url": "https://code.claude.com/docs/en/settings-reference#strictknownmarketplaces",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D8-005",
+  "chosen": [
+   "A",
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Servers MUST validate the Origin header on all incoming connections to prevent DNS rebinding; when local SHOULD bind only to 127.0.0.1",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/basic/transports",
+    "supported": true
+   },
+   {
+    "claim": "Session IDs are optional (MAY); a server not receiving MCP-Protocol-Version should assume 2025-03-26 for backwards compatibility",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/basic/transports",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D2-022",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "GitHub doesn't trigger workflows on commits made with the default GITHUB_TOKEN; remove github_token so the action authenticates as the Claude GitHub App, or pass a custom app token",
+    "url": "https://code.claude.com/docs/en/github-actions",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Option A closely reproduces the docs' troubleshooting sentence; acceptable, but recognisable wording."
+  ],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D5-018",
+  "chosen": [
+   "A",
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Claude Sonnet 5.5 has thinking on by default; display defaults to omitted (empty thinking field)",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/thinking",
+    "supported": true
+   },
+   {
+    "claim": "Billing is the same regardless of display; thinking tokens billed as output tokens; usage.output_tokens is inclusive billing total and output_tokens_details.thinking_tokens gives the reasoning share",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking",
+    "supported": true
+   },
+   {
+    "claim": "max_tokens caps thinking plus response text combined",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D1-011",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "revise",
+  "verifiedFacts": [
+   {
+    "claim": "maxBudgetUsd caps spend; when hit, ResultMessage has subtype error_max_budget_usd; session_id is present on every result",
+    "url": "https://code.claude.com/docs/en/agent-sdk/agent-loop",
+    "supported": true
+   },
+   {
+    "claim": "maxBudgetUsd stops when the client-side cost estimate reaches the value; costs are estimates and the response that crosses the budget is included (can overshoot)",
+    "url": "https://code.claude.com/docs/en/agent-sdk/cost-tracking",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Stem says Finance requires a 'hard spending ceiling'; maxBudgetUsd is enforced on a client-side estimate and the crossing response still completes, so it is not a strict hard ceiling. The key remains the best option, but the premise overstates the guarantee."
+  ],
+  "suggestedFix": "Change 'a hard spending ceiling in US dollars for each task' to 'a per-task spending cap in US dollars'."
+ },
+ {
+  "id": "CCDV-F-B2-D2-004",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "MCP connector requires the server to be publicly exposed through HTTP; it is a beta feature",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-connector",
+    "supported": true
+   },
+   {
+    "claim": "MCP tunnels use outbound-only connections but are in research preview with no support or continuity commitment",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/overview",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A2-008",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Local scope is the default for claude mcp add",
+    "url": "https://code.claude.com/docs/en/mcp#local-scope",
+    "supported": true
+   },
+   {
+    "claim": "Precedence: local > project > user; the whole entry from the highest source is used, fields are not merged; remove with claude mcp remove <name> --scope <scope>",
+    "url": "https://code.claude.com/docs/en/mcp#scope-hierarchy-and-precedence",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D8-002",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Evaluation order hooks > deny > ask > mode > allow > canUseTool; a bare allowedTools entry auto-approves the whole tool before canUseTool; use a PreToolUse hook for checks that must run every call",
+    "url": "https://code.claude.com/docs/en/agent-sdk/permissions",
+    "supported": true
+   },
+   {
+    "claim": "Plan mode sends write tools to canUseTool; bypassPermissions shadows the callback",
+    "url": "https://code.claude.com/docs/en/agent-sdk/permissions",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A1-024",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Resume from summary runs /compact, keeping the summary plus up to five recently read files (stale conclusions persist)",
+    "url": "https://code.claude.com/docs/en/sessions",
+    "supported": true
+   },
+   {
+    "claim": "Capturing results as state and passing them into a fresh session's prompt is often more robust than relying on resume",
+    "url": "https://code.claude.com/docs/en/agent-sdk/sessions",
+    "supported": true
+   },
+   {
+    "claim": "--fork-session only creates a new session ID when resuming; it does not refresh file contents",
+    "url": "https://code.claude.com/docs/en/cli-reference",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A5-012",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [
+   "Design-principle item (provenance/version metadata in retrieved context); no single official page to verify, consistent with exam-guide guidance on preserving source metadata."
+  ],
+  "suggestedFix": ""
+ }
+]

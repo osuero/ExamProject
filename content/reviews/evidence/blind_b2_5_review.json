@@ -1,0 +1,605 @@
+[
+ {
+  "id": "CCAR-F-B2-A1-010",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Multiple subagents can run concurrently so independent subtasks finish in the time of the slowest rather than the sum",
+    "url": "https://code.claude.com/docs/en/agent-sdk/subagents",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D5-014",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Haiku 4.5 supports only extended thinking; type adaptive returns 400",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/extended-thinking",
+    "supported": true
+   },
+   {
+    "claim": "Opus 4.5 is the only extended-thinking-only model that supports effort (so Haiku 4.5 does not)",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/effort",
+    "supported": true
+   },
+   {
+    "claim": "between_tools is the lowest thinking setting on Sonnet 5.5 specifically, not on every model",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/effort",
+    "supported": true
+   },
+   {
+    "claim": "Haiku 4.5 and Sonnet 5.5 are both current models as of Oct 2026",
+    "url": "https://platform.claude.com/docs/en/about-claude/models/overview",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Option D implicitly requires also dropping effort on the Haiku path; acceptable since it says 'build thinking per model'."
+  ],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A5-002",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Costs guide shows a PreToolUse hook that rewrites test commands to show only failures",
+    "url": "https://code.claude.com/docs/en/costs",
+    "supported": true
+   },
+   {
+    "claim": "Auto-compact window is a real configurable threshold (distractor C is real but only postpones)",
+    "url": "https://code.claude.com/docs/en/costs",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D6-002",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "compact_20260112 in context_management.edits with beta compact-2026-01-12; append response including compaction block",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/compaction-threshold",
+    "supported": true
+   },
+   {
+    "claim": "trigger, pause_after_compaction, instructions parameters exist",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/compaction-threshold",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Overview now recommends on-demand compaction (compact-2026-09-04) where available; threshold compaction is still valid, so no change required."
+  ],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A2-001",
+  "chosen": [
+   "B",
+   "D"
+  ],
+  "confidence": "medium",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [
+   "No doc-specific premise; D is reactive (fixes on retry) while B is preventive. 'Most directly fix how Claude fills' is slightly strained for D but no other option competes."
+  ],
+  "suggestedFix": "Optional: reword stem to 'Which TWO changes best get Claude to send valid amounts?'"
+ },
+ {
+  "id": "CCAR-F-B2-A1-013",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D6-003",
+  "chosen": [
+   "A",
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Track tests in structured tests.json; 'It is unacceptable to remove or edit tests'",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "supported": true
+   },
+   {
+    "claim": "Fresh window: 'Review progress.txt, tests.json, and the git logs'",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Option A/D wording mirrors the guide closely (tests.json, progress.txt); fine for recall but recognisable."
+  ],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A1-012",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "AgentDefinition model accepts aliases such as 'haiku' or 'inherit'",
+    "url": "https://code.claude.com/docs/en/agent-sdk/subagents",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D6-001",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Just-in-time: keep lightweight identifiers (file paths) and load data at runtime via tools; hybrid strategies",
+    "url": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+    "supported": true
+   },
+   {
+    "claim": "Larger context windows remain subject to context pollution",
+    "url": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A3-015",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "For larger features have Claude interview you using AskUserQuestion, then write a spec",
+    "url": "https://code.claude.com/docs/en/best-practices",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A2-002",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A5-010",
+  "chosen": [
+   "A",
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A1-026",
+  "chosen": [
+   "A",
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Resume across hosts: attach sessionStore adapter; lookup key derives from cwd so resume from matching cwd",
+    "url": "https://code.claude.com/docs/en/agent-sdk/sessions",
+    "supported": true
+   },
+   {
+    "claim": "Alternative: capture results as application state and pass into a fresh session's prompt",
+    "url": "https://code.claude.com/docs/en/agent-sdk/sessions",
+    "supported": true
+   },
+   {
+    "claim": "continue resumes most recent session in current directory; persistSession:false is memory-only (TS)",
+    "url": "https://code.claude.com/docs/en/agent-sdk/sessions",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D8-010",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Plugins bundle skills, agents, hooks, MCP servers; marketplaces distribute versioned releases",
+    "url": "https://code.claude.com/docs/en/plugins",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D1-012",
+  "chosen": [
+   "B",
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Set defer_loading: true on tools; tool search tool stays non-deferred",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool",
+    "supported": true
+   },
+   {
+    "claim": "Keep 3-5 most frequently used tools non-deferred",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool",
+    "supported": true
+   },
+   {
+    "claim": "defer_loading tool cannot carry cache_control (400) - distractor C false",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D2-032",
+  "chosen": [
+   "B",
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Commit .claude/settings.json so everyone gets same permissions and hooks",
+    "url": "https://code.claude.com/docs/en/settings",
+    "supported": true
+   },
+   {
+    "claim": "CLAUDE.local.md at project root for personal prefs like sandbox URLs; add to .gitignore",
+    "url": "https://code.claude.com/docs/en/memory",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D5-010",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "revise",
+  "verifiedFacts": [
+   {
+    "claim": "Python SDK list auto-paginates when iterating the returned object",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+    "supported": true
+   },
+   {
+    "claim": "List endpoint limit ranges 1 to 1000",
+    "url": "https://platform.claude.com/docs/en/api/messages/batches/list",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Distractor A is defensible: with 'several hundred' batches, limit=1000 (allowed max) returns all of them in one page, so A also 'fixes the gap' today.",
+   "Batches are listed per Workspace, not per organization."
+  ],
+  "suggestedFix": "Change stem to 'The workspace has several thousand batches' (exceeds the 1,000 per-page maximum) or rewrite A as 'Raise limit to its maximum so the first page holds every batch' with >1,000 batches; replace 'organization' with 'workspace'."
+ },
+ {
+  "id": "CCAR-F-B2-A1-002",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A2-005",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A4-011",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Structured outputs don't guarantee capitalization of enum values; response completes normally; applies to JSON outputs and strict tool use; compare case-insensitively",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/structured-outputs#invalid-outputs",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Strong item; distractor A is precisely refuted by the docs."
+  ],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D2-003",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Batch processing (/v1/messages/batches) not ZDR eligible",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/zero-data-retention",
+    "supported": true
+   },
+   {
+    "claim": "Files API not ZDR eligible; using it steps outside ZDR",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/zero-data-retention",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A1-005",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D1-008",
+  "chosen": [
+   "A",
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Wrap tool with create_sdk_mcp_server; server runs in-process",
+    "url": "https://code.claude.com/docs/en/agent-sdk/custom-tools",
+    "supported": true
+   },
+   {
+    "claim": "Fully qualified name mcp__{server}__{tool}; list it in allowedTools to skip permission prompt",
+    "url": "https://code.claude.com/docs/en/agent-sdk/custom-tools",
+    "supported": true
+   },
+   {
+    "claim": "readOnlyHint controls parallel calling, not permissions",
+    "url": "https://code.claude.com/docs/en/agent-sdk/custom-tools",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Nit: stem is Python but options use TypeScript option names (mcpServers, allowedTools); Python uses mcp_servers / allowed_tools."
+  ],
+  "suggestedFix": "Use mcp_servers and allowed_tools in options A-C (or make the stem language-neutral)."
+ },
+ {
+  "id": "CCAR-F-B2-A1-020",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Stop hook input includes last_assistant_message and stop_hook_active",
+    "url": "https://code.claude.com/docs/en/hooks",
+    "supported": true
+   },
+   {
+    "claim": "Stop decision control: decision block with reason continues the session",
+    "url": "https://code.claude.com/docs/en/hooks",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Consider mentioning stop_hook_active in the rationale to avoid infinite blocking."
+  ],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A3-008",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Rules paths frontmatter uses globs; ** matches any depth (e.g. src/api/**/*.ts)",
+    "url": "https://code.claude.com/docs/en/memory",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "alwaysApply is not a Claude Code rule field (Cursor concept); acceptable as distractor."
+  ],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A2-009",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Claude Code truncates each tool description and server instructions at 2,048 characters by default; put critical details near the start",
+    "url": "https://code.claude.com/docs/en/mcp",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Truncation limit is configurable via CLAUDE_CODE_MAX_MCP_DESCRIPTION_LENGTH; does not affect key."
+  ],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A3-011",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Ctrl+G opens proposed plan in editor; approval options include 'Yes, and use auto mode'/'Yes, auto-accept edits'",
+    "url": "https://code.claude.com/docs/en/permission-modes#review-and-approve-a-plan",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A1-004",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D5-004",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Per-message effort: role system message with empty content and output_config.effort; beta mid-conversation-output-config-2026-07-01; preserves cache; supported on Opus 5.5",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/effort#change-effort-mid-conversation-beta",
+    "supported": true
+   },
+   {
+    "claim": "Changing top-level effort invalidates cache",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/effort",
+    "supported": true
+   },
+   {
+    "claim": "Opus 5.5 rejects thinking type disabled with 400",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/effort",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Option C names the beta in parentheses, which is a mild cue but the other options are clearly wrong anyway."
+  ],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A4-005",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A3-006",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "context: fork only makes sense with explicit instructions; guideline-only skills return without meaningful output",
+    "url": "https://code.claude.com/docs/en/skills",
+    "supported": true
+   },
+   {
+    "claim": "Reference content runs inline; background and agent fields exist",
+    "url": "https://code.claude.com/docs/en/skills",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ }
+]

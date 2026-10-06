@@ -26,7 +26,7 @@ Status legend: ✅ implemented and covered by an automated test · ◐ implement
 - ✅ Network loss: the choice is kept and retried; banner explains; the clock keeps running in timed attempts (E2E offline).
 - ✅ Not enough eligible questions → clear error, no duplication.
 - ✅ Map of answered/pending/marked, previous/next, mark for review, scenario shown above dependent questions, shared-scenario items kept contiguous.
-- ☐ CCAR-F official structure "4 of 6 scenarios" in simulations (needs a larger bank: about 15 items per scenario per form).
+- ✅ CCAR-F simulations draw from 4 of the 6 scenarios, as in the official guide (integration test runs it three times).
 
 ## Results and progress
 - ✅ Points earned/max, percent, correct, incorrect, unanswered, time used, pass/fail against the simulator threshold, scoring policy and disclaimer.
@@ -40,10 +40,10 @@ Status legend: ✅ implemented and covered by an automated test · ◐ implement
 - ✅ Review records bound to content hashes; bootstrap applies them idempotently.
 - ✅ JSON and Markdown import with preview, all-or-nothing commit, retry without duplicates, exact and near-duplicate detection, inconsistent-key and key-change rejection, size/type/markup limits.
 - ✅ Profiles versioned; verified languages require official evidence; coverage and answer-key cue statistics; audit log.
-- ☐ PDF/DOCX import (designed extension point only).
+- ✅ Word (.docx) and PDF import with paragraph/page provenance, DTD and size protections (unit tests).
 - ◐ Admin UI flows are covered by E2E for lists, coverage and import preview; transitions and edits are covered by API integration tests.
 
 ## Quality
-- ✅ Backend unit + integration tests with real PostgreSQL; frontend unit test; Playwright E2E including axe checks (no serious/critical violations on public pages).
+- ✅ Backend unit + integration tests with real PostgreSQL; frontend unit test; Playwright E2E including axe checks (no serious/critical violations on public pages, the exam runner with feedback, result, my exams, progress and admin).
 - ✅ Dependency audit (npm audit, dotnet vulnerable packages) and secret scan (gitleaks) run locally; CI workflow defined.
-- ◐ CI has not run yet because the repository is not linked to this session.
+- ◐ CI runs on GitHub for pushes to main; the first run was in progress when this was written.

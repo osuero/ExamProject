@@ -1,3 +1,4 @@
+using System.Text;
 using ExamPrep.Api.Data;
 using ExamPrep.Api.DomainLogic;
 using ExamPrep.Api.Modules;
@@ -93,6 +94,38 @@ public class AssemblerTests
         var ok = ExamAssembler.Assemble(pool, W, 3, new Random(2));
         Assert.True(ok.Ok);
         Assert.Equal(3, ok.Items.Select(i => i.FamilyId).Distinct().Count());
+    }
+
+    private static List<Candidate> ScenarioPool(int perDomainPerCase, int cases)
+    {
+        var list = new List<Candidate>();
+        for (var c = 1; c <= cases; c++)
+            foreach (var d in new[] { "A", "B" })
+                for (var i = 0; i < perDomainPerCase; i++)
+                    list.Add(new Candidate(Guid.NewGuid(), d, $"C{c}-{d}-{i}", $"CASE-{c}", $"C{c}-{d}-{i:00}"));
+        return list;
+    }
+
+    [Fact] public void Scenario_sampling_uses_exactly_k_scenarios_without_duplicates()
+    {
+        for (var seed = 0; seed < 10; seed++)
+        {
+            var r = ExamAssembler.AssembleWithScenarios(ScenarioPool(4, 6), W, 20, 4, new Random(seed));
+            Assert.True(r.Ok);
+            Assert.Equal(4, r.Scenarios!.Count);
+            Assert.Equal(4, r.Items.Select(i => i.ScenarioId).Distinct().Count());
+            Assert.All(r.Items, i => Assert.Contains(i.ScenarioId, r.Scenarios));
+            Assert.Equal(20, r.Items.Select(i => i.VersionId).Distinct().Count());
+            Assert.Null(r.ScenarioNote);
+        }
+    }
+
+    [Fact] public void Scenario_sampling_falls_back_openly_when_no_subset_is_large_enough()
+    {
+        var r = ExamAssembler.AssembleWithScenarios(ScenarioPool(2, 6), W, 20, 4, new Random(3)); // 4 cases x 4 items = 16 < 20
+        Assert.True(r.Ok);
+        Assert.Null(r.Scenarios);
+        Assert.Contains("uses all scenarios", r.ScenarioNote);
     }
 
     [Fact] public void Scenario_items_stay_contiguous_in_stable_order()
@@ -217,10 +250,78 @@ Use stop_reason.
     [Fact] public void Unknown_field_is_a_format_error() =>
         Assert.Throws<FormatException>(() => MarkdownBank.Parse("## Question X-1\n- colour: blue\n"));
 
-    [Fact] public void Pdf_import_reports_not_implemented()
+    private static readonly string[] BankLines =
     {
-        var (file, errors) = ContentImporter.Parse("bank.pdf", new byte[] { 1, 2, 3 });
+        "---", "examCode: CCAR-F", "---", "## Question DOC-001", "- domain: A1", "- objective: 1.1 Loops", "- type: single_choice",
+        "- select: 1", "- sources: T13", "", "What should the loop check to decide it is done?", "", "### Options",
+        "- [ ] A: The text of the reply | rationale: Not reliable.", "- [x] B: The stop_reason value | rationale: Documented signal.",
+        "- [ ] C: The number of tokens | rationale: Not a completion signal.", "- [ ] D: A fixed iteration cap only | rationale: Safety net only.",
+        "", "### Explanation", "Use stop_reason."
+    };
+
+    public static byte[] Docx(IEnumerable<string> paragraphs, bool bullets = false)
+    {
+        using var ms = new MemoryStream();
+        using (var zip = new System.IO.Compression.ZipArchive(ms, System.IO.Compression.ZipArchiveMode.Create, true))
+        {
+            var e = zip.CreateEntry("word/document.xml");
+            using var w = new StreamWriter(e.Open());
+            w.Write("<?xml version=\"1.0\" encoding=\"UTF-8\"?><w:document xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\"><w:body>");
+            foreach (var p in paragraphs)
+            {
+                var text = bullets && p.StartsWith("- [") ? "• " + p[2..].Replace("[x]", "☒").Replace("[ ]", "☐") : p;
+                // split each paragraph into two runs to exercise run concatenation
+                var half = text.Length / 2;
+                w.Write($"<w:p><w:r><w:t xml:space=\"preserve\">{System.Security.SecurityElement.Escape(text[..half])}</w:t></w:r><w:r><w:t xml:space=\"preserve\">{System.Security.SecurityElement.Escape(text[half..])}</w:t></w:r></w:p>");
+            }
+            w.Write("</w:body></w:document>");
+        }
+        return ms.ToArray();
+    }
+
+    [Fact] public void Docx_bank_is_parsed_with_paragraph_locations()
+    {
+        var (file, errors) = ContentImporter.Parse("bank.docx", Docx(BankLines, bullets: true));
+        Assert.Empty(errors);
+        var q = Assert.Single(file!.Questions);
+        Assert.Equal(new[] { "B" }, q.CorrectOptionIds);
+        Assert.Equal(4, q.Options.Count);
+        Assert.Equal("What should the loop check to decide it is done?", q.Stem);
+        Assert.Equal("paragraph 4", q.SourceLocation);
+    }
+
+    [Fact] public void Docx_with_dtd_or_garbage_is_rejected()
+    {
+        var (_, errors) = ContentImporter.Parse("x.docx", new byte[] { 1, 2, 3, 4 });
+        Assert.NotEmpty(errors);
+        using var ms = new MemoryStream();
+        using (var zip = new System.IO.Compression.ZipArchive(ms, System.IO.Compression.ZipArchiveMode.Create, true))
+        {
+            using var w = new StreamWriter(zip.CreateEntry("word/document.xml").Open());
+            w.Write("<?xml version=\"1.0\"?><!DOCTYPE x [<!ENTITY a \"aaaa\">]><x>&a;</x>");
+        }
+        var (_, e2) = ContentImporter.Parse("dtd.docx", ms.ToArray());
+        Assert.Contains(e2, e => e.Contains("XML") || e.Contains("DTD"));
+    }
+
+    [Fact] public void Pdf_bank_is_parsed_with_page_locations()
+    {
+        var b = new UglyToad.PdfPig.Writer.PdfDocumentBuilder();
+        var font = b.AddStandard14Font(UglyToad.PdfPig.Fonts.Standard14Fonts.Standard14Font.Helvetica);
+        var page = b.AddPage(UglyToad.PdfPig.Content.PageSize.A4);
+        var y = 800.0;
+        foreach (var l in BankLines) { if (l.Length > 0) page.AddText(l, 9, new UglyToad.PdfPig.Core.PdfPoint(30, y), font); y -= 14; }
+        var (file, errors) = ContentImporter.Parse("bank.pdf", b.Build());
+        Assert.Empty(errors);
+        var q = Assert.Single(file!.Questions);
+        Assert.Equal(new[] { "B" }, q.CorrectOptionIds);
+        Assert.Equal("page 1", q.SourceLocation);
+    }
+
+    [Fact] public void Corrupt_pdf_is_reported_not_thrown()
+    {
+        var (file, errors) = ContentImporter.Parse("bank.pdf", Encoding.ASCII.GetBytes("%PDF-1.7 not really"));
         Assert.Null(file);
-        Assert.Contains(errors, e => e.Contains("not implemented"));
+        Assert.NotEmpty(errors);
     }
 }

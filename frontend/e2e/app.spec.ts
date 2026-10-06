@@ -238,3 +238,36 @@ test.describe('isolation and admin', () => {
     await expect(page.getByRole('cell', { name: 'E2E-MD-001' })).toBeVisible();
   });
 });
+
+test.describe('accessibility of signed-in pages', () => {
+  test('runner with feedback, result, my exams and admin have no serious violations', async ({ page }) => {
+    const scan = async (label: string) => {
+      const r = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
+      return r.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical').map((v) => `${label}: ${v.id} (${v.nodes.length})`);
+    };
+    await signIn(page, ADMIN);
+    const found: string[] = [];
+    const id = await startAttempt(page, { certificationCode: 'CCAR-F', mode: 'practice', questionCount: 3, feedback: true });
+    await page.goto(`/attempts/${id}`);
+    await page.locator('label.opt').first().click();
+    await expect(page.getByText('Answer saved')).toBeVisible();
+    found.push(...(await scan('runner')));
+    await page.getByRole('button', { name: 'Check answer' }).click();
+    await expect(page.locator('.feedback')).toBeVisible();
+    found.push(...(await scan('runner-feedback')));
+    await page.getByRole('button', { name: 'Finish attempt' }).click();
+    await page.getByRole('button', { name: 'Finish and see result' }).click();
+    await expect(page).toHaveURL(/\/result$/);
+    found.push(...(await scan('result')));
+    await page.goto('/my');
+    await expect(page.getByRole('heading', { name: 'My exams' })).toBeVisible();
+    found.push(...(await scan('my-exams')));
+    await page.goto('/progress/CCAR-F');
+    await expect(page.getByRole('heading', { name: 'CCAR-F progress' })).toBeVisible();
+    found.push(...(await scan('progress')));
+    await page.goto('/admin');
+    await expect(page.locator('table.data tbody tr').first()).toBeVisible();
+    found.push(...(await scan('admin')));
+    expect(found).toEqual([]);
+  });
+});

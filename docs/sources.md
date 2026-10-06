@@ -52,6 +52,8 @@ Checked 2026-10-03. Hierarchy: 1 official exam guide · 2 Pearson VUE / Anthropi
 
 ## Source catalog
 
+169 sources. T-ids above T100 were added while authoring and reviewing batches 1 and 2 (checked 2026-10-03/05).
+
 | Id | Kind | Confidence | Status | Title |
 |---|---|---|---|---|
 | C01 | community | medium | reachable | [CCDV-F – Claude Certification Guide](https://claudecertificationguide.com/ccdv-f) |
@@ -92,6 +94,20 @@ Checked 2026-10-03. Hierarchy: 1 official exam guide · 2 Pearson VUE / Anthropi
 | T08 | technical_doc | high | reachable | [Choosing a model](https://platform.claude.com/docs/en/about-claude/models/choosing-a-model) |
 | T09 | technical_doc | high | reachable | [Token counting](https://platform.claude.com/docs/en/build-with-claude/token-counting) |
 | T10 | technical_doc | high | reachable | [Structured outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs) |
+| T11 | technical_doc | high | reachable | [Claude Code permissions](https://code.claude.com/docs/en/permissions) |
+| T12 | technical_doc | high | reachable | [MCP 2025-06-18 transports](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports) |
+| T13 | technical_doc | high | reachable | [Hooks reference](https://code.claude.com/docs/en/hooks) |
+| T14 | technical_doc | high | reachable | [Reduce hallucinations](https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations) |
+| T15 | technical_doc | high | reachable | [Manage Claude's memory (CLAUDE.md and rules)](https://code.claude.com/docs/en/memory) |
+| T16 | technical_doc | high | reachable | [Agent Skills in Claude Code](https://code.claude.com/docs/en/skills) |
+| T17 | technical_doc | high | reachable | [Subagents](https://code.claude.com/docs/en/sub-agents) |
+| T18 | technical_doc | high | reachable | [Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents) |
+| T19 | technical_doc | high | reachable | [Writing effective tools for agents](https://www.anthropic.com/engineering/writing-tools-for-agents) |
+| T20 | technical_doc | high | reachable | [MCP 2025-06-18 resources](https://modelcontextprotocol.io/specification/2025-06-18/server/resources) |
+| T21 | technical_doc | high | reachable | [Use examples (multishot prompting)](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/multishot-prompting) |
+| T22 | technical_doc | high | reachable | [Batch processing](https://platform.claude.com/docs/en/build-with-claude/batch-processing) |
+| T23 | technical_doc | high | reachable | [MCP 2025-06-18 tools](https://modelcontextprotocol.io/specification/2025-06-18/server/tools) |
+| T24 | technical_doc | high | reachable | [Claude Code GitHub Actions](https://code.claude.com/docs/en/github-actions) |
 | T101 | technical_doc | high | reachable | [Tool runner (SDK)](https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-runner) |
 | T102 | technical_doc | high | reachable | [Handle tool calls](https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls) |
 | T103 | technical_doc | high | reachable | [Intercept and control agent behavior with hooks (Agent SDK)](https://code.claude.com/docs/en/agent-sdk/hooks) |
@@ -99,7 +115,6 @@ Checked 2026-10-03. Hierarchy: 1 official exam guide · 2 Pearson VUE / Anthropi
 | T105 | technical_doc | high | reachable | [Code execution tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/code-execution-tool) |
 | T106 | technical_doc | high | reachable | [CLI reference](https://code.claude.com/docs/en/cli-reference) |
 | T107 | technical_doc | high | reachable | [MCP 2025-06-18 prompts](https://modelcontextprotocol.io/specification/2025-06-18/server/prompts) |
-| T11 | technical_doc | high | reachable | [Claude Code permissions](https://code.claude.com/docs/en/permissions) |
 | T110 | technical_doc | high | reachable | [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system) |
 | T111 | technical_doc | high | reachable | [Intercept and control agent behavior with hooks (Agent SDK)](https://code.claude.com/docs/en/agent-sdk/hooks) |
 | T112 | technical_doc | high | reachable | [Parallel tool use](https://platform.claude.com/docs/en/agents-and-tools/tool-use/parallel-tool-use) |
@@ -110,7 +125,6 @@ Checked 2026-10-03. Hierarchy: 1 official exam guide · 2 Pearson VUE / Anthropi
 | T117 | technical_doc | high | reachable | [Context editing](https://platform.claude.com/docs/en/build-with-claude/context-editing) |
 | T118 | technical_doc | high | reachable | [Subagents in the Agent SDK](https://code.claude.com/docs/en/agent-sdk/subagents) |
 | T119 | technical_doc | high | reachable | [Claude on Google Cloud](https://platform.claude.com/docs/en/build-with-claude/claude-on-vertex-ai) |
-| T12 | technical_doc | high | reachable | [MCP 2025-06-18 transports](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports) |
 | T120 | technical_doc | high | reachable | [Model deprecations](https://platform.claude.com/docs/en/about-claude/model-deprecations) |
 | T121 | technical_doc | high | reachable | [Define success criteria and build evaluations](https://platform.claude.com/docs/en/test-and-evaluate/develop-tests) |
 | T122 | technical_doc | high | reachable | [Prompt caching](https://platform.claude.com/docs/en/build-with-claude/prompt-caching) |
@@ -121,12 +135,10 @@ Checked 2026-10-03. Hierarchy: 1 official exam guide · 2 Pearson VUE / Anthropi
 | T127 | technical_doc | high | reachable | [System prompts (release notes)](https://platform.claude.com/docs/en/release-notes/system-prompts/overview) |
 | T128 | technical_doc | high | reachable | [Prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices) |
 | T129 | technical_doc | high | reachable | [Strict tool use](https://platform.claude.com/docs/en/agents-and-tools/tool-use/strict-tool-use) |
-| T13 | technical_doc | high | reachable | [Hooks reference](https://code.claude.com/docs/en/hooks) |
 | T130 | technical_doc | high | reachable | [Install and manage plugins](https://code.claude.com/docs/en/plugins/install) |
 | T131 | technical_doc | high | reachable | [Plugin dependencies](https://code.claude.com/docs/en/plugins/dependencies) |
 | T132 | technical_doc | high | reachable | [Model IDs and versioning](https://platform.claude.com/docs/en/about-claude/models/model-ids-and-versions) |
 | T133 | technical_doc | high | reachable | [Building with thinking](https://platform.claude.com/docs/en/build-with-claude/thinking) |
-| T14 | technical_doc | high | reachable | [Reduce hallucinations](https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations) |
 | T140 | technical_doc | high | reachable | [Claude Code settings files and precedence](https://code.claude.com/docs/en/settings) |
 | T141 | technical_doc | high | reachable | [Claude Code CLI reference](https://code.claude.com/docs/en/cli-reference) |
 | T142 | technical_doc | high | reachable | [Handle tool calls](https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls) |
@@ -137,7 +149,6 @@ Checked 2026-10-03. Hierarchy: 1 official exam guide · 2 Pearson VUE / Anthropi
 | T147 | technical_doc | high | reachable | [Python SDK](https://platform.claude.com/docs/en/cli-sdks-libraries/sdks/python) |
 | T148 | technical_doc | high | reachable | [Prompt caching](https://platform.claude.com/docs/en/build-with-claude/prompt-caching) |
 | T149 | technical_doc | high | reachable | [Context editing](https://platform.claude.com/docs/en/build-with-claude/context-editing) |
-| T15 | technical_doc | high | reachable | [Manage Claude's memory (CLAUDE.md and rules)](https://code.claude.com/docs/en/memory) |
 | T150 | technical_doc | high | reachable | [Prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices) |
 | T151 | technical_doc | high | reachable | [Mitigate jailbreaks and prompt injections](https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks) |
 | T152 | technical_doc | high | reachable | [Workload Identity Federation](https://platform.claude.com/docs/en/manage-claude/workload-identity-federation) |
@@ -145,8 +156,6 @@ Checked 2026-10-03. Hierarchy: 1 official exam guide · 2 Pearson VUE / Anthropi
 | T154 | technical_doc | high | reachable | [Define tools](https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools) |
 | T155 | technical_doc | high | reachable | [MCP 2025-06-18 server overview](https://modelcontextprotocol.io/specification/2025-06-18/server) |
 | T156 | technical_doc | high | reachable | [MCP 2025-06-18 prompts](https://modelcontextprotocol.io/specification/2025-06-18/server/prompts) |
-| T16 | technical_doc | high | reachable | [Agent Skills in Claude Code](https://code.claude.com/docs/en/skills) |
-| T17 | technical_doc | high | reachable | [Subagents](https://code.claude.com/docs/en/sub-agents) |
 | T170 | technical_doc | high | reachable | [Subagents in the SDK](https://code.claude.com/docs/en/agent-sdk/subagents) |
 | T171 | technical_doc | high | reachable | [Intercept and control agent behavior with hooks](https://code.claude.com/docs/en/agent-sdk/hooks) |
 | T172 | technical_doc | high | reachable | [Work with sessions](https://code.claude.com/docs/en/agent-sdk/sessions) |
@@ -157,10 +166,7 @@ Checked 2026-10-03. Hierarchy: 1 official exam guide · 2 Pearson VUE / Anthropi
 | T177 | technical_doc | high | reachable | [Tools reference](https://code.claude.com/docs/en/tools-reference) |
 | T178 | technical_doc | high | reachable | [How the agent loop works](https://code.claude.com/docs/en/agent-sdk/agent-loop) |
 | T179 | technical_doc | high | reachable | [Manage sessions](https://code.claude.com/docs/en/sessions) |
-| T18 | technical_doc | high | reachable | [Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents) |
 | T180 | technical_doc | high | reachable | [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system) |
-| T19 | technical_doc | high | reachable | [Writing effective tools for agents](https://www.anthropic.com/engineering/writing-tools-for-agents) |
-| T20 | technical_doc | high | reachable | [MCP 2025-06-18 resources](https://modelcontextprotocol.io/specification/2025-06-18/server/resources) |
 | T200 | technical_doc | high | reachable | [Prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices) |
 | T201 | technical_doc | high | reachable | [Claude Code permission modes](https://code.claude.com/docs/en/permission-modes) |
 | T202 | technical_doc | high | reachable | [Claude Code CLI reference](https://code.claude.com/docs/en/cli-reference) |
@@ -170,7 +176,52 @@ Checked 2026-10-03. Hierarchy: 1 official exam guide · 2 Pearson VUE / Anthropi
 | T206 | technical_doc | high | reachable | [Claude Code commands](https://code.claude.com/docs/en/commands) |
 | T207 | technical_doc | high | reachable | [Claude Code sessions](https://code.claude.com/docs/en/sessions) |
 | T208 | technical_doc | high | reachable | [MCP connector](https://platform.claude.com/docs/en/agents-and-tools/mcp-connector) |
-| T21 | technical_doc | high | reachable | [Use examples (multishot prompting)](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/multishot-prompting) |
-| T22 | technical_doc | high | reachable | [Batch processing](https://platform.claude.com/docs/en/build-with-claude/batch-processing) |
-| T23 | technical_doc | high | reachable | [MCP 2025-06-18 tools](https://modelcontextprotocol.io/specification/2025-06-18/server/tools) |
-| T24 | technical_doc | high | reachable | [Claude Code GitHub Actions](https://code.claude.com/docs/en/github-actions) |
+| T230 | technical_doc | high | reachable | [Rate limits](https://platform.claude.com/docs/en/api/rate-limits) |
+| T231 | technical_doc | high | reachable | [Zero data retention](https://platform.claude.com/docs/en/build-with-claude/zero-data-retention) |
+| T232 | technical_doc | high | reachable | [Workspaces](https://platform.claude.com/docs/en/build-with-claude/workspaces) |
+| T233 | technical_doc | high | reachable | [Working with the Messages API](https://platform.claude.com/docs/en/build-with-claude/working-with-messages) |
+| T234 | technical_doc | high | reachable | [Mid-conversation system messages](https://platform.claude.com/docs/en/build-with-claude/mid-conversation-system-messages) |
+| T235 | technical_doc | high | reachable | [Vision](https://platform.claude.com/docs/en/build-with-claude/vision) |
+| T236 | technical_doc | high | reachable | [Server tools](https://platform.claude.com/docs/en/agents-and-tools/tool-use/server-tools) |
+| T237 | technical_doc | high | reachable | [Claude in Amazon Bedrock (Opus 4.7 and later)](https://platform.claude.com/docs/en/build-with-claude/claude-in-amazon-bedrock) |
+| T238 | technical_doc | high | reachable | [Use Claude Code features in the SDK](https://code.claude.com/docs/en/agent-sdk/claude-code-features) |
+| T239 | technical_doc | high | reachable | [Checkpointing](https://code.claude.com/docs/en/checkpointing) |
+| T240 | technical_doc | high | reachable | [Manage Claude Code plugins for your organization](https://code.claude.com/docs/en/plugins/org) |
+| T241 | technical_doc | high | reachable | [Agent Skills overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) |
+| T242 | technical_doc | high | reachable | [Using Agent Skills with the API](https://platform.claude.com/docs/en/build-with-claude/skills-guide) |
+| T243 | technical_doc | high | reachable | [Run parallel sessions with worktrees](https://code.claude.com/docs/en/worktrees) |
+| T244 | technical_doc | high | reachable | [Code Review](https://code.claude.com/docs/en/code-review) |
+| T246 | technical_doc | high | reachable | [List Message Batches](https://platform.claude.com/docs/en/api/messages/batches/list) |
+| T247 | technical_doc | high | reachable | [TypeScript SDK](https://platform.claude.com/docs/en/cli-sdks-libraries/sdks/typescript) |
+| T248 | technical_doc | high | reachable | [MCP tunnels](https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/overview) |
+| T260 | technical_doc | high | reachable | [Fast mode (research preview)](https://platform.claude.com/docs/en/build-with-claude/fast-mode) |
+| T261 | technical_doc | high | reachable | [Context windows](https://platform.claude.com/docs/en/build-with-claude/context-windows) |
+| T262 | technical_doc | high | reachable | [Steering thinking](https://platform.claude.com/docs/en/build-with-claude/thinking-steering-and-cost) |
+| T263 | technical_doc | high | reachable | [Troubleshooting thinking](https://platform.claude.com/docs/en/build-with-claude/thinking-troubleshooting) |
+| T264 | technical_doc | high | reachable | [Models overview](https://platform.claude.com/docs/en/models/overview) |
+| T265 | technical_doc | high | reachable | [Compaction at a token threshold](https://platform.claude.com/docs/en/build-with-claude/compaction-threshold) |
+| T266 | technical_doc | high | reachable | [API overview](https://platform.claude.com/docs/en/api/overview) |
+| T267 | technical_doc | high | reachable | [Rate limits](https://platform.claude.com/docs/en/api/rate-limits) |
+| T268 | technical_doc | high | reachable | [List Models (API reference)](https://platform.claude.com/docs/en/api/models/list) |
+| T269 | technical_doc | high | reachable | [Tool search tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool) |
+| T270 | technical_doc | high | reachable | [Use Claude Code features in the SDK](https://code.claude.com/docs/en/agent-sdk/claude-code-features) |
+| T271 | technical_doc | high | reachable | [Give Claude custom tools (Agent SDK)](https://code.claude.com/docs/en/agent-sdk/custom-tools) |
+| T272 | technical_doc | high | reachable | [Modifying system prompts (Agent SDK)](https://code.claude.com/docs/en/agent-sdk/modifying-system-prompts) |
+| T273 | technical_doc | high | reachable | [Handle approvals and user input (Agent SDK)](https://code.claude.com/docs/en/agent-sdk/user-input) |
+| T274 | technical_doc | high | reachable | [LangGraph interrupts](https://docs.langchain.com/oss/python/langgraph/interrupts) |
+| T275 | technical_doc | high | reachable | [Messages API reference](https://platform.claude.com/docs/en/api/messages) |
+| T290 | technical_doc | high | reachable | [Compaction at a token threshold](https://platform.claude.com/docs/en/build-with-claude/compaction-threshold) |
+| T291 | technical_doc | high | reachable | [Tool search tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool) |
+| T292 | technical_doc | high | reachable | [MCP 2025-06-18 authorization](https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization) |
+| T293 | technical_doc | high | reachable | [Handle approvals and user input (Agent SDK)](https://code.claude.com/docs/en/agent-sdk/user-input) |
+| T294 | technical_doc | high | reachable | [Configure the sandboxed Bash tool](https://code.claude.com/docs/en/sandboxing) |
+| T295 | technical_doc | high | reachable | [Claude Code settings reference](https://code.claude.com/docs/en/settings-reference) |
+| T296 | technical_doc | high | reachable | [Claude Code authentication](https://code.claude.com/docs/en/authentication) |
+| T297 | technical_doc | high | reachable | [Usage and Cost API](https://platform.claude.com/docs/en/build-with-claude/usage-cost-api) |
+| T298 | technical_doc | high | reachable | [Workspaces](https://platform.claude.com/docs/en/build-with-claude/workspaces) |
+| T299 | technical_doc | high | reachable | [Using Agent Skills with the API](https://platform.claude.com/docs/en/build-with-claude/skills-guide) |
+| T300 | technical_doc | high | reachable | [Claude Code plugins overview](https://code.claude.com/docs/en/plugins) |
+| T350 | technical_doc | high | reachable | [Claude Code error reference](https://code.claude.com/docs/en/errors) |
+| T380 | technical_doc | high | reachable | [Manage costs effectively (Claude Code)](https://code.claude.com/docs/en/costs) |
+| T381 | technical_doc | high | reachable | [Context windows](https://platform.claude.com/docs/en/build-with-claude/context-windows) |
+| T382 | technical_doc | high | reachable | [Working with the Messages API](https://platform.claude.com/docs/en/build-with-claude/working-with-messages) |

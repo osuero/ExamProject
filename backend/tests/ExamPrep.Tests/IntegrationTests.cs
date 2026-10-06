@@ -20,7 +20,7 @@ public class AuthTests(TestApp app)
         var a = await anon.PostAsync("/api/auth/request-link", new { email = "existing@test.local" });
         var b = await anon.PostAsync("/api/auth/request-link", new { email = "nobody-" + Guid.NewGuid() + "@test.local" });
         Assert.Equal(a.StatusCode, b.StatusCode);
-        Assert.Equal(await a.Content.ReadAsStringAsync(), await b.Content.ReadAsStringAsync());
+        Assert.Equal(await a.Content.ReadAsStringAsync(TestContext.Current.CancellationToken), await b.Content.ReadAsStringAsync(TestContext.Current.CancellationToken));
     }
 
     [Fact]
@@ -64,7 +64,7 @@ public class AuthTests(TestApp app)
         var api = await app.SignInAsync("csrf@test.local");
         var r = await api.PostAsync("/api/attempts", new { certificationCode = "CCDV-F", mode = "practice", questionCount = 3 }, csrf: false);
         Assert.Equal(HttpStatusCode.Forbidden, r.StatusCode);
-        Assert.Contains("csrf_invalid", await r.Content.ReadAsStringAsync());
+        Assert.Contains("csrf_invalid", await r.Content.ReadAsStringAsync(TestContext.Current.CancellationToken));
     }
 
     [Fact]
@@ -107,7 +107,7 @@ public class CatalogAndContentTests(TestApp app)
         Assert.Equal(before, app.WithDb(db => db.QuestionVersions.Count()));
         var notes = app.WithDb(db => db.QuestionVersions.Where(v => v.Status == QuestionStatuses.Published).Select(v => v.StatusNote).ToList());
         Assert.NotEmpty(notes);
-        Assert.All(notes, n => Assert.StartsWith("QA-B1-", n));
+        Assert.All(notes, n => Assert.Matches("^QA-B[0-9]+-", n));
     }
 
     private static MultipartFormDataContent File(string name, string content)
@@ -181,8 +181,9 @@ public class CatalogAndContentTests(TestApp app)
         var flip = await admin.JsonAsync(await Upload(admin, "preview", "k2.json", Bank("TEST-IMP-KEY", "B", stem)));
         Assert.Contains("key_changed_same_content", flip.GetRawText());
 
-        var md = await admin.JsonAsync(await Upload(admin, "preview", "x.pdf", "%PDF"));
-        Assert.Contains("not implemented", md.GetRawText());
+        var pdf = await admin.JsonAsync(await Upload(admin, "preview", "x.pdf", "%PDF"));
+        Assert.False(pdf.GetProperty("valid").GetBoolean());
+        Assert.Contains("PDF could not be read", pdf.GetRawText());
     }
 
     [Fact]
@@ -201,7 +202,7 @@ public class CatalogAndContentTests(TestApp app)
         Assert.Equal(HttpStatusCode.NoContent, rm.StatusCode);
         var blocked = await admin.PostAsync($"/api/admin/questions/{id}/transition", new { to = "published" });
         Assert.Equal(HttpStatusCode.Conflict, blocked.StatusCode);
-        Assert.Contains("language_not_verified", await blocked.Content.ReadAsStringAsync());
+        Assert.Contains("language_not_verified", await blocked.Content.ReadAsStringAsync(TestContext.Current.CancellationToken));
         var restore = await admin.PostAsync("/api/admin/certifications/CCDV-F/languages", new { locale = "en", sourceId = "P06", evidence = "FAQ: English only (test restore)" });
         Assert.Equal(HttpStatusCode.OK, restore.StatusCode);
         Assert.Equal(HttpStatusCode.OK, (await admin.PostAsync($"/api/admin/questions/{id}/transition", new { to = "published" })).StatusCode);
@@ -257,6 +258,26 @@ public class AttemptTests(TestApp app)
         }
         var check = await api.PostAsync($"/api/attempts/{id}/items/1/check", new { });
         Assert.Equal(HttpStatusCode.Conflict, check.StatusCode);
+    }
+
+    [Fact]
+    public async Task Architect_simulation_draws_from_four_of_six_scenarios()
+    {
+        var api = await app.SignInAsync("scenarios@test.local");
+        for (var run = 0; run < 3; run++)
+        {
+            var id = await api.StartAsync(new { certificationCode = "CCAR-F", mode = "simulation" });
+            var s = await api.GetJsonAsync($"/api/attempts/{id}");
+            var scen = s.GetProperty("items").EnumerateArray().Select(i => i.GetProperty("scenario").GetProperty("id").GetString()).Distinct().ToList();
+            Assert.Equal(4, scen.Count);
+            Assert.Equal(60, s.GetProperty("items").GetArrayLength());
+            var snap = app.WithDb(db => db.Attempts.Single(a => a.Id == id).ProfileSnapshotJson);
+            using var doc = JsonDocument.Parse(snap);
+            Assert.Equal(4, doc.RootElement.GetProperty("scenarios").GetArrayLength());
+            await api.PostAsync($"/api/attempts/{id}/finish");
+        }
+        var detail = await api.GetJsonAsync("/api/catalog/CCAR-F");
+        Assert.Contains("4 randomly chosen scenarios", detail.GetRawText());
     }
 
     [Fact]
@@ -322,7 +343,7 @@ public class AttemptTests(TestApp app)
             await api.PutAsync($"/api/attempts/{id}/items/{pos}/answer", new { selected = new[] { key[0] } });
             var early = await api.PostAsync($"/api/attempts/{id}/items/{pos}/check", new { });
             Assert.Equal(HttpStatusCode.BadRequest, early.StatusCode);
-            Assert.Contains("incomplete_selection", await early.Content.ReadAsStringAsync());
+            Assert.Contains("incomplete_selection", await early.Content.ReadAsStringAsync(TestContext.Current.CancellationToken));
             var tooMany = it.GetProperty("options").EnumerateArray().Select(o => o.GetProperty("id").GetString()!).Take(3).ToArray();
             Assert.Equal(HttpStatusCode.BadRequest, (await api.PutAsync($"/api/attempts/{id}/items/{pos}/answer", new { selected = tooMany })).StatusCode);
         }
@@ -351,7 +372,7 @@ public class AttemptTests(TestApp app)
         app.Clock.Advance(TimeSpan.FromMinutes(4));
         var late = await api.PutAsync($"/api/attempts/{id}/items/2/answer", new { selected = new[] { "A" } });
         Assert.Equal(HttpStatusCode.Conflict, late.StatusCode);
-        Assert.Contains("attempt_expired", await late.Content.ReadAsStringAsync());
+        Assert.Contains("attempt_expired", await late.Content.ReadAsStringAsync(TestContext.Current.CancellationToken));
         var res = await api.GetJsonAsync($"/api/attempts/{id}/result");
         Assert.Equal("expired", res.GetProperty("attempt").GetProperty("status").GetString());
         Assert.Equal(300, res.GetProperty("attempt").GetProperty("score").GetProperty("timeUsedSeconds").GetInt32());
@@ -417,7 +438,7 @@ public class AttemptTests(TestApp app)
         var api = await app.SignInAsync("short@test.local");
         var r = await api.PostAsync("/api/attempts", new { certificationCode = "CCDV-F", mode = "custom", questionCount = 50, domainCodes = new[] { "D3" } });
         Assert.Equal(HttpStatusCode.Conflict, r.StatusCode);
-        Assert.Contains("insufficient_questions", await r.Content.ReadAsStringAsync());
+        Assert.Contains("insufficient_questions", await r.Content.ReadAsStringAsync(TestContext.Current.CancellationToken));
         var preview = await api.PostAsync("/api/attempts", new { certificationCode = "CCDV-F", mode = "practice", questionCount = 3, preview = true });
         Assert.Equal(HttpStatusCode.Forbidden, preview.StatusCode);
     }
@@ -447,7 +468,7 @@ public class AttemptTests(TestApp app)
             questionCount = 60, examDurationMinutes = 120, appointmentDurationMinutes = 135,
             allowedQuestionTypes = new[] { "single_choice", "multiple_response" },
             domainWeights = new[] { new { code = "A1", weightPercent = 27 }, new { code = "A2", weightPercent = 18 }, new { code = "A3", weightPercent = 20 }, new { code = "A4", weightPercent = 20 }, new { code = "A5", weightPercent = 15 } },
-            simulatorPassPercent = 80, verificationStatus = "confirmed_official_exam_guide", sourceIds = new[] { "P05", "P06" }
+            simulatorPassPercent = 80, verificationStatus = "confirmed_official_exam_guide", sourceIds = new[] { "P05", "P06" }, scenariosPerForm = 4
         });
     }
 

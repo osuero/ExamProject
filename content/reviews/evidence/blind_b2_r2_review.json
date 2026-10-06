@@ -1,0 +1,357 @@
+[
+ {
+  "id": "CCDV-F-B2-D2-015",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "server_tool_use blocks are executed by the API; unlike client tool_use, no tool_result is needed; ids use srvtoolu_ prefix",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/server-tools",
+    "supported": true
+   },
+   {
+    "claim": "Client and server tools can be combined in the same request / parallel tool group",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/server-tools",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D2-029",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "'Can you suggest some changes' leads Claude to suggest rather than implement; a system prompt such as 'By default, implement changes rather than only suggesting them' makes it act",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "supported": true
+   },
+   {
+    "claim": "Docs do not attribute this behavior to temperature or tool descriptions",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D2-030",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "--system-prompt replaces the entire default prompt; --system-prompt-file also replaces",
+    "url": "https://code.claude.com/docs/en/cli-reference",
+    "supported": true
+   },
+   {
+    "claim": "--append-system-prompt appends to the default prompt and preserves default tool guidance; recommended when Claude should remain a coding assistant with extra rules",
+    "url": "https://code.claude.com/docs/en/cli-reference",
+    "supported": true
+   },
+   {
+    "claim": "--bare skips auto-discovery of hooks, skills, CLAUDE.md etc.; it does not restore the default prompt",
+    "url": "https://code.claude.com/docs/en/cli-reference",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D5-010",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Python SDK list methods auto-paginate when iterated: for batch in client.messages.batches.list(limit=20) fetches more pages as needed; .data holds only the current page",
+    "url": "https://platform.claude.com/docs/en/api/sdks/python",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D1-009",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "PreToolUse hook can return hookSpecificOutput.updatedInput with permissionDecision 'allow' to auto-approve a rewritten file_path (sandbox redirect example)",
+    "url": "https://code.claude.com/docs/en/agent-sdk/hooks",
+    "supported": true
+   },
+   {
+    "claim": "Docs: always return a new object rather than mutating the original tool_input; returning {} allows without changes",
+    "url": "https://code.claude.com/docs/en/agent-sdk/hooks",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D1-011",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "max_budget_usd / maxBudgetUsd stops the query when the client-side cost estimate reaches the USD value",
+    "url": "https://code.claude.com/docs/en/agent-sdk/python",
+    "supported": true
+   },
+   {
+    "claim": "ResultMessage subtypes include success, error_max_turns, error_max_budget_usd, error_during_execution; ResultMessage carries session_id; result is optional",
+    "url": "https://code.claude.com/docs/en/agent-sdk/python",
+    "supported": true
+   },
+   {
+    "claim": "A single-shot query() raises after yielding an error result",
+    "url": "https://code.claude.com/docs/en/agent-sdk/cost-tracking",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Minor: mixes TypeScript option name (maxBudgetUsd) with the Python type name (ResultMessage; TS type is SDKResultMessage). Not answer-affecting."
+  ],
+  "suggestedFix": "Optionally use 'max_budget_usd' with ResultMessage (Python) or 'maxBudgetUsd' with the result message (TypeScript) consistently across options."
+ },
+ {
+  "id": "CCDV-F-B2-D8-001",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "medium",
+  "verdict": "revise",
+  "verifiedFacts": [
+   {
+    "claim": "With tool_choice any or tool, the API prefills the assistant turn and the model will not emit natural-language explanation before tool_use, even if asked",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use",
+    "supported": true
+   },
+   {
+    "claim": "Docs recommendation for explanation plus a specific tool: use tool_choice auto with explicit instructions in the user message",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Two defensible answers: B is the documented recommendation (auto + instruction), but the stem's hard requirement 'every request must produce a ticket' is only guaranteed by keeping the forced tool_choice, which favors D (reason field in the schema also satisfies the audit-log need).",
+   "Under B the ticket guarantee becomes instruction-based; under D the explanation is in tool input rather than a text block 'before filing'. The stem does not say which constraint dominates."
+  ],
+  "suggestedFix": "Decide the key and remove the competing path. If key=D: state explicitly that the team must keep a guaranteed file_ticket call on every request (and drop 'before filing'). If key=B: remove 'every request must produce a ticket' (e.g., 'nearly every request should produce a ticket and a reviewer checks misses') and replace D with a clearly non-viable distractor (e.g., add the explanation request to the tool description)."
+ },
+ {
+  "id": "CCDV-F-B2-D3-001",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Rules in .claude/rules/ with paths frontmatter load only when Claude reads/writes/edits matching files; glob patterns like src/**/* supported",
+    "url": "https://code.claude.com/docs/en/memory",
+    "supported": true
+   },
+   {
+    "claim": "@imports are expanded and loaded at launch and do not reduce context cost",
+    "url": "https://code.claude.com/docs/en/memory",
+    "supported": true
+   },
+   {
+    "claim": "Subdirectory CLAUDE.md files load on demand; CLAUDE.local.md is personal, not shared",
+    "url": "https://code.claude.com/docs/en/memory",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCDV-F-B2-D4-001",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "HTTP 413 request_too_large: request exceeds max bytes; Messages API max request size 32 MB",
+    "url": "https://platform.claude.com/docs/en/api/errors",
+    "supported": true
+   },
+   {
+    "claim": "For large PDFs, upload with the Files API and reference by file_id to keep payloads small; PDF pages are converted to images (scanned content readable)",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/pdf-support",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A3-003",
+  "chosen": [
+   "A",
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Read deny rules apply to built-in file tools and to file commands Claude Code recognizes in Bash (cat, head, tail, sed, tee) and redirections; not to arbitrary subprocesses",
+    "url": "https://code.claude.com/docs/en/permissions",
+    "supported": true
+   },
+   {
+    "claim": "Managed settings permission rules cannot be overridden by any other level",
+    "url": "https://code.claude.com/docs/en/permissions",
+    "supported": true
+   },
+   {
+    "claim": ".claudeignore has no effect; use Read deny rules",
+    "url": "https://code.claude.com/docs/en/permissions",
+    "supported": true
+   },
+   {
+    "claim": "Managed policy CLAUDE.md cannot be excluded by individual settings; recommended for data handling and compliance reminders; settings for technical enforcement",
+    "url": "https://code.claude.com/docs/en/memory",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A2-007",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "MCP tool execution errors (API failures, business logic errors) are reported in the result with isError: true so the model can act on them",
+    "url": "https://modelcontextprotocol.io/specification/2025-11-25/server/tools",
+    "supported": true
+   }
+  ],
+  "issues": [
+   "Note: error category / retryable fields are an application convention, not MCP-spec fields; option wording ('error content giving...') is compatible with that."
+  ],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A4-001",
+  "chosen": [
+   "B"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Clear, explicit criteria and few-shot examples improve accuracy and consistency",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A4-003",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Being specific about desired output and constraints improves results; vague instructions are less effective",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A4-009",
+  "chosen": [
+   "D"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Structured outputs support string format 'date' (and date-time etc.) and simple regex patterns; JSON outputs and strict tool use share the same limitations",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+    "supported": true
+   },
+   {
+    "claim": "Constrained decoding guarantees schema compliance, not semantic correctness of values",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A5-006",
+  "chosen": [
+   "A"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Subagents should return work with clear output formats/boundaries; coordinator must preserve information rather than lose it in handoffs",
+    "url": "https://www.anthropic.com/engineering/multi-agent-research-system",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ },
+ {
+  "id": "CCAR-F-B2-A5-007",
+  "chosen": [
+   "C"
+  ],
+  "confidence": "high",
+  "verdict": "pass",
+  "verifiedFacts": [
+   {
+    "claim": "Restarts from the beginning are costly; resume from where the agent was when errors occurred; store plans/work in external memory/systems and pass references",
+    "url": "https://www.anthropic.com/engineering/multi-agent-research-system",
+    "supported": true
+   }
+  ],
+  "issues": [],
+  "suggestedFix": ""
+ }
+]

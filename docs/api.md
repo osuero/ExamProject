@@ -15,7 +15,7 @@ JSON over HTTPS, same origin as the SPA. Unsafe methods require header `X-XSRF-T
 ## Catalog (public)
 | GET | /api/catalog | cards: code, title, level, shortDescription, languages, languageStatus, questionCount, durationMinutes, profileVersion, domains with weights, availability |
 |---|---|---|
-| GET | /api/catalog/{code} | detail: description, disclaimer, verified languages, profile (version, counts, times, types, pass mark, scoring policy, official score reference, status, sources), domains with objectives and published counts, modes, availability |
+| GET | /api/catalog/{code} | detail: description, disclaimer, verified languages, profile (version, counts, times, scenariosPerForm, types, pass mark, scoring policy, official score reference, status, sources), domains with objectives and published counts, modes, availability |
 
 ## Attempts (authenticated, owner only — other users get 404)
 | Method | Path | Body / result |
@@ -44,7 +44,7 @@ JSON over HTTPS, same origin as the SPA. Unsafe methods require header `X-XSRF-T
 | GET | /api/admin/certifications/{code} — domains, languages, profile versions |
 | POST | /api/admin/certifications/{code}/profiles — new profile version |
 | POST/DELETE | /api/admin/certifications/{code}/languages[/{locale}] — requires official/provider source and evidence |
-| POST | /api/admin/imports/preview · /api/admin/imports/commit — multipart `file` (.json/.md, ≤ 2 MB); commit is all-or-nothing, 422 with report when invalid |
+| POST | /api/admin/imports/preview · /api/admin/imports/commit — multipart `file` (.json/.md/.docx/.pdf, ≤ 2 MB); report items include `location`; commit is all-or-nothing, 422 with report when invalid |
 | GET | /api/admin/imports · /api/admin/audit · /api/admin/users |
 
 ## Development only

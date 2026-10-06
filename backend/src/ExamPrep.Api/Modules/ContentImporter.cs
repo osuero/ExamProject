@@ -2,6 +2,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
+using System.Xml;
 using ExamPrep.Api.Data;
 using ExamPrep.Api.DomainLogic;
 using ExamPrep.Api.Infrastructure;
@@ -48,9 +49,11 @@ public class BankQuestion
     public string? Originality { get; set; }
     public string? FamilyId { get; set; }
     public List<string> Tags { get; set; } = new();
+    /// <summary>Where the item starts in the uploaded file (line, paragraph or page). Set by the parsers.</summary>
+    public string? SourceLocation { get; set; }
 }
 
-public record ImportItemReport(string ExternalId, string Action, List<ValidationIssue> Issues, string? NearDuplicateOf = null, double? Similarity = null);
+public record ImportItemReport(string ExternalId, string Action, List<ValidationIssue> Issues, string? NearDuplicateOf = null, double? Similarity = null, string? Location = null);
 
 public record ImportReport(string FileName, string Format, string Sha256, string ExamCode, bool Valid, List<string> FileErrors,
     List<ImportItemReport> Items, int CasesNew, int CasesUnchanged, int ToCreate, int Unchanged, int ToVersion, int Rejected);
@@ -73,16 +76,20 @@ public class ContentImporter(AppDbContext db, TimeProvider clock, Audit audit)
         if (bytes.Length == 0) return (null, new() { "File is empty." });
         if (bytes.Length > MaxBytes) return (null, new() { $"File exceeds {MaxBytes / 1024 / 1024} MB." });
         var ext = Path.GetExtension(fileName).ToLowerInvariant();
-        string text;
-        try { text = new UTF8Encoding(false, true).GetString(bytes); }
-        catch (DecoderFallbackException) { return (null, new() { "File is not valid UTF-8 text." }); }
+        string text = "";
+        if (ext is not (".docx" or ".pdf"))
+        {
+            try { text = new UTF8Encoding(false, true).GetString(bytes); }
+            catch (DecoderFallbackException) { return (null, new() { "File is not valid UTF-8 text." }); }
+        }
         try
         {
             BankFile? f = ext switch
             {
                 ".json" => JsonSerializer.Deserialize<BankFile>(text, Json),
                 ".md" or ".markdown" => MarkdownBank.Parse(text),
-                ".pdf" or ".docx" => throw new NotSupportedException("PDF and DOCX import is designed but not implemented yet. Convert to JSON or Markdown."),
+                ".docx" => FromLines(DocumentText.FromDocx(bytes)),
+                ".pdf" => FromLines(DocumentText.FromPdf(bytes)),
                 _ => throw new NotSupportedException("Only .json and .md files are accepted.")
             };
             if (f is null) return (null, new() { "File has no content." });
@@ -92,8 +99,14 @@ public class ContentImporter(AppDbContext db, TimeProvider clock, Audit audit)
         }
         catch (JsonException e) { return (null, new() { $"Invalid JSON: {e.Message}" }); }
         catch (NotSupportedException e) { return (null, new() { e.Message }); }
-        catch (FormatException e) { return (null, new() { $"Invalid Markdown bank: {e.Message}" }); }
+        catch (FormatException e) { return (null, new() { $"Invalid bank document: {e.Message}" }); }
+        catch (InvalidDataException) { return (null, new() { "The file is not a valid .docx package." }); }
+        catch (XmlException e) { return (null, new() { $"The .docx content is not valid XML: {e.Message}" }); }
+        catch (Exception e) when (ext == ".pdf") { return (null, new() { $"The PDF could not be read: {e.GetType().Name}" }); }
     }
+
+    private static BankFile FromLines(List<DocumentText.Line> lines) =>
+        MarkdownBank.Parse(string.Join("\n", lines.Select(l => DocumentText.Normalize(l.Text))), lines.Select(l => l.Location).ToList());
 
     public static string ContentHash(QuestionVersion v) => Crypto.Sha256Hex(JsonSerializer.Serialize(new
     {
@@ -207,7 +220,7 @@ public class ContentImporter(AppDbContext db, TimeProvider clock, Audit audit)
             }
             if (issues.Any(i => i.Severity == "error")) action = "reject";
             else accepted.Add((q.Id, v));
-            items.Add(new ImportItemReport(q.Id, action, issues, dupOf, sim));
+            items.Add(new ImportItemReport(q.Id, action, issues, dupOf, sim, q.SourceLocation));
             plan.Add(new PlannedItem(q, v, ex, action));
         }
 
@@ -241,7 +254,7 @@ public class ContentImporter(AppDbContext db, TimeProvider clock, Audit audit)
             {
                 var v = p.Version;
                 v.CreatedAt = now; v.UpdatedAt = now; v.ImportBatchId = batch.Id; v.Status = QuestionStatuses.Draft;
-                v.Provenance = $"{provenance}; file={Path.GetFileName(fileName)}; sha256={report.Sha256}";
+                v.Provenance = $"{provenance}; file={Path.GetFileName(fileName)}; sha256={report.Sha256}" + (p.Source.SourceLocation is null ? "" : $"; at={p.Source.SourceLocation}");
                 if (p.Existing is null)
                 {
                     var q = new Question { ExternalId = p.Source.Id, CertificationId = cert.Id, FamilyId = p.Source.FamilyId ?? p.Source.Id, CreatedAt = now };
@@ -268,9 +281,10 @@ public class ContentImporter(AppDbContext db, TimeProvider clock, Audit audit)
 /// <summary>Markdown bank format, documented in docs/content-format.md.</summary>
 public static class MarkdownBank
 {
-    public static BankFile Parse(string text)
+    public static BankFile Parse(string text, IReadOnlyList<string>? locations = null)
     {
         var lines = text.Replace("\r\n", "\n").Split('\n');
+        string Loc(int idx) => locations is not null && idx < locations.Count ? locations[idx] : $"line {idx + 1}";
         var file = new BankFile();
         int i = 0;
         if (lines.Length > 0 && lines[0].Trim() == "---")
@@ -310,7 +324,7 @@ public static class MarkdownBank
             if (qM.Success)
             {
                 Flush(); c = null;
-                q = new BankQuestion { Id = qM.Groups[1].Value };
+                q = new BankQuestion { Id = qM.Groups[1].Value, SourceLocation = Loc(i) };
                 file.Questions.Add(q); section = "meta";
                 continue;
             }

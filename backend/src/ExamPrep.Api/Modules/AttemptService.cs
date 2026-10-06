@@ -80,7 +80,9 @@ public class AttemptService(AppDbContext db, TimeProvider clock, Audit audit)
         var statuses = preview ? PreviewStatuses : new[] { QuestionStatuses.Published };
         var pool = await LatestEligibleVersions(cert.Id, statuses, locale, ct);
         var rng = seed is null ? Random.Shared : new Random(seed.Value);
-        var result = ExamAssembler.Assemble(pool, weights, count, rng);
+        var result = dto.Mode == AttemptModes.Simulation && profile.ScenariosPerForm is int k && k > 0
+            ? ExamAssembler.AssembleWithScenarios(pool, weights, count, k, rng)
+            : ExamAssembler.Assemble(pool, weights, count, rng);
         if (!result.Ok)
             throw new AttemptError(409, "insufficient_questions", result.Error!, new { required = count, available = result.Available, target = result.Target });
 
@@ -96,7 +98,8 @@ public class AttemptService(AppDbContext db, TimeProvider clock, Audit audit)
                 profileId = profile.Id, profile.Version, profile.QuestionCount, profile.ExamDurationMinutes, profile.DomainWeights,
                 profile.SimulatorPassPercent, profile.ScoringPolicy, profile.VerificationStatus,
                 attemptQuestionCount = count, attemptDurationMinutes = duration, domains = weights.Select(w => w.Code),
-                allocationTarget = result.Target, allocationActual = result.Actual, preview
+                allocationTarget = result.Target, allocationActual = result.Actual, preview,
+                scenariosPerForm = profile.ScenariosPerForm, scenarios = result.Scenarios, scenarioNote = result.ScenarioNote
             }, Json)
         };
         var versionIds = result.Items.Select(i => i.VersionId).ToList();
